@@ -1,0 +1,102 @@
+---
+import type { SerializedProject } from "../lib/projects";
+import StatusBadge from "./StatusBadge.astro";
+import { withBase } from "../lib/paths";
+
+interface Props {
+  project: SerializedProject;
+}
+
+const { project } = Astro.props;
+
+const formatter = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  day: "numeric",
+  year: "numeric",
+});
+
+const linkLabels: Record<string, string> = {
+  github: "GitHub",
+  demo: "Demo",
+  poster: "Poster",
+  slides: "Slides",
+  dataset: "Dataset",
+};
+
+const links = Object.entries(project.links).filter(([, value]) => Boolean(value));
+const featuredImage = project.featuredImage ? withBase(project.featuredImage) : "";
+const readFull = withBase(`projects/${project.slug}/`);
+---
+
+<section class="project-preview-column" aria-label="Selected project preview">
+  <button class="preview-mobile-toggle" id="preview-mobile-toggle" type="button" aria-expanded="true">
+    Hide preview
+  </button>
+
+  <article class="preview-card" id="preview-card">
+    <p class="preview-kicker">Preview</p>
+    <h2 id="preview-title">{project.title}</h2>
+
+    <p class="preview-summary" id="preview-summary">{project.summary}</p>
+
+    <div class="preview-badges">
+      <span class="meta-pill" id="preview-type">{project.type}</span>
+      <StatusBadge status={project.status} id="preview-status" />
+    </div>
+
+    <p id="preview-meta" class="preview-meta">
+      Updated {formatter.format(new Date(project.lastUpdated))}
+    </p>
+
+    <p id="preview-venue" class="preview-venue" hidden={!project.venueTarget}>
+      {project.venueTarget ? `Venue: ${project.venueTarget}` : ""}
+    </p>
+
+    <figure id="preview-image-wrap" class="preview-image-wrap" hidden={!project.featuredImage}>
+      <img id="preview-image" src={featuredImage} alt="Featured project figure" loading="lazy" />
+    </figure>
+
+    <section class="preview-abstract-block">
+      <div class="preview-abstract-header">
+        <h3>Abstract</h3>
+        <button id="preview-abstract-toggle" type="button" class="text-button" aria-expanded="false">
+          Expand
+        </button>
+      </div>
+      <p id="preview-abstract" class="preview-abstract-text is-collapsed">{project.abstract}</p>
+    </section>
+
+    <section class="preview-links-wrap" aria-label="Quick links">
+      <h3>Quick links</h3>
+      <div class="preview-links-grid" id="preview-links">
+        {
+          links.length ? (
+            links.map(([key, value]) => (
+              <a class="link-pill" href={value} target="_blank" rel="noreferrer">
+                {linkLabels[key] ?? key}
+              </a>
+            ))
+          ) : (
+            <p class="muted">No external links yet.</p>
+          )
+        }
+      </div>
+    </section>
+
+    <section class="preview-latest" id="preview-latest">
+      {
+        project.updates.length ? (
+          <p>
+            <strong>Latest update:</strong> {formatter.format(new Date(project.updates[0].date))} - {project.updates[0].note}
+          </p>
+        ) : (
+          <p class="muted">No timeline updates yet.</p>
+        )
+      }
+    </section>
+
+    <a id="preview-read-full" href={readFull} class="button button-secondary" style="justify-self:start;">
+      Full page
+    </a>
+  </article>
+</section>

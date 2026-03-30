@@ -1,0 +1,41 @@
+---
+interface Props {
+  label: string;
+  active?: boolean;
+  interactive?: boolean;
+  count?: number;
+  group?: string;
+  value?: string;
+}
+
+const {
+  label,
+  active = false,
+  interactive = false,
+  count,
+  group,
+  value,
+} = Astro.props;
+
+const className = `chip${active ? " is-active" : ""}`;
+---
+
+{
+  interactive ? (
+    <button
+      type="button"
+      class={className}
+      data-filter-chip
+      data-filter-group={group}
+      data-filter-value={value ?? label}
+    >
+      <span>{label}</span>
+      {typeof count === "number" ? <span class="chip-count">{count}</span> : null}
+    </button>
+  ) : (
+    <span class={className}>
+      <span>{label}</span>
+      {typeof count === "number" ? <span class="chip-count">{count}</span> : null}
+    </span>
+  )
+}

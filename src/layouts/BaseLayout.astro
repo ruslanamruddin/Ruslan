@@ -1,0 +1,109 @@
+---
+import "../styles/global.css";
+import CommandPalette from "../components/CommandPalette.astro";
+import { withBase } from "../lib/paths";
+
+interface CommandProject {
+  title: string;
+  slug: string;
+  type: string;
+  status: string;
+}
+
+interface Props {
+  title: string;
+  description?: string;
+  commandProjects?: CommandProject[];
+}
+
+const { title, description = "Personal research archive", commandProjects = [] } = Astro.props;
+const currentYear = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <script is:inline>
+      (() => {
+        try {
+          const storageKey = "research-archive-theme";
+          const saved = window.localStorage.getItem(storageKey);
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const theme = saved === "light" || saved === "dark" ? saved : prefersDark ? "dark" : "light";
+          document.documentElement.dataset.theme = theme;
+        } catch {
+          document.documentElement.dataset.theme = "light";
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="site-brand" href={withBase("")}>R. Amruddin</a>
+
+        <nav class="site-nav" aria-label="Main navigation">
+          <a href={withBase("")}>Index</a>
+          <a href={withBase("projects/")}>Projects</a>
+          <a href={withBase("notes/")}>Notes</a>
+          <a href={withBase("cv/")}>CV</a>
+        </nav>
+
+        <div class="site-actions">
+          <button id="theme-toggle" class="text-button" type="button" aria-label="Toggle color theme" aria-pressed="false">
+            dark
+          </button>
+          <button class="text-button" type="button" data-command-open>
+            ⌘K
+          </button>
+        </div>
+      </header>
+
+      <main id="main-content" class="site-main">
+        <slot />
+      </main>
+
+      <footer class="site-footer">
+        <p>© {currentYear} — Last updated Feb 2026</p>
+      </footer>
+    </div>
+
+    <CommandPalette projects={commandProjects} />
+
+    <script is:inline>
+      (() => {
+        const storageKey = "research-archive-theme";
+        const root = document.documentElement;
+        const toggle = document.getElementById("theme-toggle");
+
+        if (!(toggle instanceof HTMLButtonElement)) return;
+
+        const syncLabel = (theme) => {
+          toggle.textContent = theme === "dark" ? "light" : "dark";
+          toggle.setAttribute("aria-pressed", theme === "dark" ? "true" : "false");
+        };
+
+        const setTheme = (theme) => {
+          root.dataset.theme = theme;
+          window.localStorage.setItem(storageKey, theme);
+          syncLabel(theme);
+        };
+
+        const currentTheme = root.dataset.theme === "dark" ? "dark" : "light";
+        syncLabel(currentTheme);
+
+        toggle.addEventListener("click", () => {
+          const next = root.dataset.theme === "dark" ? "light" : "dark";
+          setTheme(next);
+        });
+      })();
+    </script>
+  </body>
+</html>

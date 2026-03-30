@@ -1,0 +1,138 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getProjects, serializeProjects } from "../../lib/projects";
+import { withBase } from "../../lib/paths";
+import {
+  education,
+  professionalExperience,
+  volunteerExperience,
+  leadershipAndInvolvement,
+  publications,
+  awardsAndScholarships,
+} from "../../lib/cv-data";
+
+const projects = await getProjects();
+const commandProjects = serializeProjects(projects).map((project) => ({
+  title: project.title,
+  slug: project.slug,
+  type: project.type,
+  status: project.status,
+}));
+---
+
+<BaseLayout title="CV | Ruslan Amruddin" description="Background, focus areas, and selected contributions." commandProjects={commandProjects}>
+  <section class="page-head">
+    <h1>CV</h1>
+    <p>Background, focus areas, and current work.</p>
+  </section>
+
+  <section class="cv-sheet">
+
+    <!-- ── Education ────────────────────────────────── -->
+    <section>
+      <h2>Education</h2>
+      <div class="cv-entry">
+        <div class="cv-entry-header">
+          <strong>{education.degree}</strong>
+          <span class="cv-date">{education.start} – {education.end} ({education.endNote})</span>
+        </div>
+        <p>{education.institution} — {education.location}</p>
+        <p>GPA: {education.gpa}</p>
+        <p>{education.distinction}</p>
+      </div>
+    </section>
+
+    <!-- ── Research focus ───────────────────────────── -->
+    <section>
+      <h2>Research focus</h2>
+      <ul class="cv-list">
+        <li>Computational histology and image segmentation</li>
+        <li>Machine learning for biomedical data</li>
+        <li>Reproducible research pipelines and scientific tooling</li>
+        <li>Placental biology and developmental biology (methods + quantitative analysis)</li>
+      </ul>
+    </section>
+
+    <!-- ── Professional Experience ──────────────────── -->
+    <section>
+      <h2>Experience</h2>
+      {professionalExperience.map((entry) => (
+        <div class="cv-entry">
+          <div class="cv-entry-header">
+            <strong>{entry.role}</strong>
+            <span class="cv-date">{entry.start} – {entry.end ?? "Present"}</span>
+          </div>
+          <p class="cv-org">{entry.organization} — {entry.location}</p>
+          <ul class="cv-list">
+            {entry.description.map((d) => <li>{d}</li>)}
+          </ul>
+        </div>
+      ))}
+    </section>
+
+    <!-- ── Publications ─────────────────────────────── -->
+    <section>
+      <h2>Publications</h2>
+      {publications.map((pub) => (
+        <div class="cv-entry">
+          <div class="cv-entry-header">
+            <strong>{pub.title}</strong>
+            <span class="cv-date">{pub.year}</span>
+          </div>
+          <p class="cv-org">
+            {pub.authorsPosition} · {pub.venue}{pub.pages ? `, ${pub.pages}` : ""}
+          </p>
+          {pub.doi && (
+            <p class="cv-doi">
+              DOI: <a href={`https://doi.org/${pub.doi}`}>{pub.doi}</a>
+            </p>
+          )}
+          <ul class="cv-list">
+            {pub.description.map((d) => <li>{d}</li>)}
+          </ul>
+        </div>
+      ))}
+    </section>
+
+    <!-- ── Volunteer Experience ──────────────────────── -->
+    <section>
+      <h2>Volunteer</h2>
+      {volunteerExperience.map((entry) => (
+        <div class="cv-entry">
+          <div class="cv-entry-header">
+            <strong>{entry.role}</strong>
+          </div>
+          <p class="cv-org">{entry.organization} — {entry.location}</p>
+          <ul class="cv-list">
+            {entry.description.map((d) => <li>{d}</li>)}
+          </ul>
+        </div>
+      ))}
+    </section>
+
+    <!-- ── Leadership & Involvement ─────────────────── -->
+    <section>
+      <h2>Leadership & Involvement</h2>
+      <ul class="cv-list">
+        {leadershipAndInvolvement.map((entry) => (
+          <li><strong>{entry.role}</strong>, {entry.organization}</li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- ── Awards & Scholarships ────────────────────── -->
+    <section>
+      <h2>Awards & Scholarships</h2>
+      <ul class="cv-list">
+        {awardsAndScholarships.map((a) => <li>{a.name}</li>)}
+      </ul>
+    </section>
+
+    <!-- ── Download ─────────────────────────────────── -->
+    <div>
+      <a class="button button-primary" href={withBase("cv/ruslan-cv.pdf")} download>
+        Download PDF
+      </a>
+    </div>
+  </section>
+</BaseLayout>

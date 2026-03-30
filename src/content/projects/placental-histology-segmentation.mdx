@@ -1,0 +1,42 @@
+---
+title: Deep Learning Pipeline for Placental Histology Segmentation
+date: 2024-01-15
+last_updated: 2025-02-15
+type: Research
+status: "Results ready (writing)"
+tags:
+  - computer-vision
+  - histology
+  - segmentation
+  - U-Net
+  - PyTorch
+summary: An end-to-end deep learning pipeline for segmenting fetal and maternal blood spaces in placental histology slides, reducing manual annotation time from up to 90 minutes per slide to seconds.
+abstract: This project develops a scalable, reproducible deep learning pipeline for placental histology segmentation, focusing on fetal and maternal blood space quantification. Single-channel annotation masks generated in QuPath are used to train supervised U-Net convolutional neural networks, enabling accurate region-of-interest classification across whole-slide images. Pixel-level predictions are aggregated into slide-level quantitative metrics, supporting downstream morphometric analysis while dramatically reducing manual labor. The work is intended as a generalizable methods framework for histology-heavy labs.
+venue_target: "Methods-focused computational biology or biomedical imaging journal"
+updates:
+  - date: 2025-02-15
+    note: Manuscript drafting in progress.
+  - date: 2024-11-01
+    note: Slide-level aggregation and quantitative analysis completed.
+  - date: 2024-06-01
+    note: Model training and validation completed.
+  - date: 2024-03-01
+    note: Dataset curation and annotation protocol finalized.
+pinned: true
+---
+
+## Methods
+
+Whole-slide placental histology images are annotated in QuPath to produce single-channel region masks delineating fetal blood space, maternal blood space, and tissue. These masks serve as ground truth for training U-Net convolutional neural networks in PyTorch. The pipeline handles tiling, normalization, augmentation, and training with configurable hyperparameters. Inference produces pixel-level segmentation maps across full slides.
+
+## Results
+
+The trained models achieve accurate classification of fetal and maternal blood spaces across diverse placental regions. Pixel-level predictions are aggregated into slide-level quantitative metrics — area fractions, region counts, and spatial distributions — enabling reproducible morphometric comparison across experimental groups. Processing time drops from up to 90 minutes of manual annotation per slide to seconds of automated inference.
+
+## Limitations
+
+Model performance is sensitive to staining variability and tissue preparation quality. Generalization to other tissue types or staining protocols has not yet been evaluated. The current pipeline assumes consistent annotation conventions across annotators.
+
+## Next steps
+
+Finalize the methods manuscript. Evaluate cross-lab generalizability. Release the pipeline code and a sample annotated dataset for reproducibility.

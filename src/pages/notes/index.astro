@@ -1,0 +1,38 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getProjects, serializeProjects } from "../../lib/projects";
+
+const projects = await getProjects();
+const commandProjects = serializeProjects(projects).map((project) => ({
+  title: project.title,
+  slug: project.slug,
+  type: project.type,
+  status: project.status,
+}));
+---
+
+<BaseLayout
+  title="Notes | Research Archive"
+  description="Working notes and references."
+  commandProjects={commandProjects}
+>
+  <section class="page-head">
+    <h1>Notes</h1>
+    <p>Fragments, references, and short writeups that do not warrant full project pages.</p>
+  </section>
+
+  <section class="notes-sheet">
+    <section>
+      <h2>Planned</h2>
+      <ul style="margin-left:1.1rem;display:grid;gap:0.3rem;font-size:var(--text-sm);color:var(--muted);">
+        <li>Reading notes linked to active projects.</li>
+        <li>Paper summaries with open questions.</li>
+        <li>Implementation notes worth preserving.</li>
+      </ul>
+    </section>
+
+    <p style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--faint);">
+      In preparation.
+    </p>
+  </section>
+</BaseLayout>

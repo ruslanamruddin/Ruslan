@@ -1,0 +1,178 @@
+---
+import { withBase } from "../lib/paths";
+
+interface CommandProject {
+  title: string;
+  slug: string;
+  type: string;
+  status: string;
+}
+
+interface Props {
+  projects: CommandProject[];
+}
+
+const { projects } = Astro.props;
+---
+
+<div id="command-palette" class="command-palette" hidden>
+  <button class="command-backdrop" type="button" aria-label="Close command palette" data-command-close></button>
+  <section class="command-dialog" role="dialog" aria-modal="true" aria-labelledby="command-title">
+    <header class="command-header">
+      <h2 id="command-title">Jump to project</h2>
+      <button class="text-button" type="button" data-command-close>
+        Esc
+      </button>
+    </header>
+
+    <label for="command-search" class="sr-only">Search projects</label>
+    <input id="command-search" type="search" placeholder="Type a project title, type, or status" autocomplete="off" />
+
+    <ul id="command-results" class="command-results" role="listbox">
+      {
+        projects.map((project) => (
+          <li>
+            <button
+              class="command-item"
+              type="button"
+              data-command-item
+              data-command-slug={project.slug}
+              data-command-query={`${project.title} ${project.type} ${project.status}`.toLowerCase()}
+              data-command-url={withBase(`projects/?project=${project.slug}`)}
+            >
+              <span>{project.title}</span>
+              <span>{project.type}</span>
+            </button>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p id="command-empty" class="command-empty" hidden>No projects found.</p>
+  </section>
+</div>
+
+<script is:inline define:vars={{ baseUrl: import.meta.env.BASE_URL }}>
+  (() => {
+    const palette = document.getElementById("command-palette");
+    if (!(palette instanceof HTMLElement)) return;
+
+    const search = document.getElementById("command-search");
+    const list = document.getElementById("command-results");
+    const emptyState = document.getElementById("command-empty");
+    if (!(search instanceof HTMLInputElement) || !(list instanceof HTMLElement) || !(emptyState instanceof HTMLElement)) {
+      return;
+    }
+
+    const openButtons = Array.from(document.querySelectorAll("[data-command-open]"));
+    const closeButtons = Array.from(palette.querySelectorAll("[data-command-close]"));
+    const items = Array.from(list.querySelectorAll("[data-command-item]"));
+
+    const isProjectsPath = () => window.location.pathname.endsWith("/projects/") || window.location.pathname.endsWith("/projects");
+
+    const visibleItems = () =>
+      items.filter((item) => {
+        const parent = item.parentElement;
+        return parent instanceof HTMLElement ? !parent.hidden : false;
+      });
+
+    const filterItems = () => {
+      const query = search.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      items.forEach((item) => {
+        const node = item;
+        const text = node.getAttribute("data-command-query") ?? "";
+        const isMatch = !query || text.includes(query);
+        const parent = node.parentElement;
+        if (parent instanceof HTMLElement) {
+          parent.hidden = !isMatch;
+        }
+        if (isMatch) {
+          visibleCount += 1;
+        }
+      });
+
+      emptyState.hidden = visibleCount > 0;
+    };
+
+    const openPalette = () => {
+      palette.hidden = false;
+      requestAnimationFrame(() => palette.classList.add("is-open"));
+      search.value = "";
+      filterItems();
+      search.focus();
+    };
+
+    const closePalette = () => {
+      palette.classList.remove("is-open");
+      window.setTimeout(() => {
+        palette.hidden = true;
+      }, 180);
+    };
+
+    const navigateToProject = (slug, href) => {
+      if (isProjectsPath()) {
+        window.dispatchEvent(new CustomEvent("archive:select", { detail: { slug } }));
+        const url = new URL(window.location.href);
+        url.searchParams.set("project", slug);
+        window.history.replaceState({}, "", url);
+        closePalette();
+        return;
+      }
+
+      if (href) {
+        window.location.href = href;
+        return;
+      }
+
+      const url = new URL(window.location.href);
+      url.pathname = `${baseUrl}projects/`;
+      url.search = "";
+      url.searchParams.set("project", slug);
+      window.location.href = url.toString();
+    };
+
+    const onItemSelect = (item) => {
+      const slug = item.getAttribute("data-command-slug");
+      const href = item.getAttribute("data-command-url");
+      if (!slug) return;
+      navigateToProject(slug, href);
+    };
+
+    openButtons.forEach((button) => {
+      button.addEventListener("click", openPalette);
+    });
+
+    closeButtons.forEach((button) => {
+      button.addEventListener("click", closePalette);
+    });
+
+    items.forEach((item) => {
+      item.addEventListener("click", () => onItemSelect(item));
+    });
+
+    search.addEventListener("input", filterItems);
+
+    search.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        const first = visibleItems()[0];
+        if (first instanceof HTMLElement) {
+          onItemSelect(first);
+        }
+      }
+    });
+
+    window.addEventListener("keydown", (event) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        openPalette();
+      }
+
+      if (event.key === "Escape" && !palette.hidden) {
+        closePalette();
+      }
+    });
+  })();
+</script>
