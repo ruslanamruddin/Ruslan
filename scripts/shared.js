@@ -30,6 +30,8 @@
   const detailInner = document.getElementById("sidebar-detail-inner");
   if (!overlay || !panel || !iframe) return;
 
+  const base = document.querySelector("base")?.getAttribute("href") || "/";
+
   const projects = {
     "histoscope": {
       title: "Histoscope",
@@ -68,7 +70,7 @@
     } else {
       if (detail) detail.hidden = true;
       panel.classList.remove("has-detail");
-      iframe.src = `/projects/${slug}/`;
+      iframe.src = `${base}projects/${slug}/`;
     }
 
     overlay.hidden = false;
@@ -160,7 +162,8 @@
         if (typeof window.__openSidebar === "function") {
           window.__openSidebar(p.slug);
         } else {
-          window.location.href = `/projects/${p.slug}/`;
+          const b = document.querySelector("base")?.getAttribute("href") || "/";
+          window.location.href = `${b}projects/${p.slug}/`;
         }
       });
       const li = document.createElement("li");
