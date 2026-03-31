@@ -185,6 +185,12 @@ textarea {
   width: min(960px, calc(100% - 3rem));
   margin: 0 auto;
   padding: 0 0 3rem;
+  transition: margin 250ms ease;
+}
+
+.site-shell.is-pushed {
+  margin-left: 1.5rem;
+  margin-right: auto;
 }
 
 /* ── header ────────────────────────────────────── */

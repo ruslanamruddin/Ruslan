@@ -100,17 +100,21 @@
       iframe.src = `${base}projects/${slug}/`;
     }
 
+    const shell = document.querySelector(".site-shell");
     overlay.hidden = false;
     panel.hidden = false;
     requestAnimationFrame(() => {
       overlay.classList.add("is-open");
       panel.classList.add("is-open");
+      if (shell) shell.classList.add("is-pushed");
     });
   };
 
   const closeSidebar = () => {
+    const shell = document.querySelector(".site-shell");
     overlay.classList.remove("is-open");
     panel.classList.remove("is-open");
+    if (shell) shell.classList.remove("is-pushed");
     panel.addEventListener("transitionend", () => {
       overlay.hidden = true;
       panel.hidden = true;
