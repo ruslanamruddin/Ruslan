@@ -827,34 +827,41 @@ button.chip:focus-visible,
 .sidebar-detail-inner {
   padding: 1rem 1.2rem;
   overflow-y: auto;
-  display: grid;
-  gap: 0.5rem;
-  align-content: start;
 }
 
 .sidebar-detail-inner h3 {
   font-size: var(--text-sm);
   font-weight: 500;
+  margin-top: 0.4rem;
+  margin-bottom: 0.2rem;
+}
+
+.sidebar-detail-inner h3:first-of-type {
+  margin-top: 0;
 }
 
 .sidebar-detail-inner p {
   font-size: var(--text-sm);
   color: var(--muted);
   line-height: 1.5;
-  max-width: 60ch;
+  margin-bottom: 0.3rem;
 }
 
 .sidebar-detail-inner .sidebar-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
+  clear: both;
+  padding-top: 0.25rem;
 }
 
 .sidebar-detail-inner .sidebar-demo-img {
+  float: right;
+  margin: 0 0 0.6rem 1rem;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  max-width: 100%;
-  max-height: 140px;
+  width: 45%;
+  max-width: 280px;
   object-fit: cover;
   object-position: top left;
 }
