@@ -28,15 +28,42 @@
   const closeBtn = document.getElementById("sidebar-close");
   const detail = document.getElementById("sidebar-detail");
   const detailInner = document.getElementById("sidebar-detail-inner");
+  const resizeHandle = document.getElementById("sidebar-resize");
   if (!overlay || !panel || !iframe) return;
 
   const base = document.querySelector("base")?.getAttribute("href") || "/";
+
+  // Drag-to-resize
+  if (resizeHandle) {
+    let startX, startWidth;
+    const onMouseMove = (e) => {
+      const newWidth = startWidth + (startX - e.clientX);
+      const clamped = Math.max(320, Math.min(newWidth, window.innerWidth * 0.95));
+      panel.style.width = clamped + "px";
+    };
+    const onMouseUp = () => {
+      panel.classList.remove("is-resizing");
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+      iframe.style.pointerEvents = "";
+    };
+    resizeHandle.addEventListener("mousedown", (e) => {
+      e.preventDefault();
+      startX = e.clientX;
+      startWidth = panel.offsetWidth;
+      panel.classList.add("is-resizing");
+      iframe.style.pointerEvents = "none";
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", onMouseUp);
+    });
+  }
 
   const projects = {
     "histoscope": {
       title: "Histoscope",
       liveUrl: "https://histoscope.app",
       detail: `
+        <img class="sidebar-demo-img" src="${base}images/histoscope-demo.png" alt="Histoscope platform demo" />
         <h3>What it is</h3>
         <p>A research-focused platform for deploying, reviewing, and iteratively improving machine learning histology segmentation models in real lab workflows.</p>
         <h3>Purpose</h3>
@@ -90,6 +117,7 @@
       panel.classList.remove("has-detail");
       if (detail) detail.hidden = true;
       iframe.src = "about:blank";
+      panel.style.width = "";
     }, { once: true });
   };
 
