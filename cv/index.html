@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="Background, focus areas, and selected contributions." />
+    <title>CV | Ruslan Amruddin</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+    <script>
+      (() => {
+        try {
+          const storageKey = "research-archive-theme";
+          const saved = window.localStorage.getItem(storageKey);
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const theme = saved === "light" || saved === "dark" ? saved : "light";
+          document.documentElement.dataset.theme = theme;
+        } catch { document.documentElement.dataset.theme = "light"; }
+      })();
+    </script>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="site-brand" href="/">R. Amruddin</a>
+        <nav class="site-nav" aria-label="Main navigation">
+          <a href="/notes/">Notes</a>
+          <a href="/cv/">CV</a>
+        </nav>
+        <div class="site-actions">
+          <button id="theme-toggle" class="text-button" type="button" aria-label="Toggle color theme" aria-pressed="false">dark</button>
+          <button class="text-button" type="button" data-command-open>&#8984;K</button>
+        </div>
+      </header>
+
+      <main id="main-content" class="site-main">
+        <section class="page-head">
+          <h1>CV</h1>
+          <p>Background, focus areas, and current work.</p>
+        </section>
+
+        <section class="cv-sheet">
+          <section>
+            <h2>Education</h2>
+            <div class="cv-entry">
+              <div class="cv-entry-header">
+                <strong>BSc (Honours) in Life Sciences</strong>
+                <span class="cv-date">Sept 2022 – Apr 2026 (Expected)</span>
+              </div>
+              <p>Queen's University — Kingston, ON</p>
+              <p>GPA: 3.94 / 4.00</p>
+              <p>Dean's Honour List with Distinction (Top 3%)</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>Research focus</h2>
+            <ul class="cv-list">
+              <li>Computational histology and image segmentation</li>
+              <li>Machine learning for biomedical data</li>
+              <li>Reproducible research pipelines and scientific tooling</li>
+              <li>Placental biology and developmental biology (methods + quantitative analysis)</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Experience</h2>
+            <div class="cv-entry">
+              <div class="cv-entry-header">
+                <strong>Research Assistant</strong>
+                <span class="cv-date">Feb 2024 – Present</span>
+              </div>
+              <p class="cv-org">Natale Lab, Queen's University — Kingston, ON</p>
+              <ul class="cv-list">
+                <li>Conducting molecular and histological research on cannabinoid effects in placental development</li>
+                <li>Implementing ML-based tissue segmentation and fluorescence image analysis pipelines</li>
+              </ul>
+            </div>
+            <div class="cv-entry">
+              <div class="cv-entry-header">
+                <strong>Residence Don</strong>
+                <span class="cv-date">Aug 2025 – Present</span>
+              </div>
+              <p class="cv-org">Queen's University — Kingston, ON</p>
+              <ul class="cv-list">
+                <li>Providing academic, wellness, and personal support to 50 undergraduate residents</li>
+                <li>Facilitating conflict resolution and leadership programs</li>
+                <li>Organizing inclusivity and mentorship initiatives</li>
+              </ul>
+            </div>
+            <div class="cv-entry">
+              <div class="cv-entry-header">
+                <strong>Operations Manager</strong>
+                <span class="cv-date">May 2024 – Apr 2025</span>
+              </div>
+              <p class="cv-org">Student Life Center, Queen's University — Kingston, ON</p>
+              <ul class="cv-list">
+                <li>Managed 23 staff members across scheduling, operations, and budgeting</li>
+                <li>Implemented scheduling and process automation improvements</li>
+                <li>Improved operational protocols</li>
+              </ul>
+            </div>
+            <div class="cv-entry">
+              <div class="cv-entry-header">
+                <strong>Technical Support Specialist</strong>
+                <span class="cv-date">Jul 2022 – Sept 2022</span>
+              </div>
+              <p class="cv-org">Moneris Solutions — Remote / Toronto, ON</p>
+              <ul class="cv-list">
+                <li>Provided front-line terminal and network troubleshooting for business clients</li>
+                <li>Documented systemic technical issues for escalation</li>
+              </ul>
+            </div>
+            <div class="cv-entry">
+              <div class="cv-entry-header">
+                <strong>Private STEM Tutor</strong>
+                <span class="cv-date">2020 – Present</span>
+              </div>
+              <p class="cv-org">Independent — Ajax &amp; Virtual</p>
+              <ul class="cv-list">
+                <li>Mentored students in biology, chemistry, and mathematics</li>
+                <li>Supported average grade improvement of 20–30%</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2>Publications</h2>
+            <div class="cv-entry">
+              <div class="cv-entry-header">
+                <strong>Exploring Artificial Consciousness</strong>
+                <span class="cv-date">2024</span>
+              </div>
+              <p class="cv-org">Second Author · Canadian Undergraduate Conference on Artificial Intelligence (CUCAI 2024), pp. 64–71</p>
+              <ul class="cv-list">
+                <li>Literature review and comparative analysis of AI and biological models of consciousness</li>
+                <li>Ethical and philosophical evaluation of synthetic cognition</li>
+              </ul>
+            </div>
+            <div class="cv-entry">
+              <div class="cv-entry-header">
+                <strong>Notification Sounds and Physiological Responses</strong>
+                <span class="cv-date">2024</span>
+              </div>
+              <p class="cv-org">Second Author · Qapsule Undergraduate Research Journal</p>
+              <p class="cv-doi">DOI: <a href="https://doi.org/10.24908/qap.v1i3.18934">10.24908/qap.v1i3.18934</a></p>
+              <ul class="cv-list">
+                <li>Studied sound frequency impact on heart rate variability and reaction time</li>
+                <li>Statistical analysis in R and Python</li>
+              </ul>
+            </div>
+            <div class="cv-entry">
+              <div class="cv-entry-header">
+                <strong>RecognEyes: Smart Glasses for Prosopagnosia</strong>
+                <span class="cv-date">2025</span>
+              </div>
+              <p class="cv-org">Second Author · Canadian Undergraduate Conference on Artificial Intelligence (CUCAI 2025), pp. 194–199</p>
+              <ul class="cv-list">
+                <li>TensorFlow-based facial recognition pipeline (&gt;99% accuracy)</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2>Volunteer</h2>
+            <div class="cv-entry">
+              <div class="cv-entry-header"><strong>Education Technology Volunteer</strong></div>
+              <p class="cv-org">Toronto General Hospital (UHN) — Toronto, ON</p>
+              <ul class="cv-list">
+                <li>Digitized audiovisual asset systems</li>
+                <li>Improved departmental accessibility workflows</li>
+              </ul>
+            </div>
+            <div class="cv-entry">
+              <div class="cv-entry-header"><strong>Emergency &amp; Cancer Center Volunteer</strong></div>
+              <p class="cv-org">LakeRidge Health — Ajax / Whitby, ON</p>
+              <ul class="cv-list">
+                <li>Provided logistical and emotional support in high-acuity care units</li>
+                <li>Facilitated interdepartmental communication for patient needs</li>
+              </ul>
+            </div>
+            <div class="cv-entry">
+              <div class="cv-entry-header"><strong>Community Volunteer</strong></div>
+              <p class="cv-org">Aga Khan Foundation — GTA &amp; Kingston</p>
+              <ul class="cv-list">
+                <li>Coordinated youth mentorship and education programs</li>
+                <li>Assisted fundraising events supporting global education initiatives</li>
+              </ul>
+            </div>
+            <div class="cv-entry">
+              <div class="cv-entry-header"><strong>Events Coordinator</strong></div>
+              <p class="cv-org">Ismaili Student Association — Kingston, ON</p>
+              <ul class="cv-list">
+                <li>Organized intercultural events (200+ attendees)</li>
+                <li>Managed sponsorship outreach and logistics</li>
+                <li>Increased engagement by 40%</li>
+              </ul>
+            </div>
+            <div class="cv-entry">
+              <div class="cv-entry-header"><strong>Executive Member</strong></div>
+              <p class="cv-org">Queen's Generation Connect — Kingston, ON</p>
+              <ul class="cv-list">
+                <li>Led intergenerational outreach initiatives</li>
+                <li>Spearheaded volunteer recruitment and community partnerships</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2>Leadership &amp; Involvement</h2>
+            <ul class="cv-list">
+              <li><strong>President</strong>, Afghan Students' Association</li>
+              <li><strong>President</strong>, Qapsule Undergraduate Health Science Journal</li>
+              <li><strong>Design Team Member</strong>, QMIND</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Awards &amp; Scholarships</h2>
+            <ul class="cv-list">
+              <li>Eleanor Rowley Ingraham Admission Scholarship</li>
+              <li>James H. Rattray Scholarship in Science</li>
+              <li>Queen's Appeal Undergraduate Scholarship</li>
+              <li>Dean's Award of Excellence</li>
+            </ul>
+          </section>
+
+          <div>
+            <a class="button button-primary" href="/cv/ruslan_cv.pdf" download>Download PDF</a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p>&copy; 2026 — Last updated Feb 2026</p>
+      </footer>
+    </div>
+
+    <div class="command-palette" id="command-palette" hidden>
+      <button class="command-backdrop" data-command-close aria-label="Close command palette"></button>
+      <div class="command-dialog" role="dialog" aria-label="Command palette">
+        <div class="command-header">
+          <h2>Go to project</h2>
+          <button class="text-button" data-command-close type="button">Esc</button>
+        </div>
+        <input id="command-search" type="text" placeholder="Search projects..." autocomplete="off" />
+        <ul class="command-results" id="command-results"></ul>
+      </div>
+    </div>
+
+    <script src="/scripts/shared.js"></script>
+  </body>
+</html>

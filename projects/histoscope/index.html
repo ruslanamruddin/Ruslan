@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="A research-focused platform for deploying, reviewing, and iteratively improving machine learning histology segmentation models in real lab workflows." />
+    <title>Histoscope | Research Archive</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+    <script>
+      (() => {
+        try {
+          const s = window.localStorage.getItem("research-archive-theme");
+          const d = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          document.documentElement.dataset.theme = s === "light" || s === "dark" ? s : "light";
+        } catch { document.documentElement.dataset.theme = "light"; }
+      })();
+    </script>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="site-brand" href="/">R. Amruddin</a>
+        <nav class="site-nav" aria-label="Main navigation">
+          <a href="/notes/">Notes</a>
+          <a href="/cv/">CV</a>
+        </nav>
+        <div class="site-actions">
+          <button id="theme-toggle" class="text-button" type="button" aria-label="Toggle color theme" aria-pressed="false">dark</button>
+          <button class="text-button" type="button" data-command-open>&#8984;K</button>
+        </div>
+      </header>
+
+      <main id="main-content" class="site-main">
+        <article class="paper-layout">
+          <header class="paper-header">
+            <p style="font-family:var(--font-mono);font-size:var(--text-xs);"><a href="/projects/?project=histoscope">Back to archive</a></p>
+            <h1>Histoscope</h1>
+            <p style="color:var(--muted);">A research-focused platform for deploying, reviewing, and iteratively improving machine learning histology segmentation models in real lab workflows.</p>
+            <div class="preview-badges">
+              <span class="meta-pill">Tool</span>
+              <span class="status-badge">Ongoing</span>
+            </div>
+            <div class="paper-meta-grid">
+              <div><strong>Started</strong><p>Aug 1, 2024</p></div>
+              <div><strong>Last updated</strong><p>Feb 10, 2025</p></div>
+              <div><strong>Venue target</strong><p>Not publication-focused (research infrastructure)</p></div>
+            </div>
+            <div class="project-row-tags">
+              <span class="chip">ML-tooling</span>
+              <span class="chip">human-in-the-loop</span>
+              <span class="chip">histology</span>
+              <span class="chip">software</span>
+            </div>
+          </header>
+
+          <section>
+            <h2>Abstract</h2>
+            <p style="max-width:64ch;">Histoscope is a software platform designed to support practical deployment of machine learning models for histological analysis. It enables versioned inference runs, human-in-the-loop review of segmentation outputs, and reproducible mask export for downstream quantitative analysis. The system is built to bridge experimental labs and ML research by prioritizing traceability, validation, and iterative dataset improvement.</p>
+          </section>
+
+          <section>
+            <h2>Links</h2>
+            <div class="detail-links">
+              <p class="muted">No external links yet.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>Timeline</h2>
+            <ul class="timeline">
+              <li><time datetime="2025-02-10">Feb 10, 2025</time><p>Dataset reintegration and versioning in progress.</p></li>
+              <li><time datetime="2024-12-01">Dec 1, 2024</time><p>Human-in-the-loop review system added.</p></li>
+              <li><time datetime="2024-09-01">Sep 1, 2024</time><p>Core inference workflow implemented.</p></li>
+            </ul>
+          </section>
+
+          <section class="article-content">
+            <h2>System design</h2>
+            <p>Histoscope is structured around a versioned inference pipeline. Users register trained models, run batch inference on slide sets, and store results as traceable artifacts. Each run is linked to a specific model version, dataset snapshot, and parameter configuration, enabling reproducible comparisons across iterations.</p>
+
+            <h2>Review and validation workflow</h2>
+            <p>A human-in-the-loop review interface allows researchers to inspect segmentation outputs, flag errors, and correct predictions directly. Corrections feed back into the training dataset, supporting iterative model improvement without breaking the provenance chain.</p>
+
+            <h2>Intended lab use cases</h2>
+            <p>The platform targets histology-heavy research groups that need to deploy ML models without dedicated engineering support. Typical workflows include batch segmentation of whole-slide images, quality control of automated annotations, and export of validated masks for morphometric analysis.</p>
+
+            <h2>Planned extensions</h2>
+            <p>Upcoming work includes multi-model comparison dashboards, configurable export formats for downstream statistical tools, and integration with common slide management systems.</p>
+          </section>
+        </article>
+      </main>
+
+      <footer class="site-footer">
+        <p>&copy; 2026 — Last updated Feb 2026</p>
+      </footer>
+    </div>
+
+    <div class="command-palette" id="command-palette" hidden>
+      <button class="command-backdrop" data-command-close aria-label="Close command palette"></button>
+      <div class="command-dialog" role="dialog" aria-label="Command palette">
+        <div class="command-header">
+          <h2>Go to project</h2>
+          <button class="text-button" data-command-close type="button">Esc</button>
+        </div>
+        <input id="command-search" type="text" placeholder="Search projects..." autocomplete="off" />
+        <ul class="command-results" id="command-results"></ul>
+      </div>
+    </div>
+
+    <script src="/scripts/shared.js"></script>
+  </body>
+</html>

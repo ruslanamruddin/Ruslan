@@ -14,8 +14,8 @@
   --bg: #f8f7f5;
   --surface: #ffffff;
   --surface-2: #f1f0ec;
-  --text: #1c1b19;
-  --muted: #71706b;
+  --text: #000000;
+  --muted: #333333;
   --faint: #a3a29c;
   --border: #dddcd7;
   --border-strong: #c4c3be;
@@ -684,47 +684,11 @@ button.chip:focus-visible,
   color: var(--muted);
 }
 
-/* ── home grid ─────────────────────────────────── */
+/* ── home project list ─────────────────────────── */
 
-.home-grid {
+.project-list-home {
   display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 1.5rem;
-  align-items: start;
-}
-
-/* ── now strip ─────────────────────────────────── */
-
-.now-strip {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--surface);
-  padding: 0.8rem;
-  display: grid;
-  gap: 0.65rem;
-}
-
-.now-strip h2 {
-  font-size: var(--text-xs);
-}
-
-.now-item {
-  display: grid;
-  gap: 0.15rem;
-}
-
-.now-item strong {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--faint);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.now-item p {
-  font-size: var(--text-sm);
-  color: var(--muted);
-  line-height: 1.5;
+  gap: 0;
 }
 
 /* ── pinned projects ───────────────────────────── */
@@ -768,58 +732,112 @@ button.chip:focus-visible,
   line-height: 1.45;
 }
 
-/* ── activity feed ─────────────────────────────── */
+/* ── sidebar panel ─────────────────────────────── */
 
-.activity-feed {
-  list-style: none;
-  display: grid;
-  gap: 0;
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  transition: opacity 200ms ease;
 }
 
-.activity-item {
+.sidebar-overlay.is-open {
+  opacity: 1;
+}
+
+.sidebar-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  width: 55vw;
+  max-width: 900px;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  display: grid;
+  grid-template-rows: auto 1fr;
+  transform: translateX(100%);
+  transition: transform 250ms ease;
+}
+
+.sidebar-panel.has-detail {
+  grid-template-rows: auto 25% 1fr;
+}
+
+.sidebar-panel.is-open {
+  transform: translateX(0);
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.65rem 1rem;
   border-bottom: 1px solid var(--border);
-  padding: 0.5rem 0;
-  display: grid;
-  grid-template-columns: 7rem 1fr auto;
-  gap: 0.5rem;
-  align-items: baseline;
-}
-
-.activity-item:last-child {
-  border-bottom: none;
-}
-
-.activity-item time {
   font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--faint);
-  white-space: nowrap;
+  font-size: var(--text-sm);
 }
 
-.activity-item p {
+.sidebar-title {
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.sidebar-detail {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  overflow: hidden;
+}
+
+.sidebar-detail-inner {
+  padding: 1rem 1.2rem;
+  overflow-y: auto;
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+}
+
+.sidebar-detail-inner h3 {
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.sidebar-detail-inner p {
   font-size: var(--text-sm);
   color: var(--muted);
+  line-height: 1.5;
+  max-width: 60ch;
 }
 
-.activity-item a {
+.sidebar-detail-inner .sidebar-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.sidebar-detail-divider {
+  border-top: 1px solid var(--border);
+  padding: 0.35rem 1.2rem;
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   color: var(--faint);
-  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--surface-2);
 }
 
-/* ── elsewhere ─────────────────────────────────── */
-
-.elsewhere {
-  border-top: 1px solid var(--border);
-  padding-top: 1.2rem;
-}
-
-.elsewhere p {
-  font-size: var(--text-sm);
-  color: var(--faint);
-  max-width: 52ch;
-  line-height: 1.55;
+.sidebar-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: var(--bg);
 }
 
 /* ── paper layout (project detail) ─────────────── */
@@ -1121,10 +1139,14 @@ button.chip:focus-visible,
     overflow-x: auto;
   }
 
-  .home-grid,
   .projects-shell,
   .filters-row {
     grid-template-columns: 1fr;
+  }
+
+  .sidebar-panel {
+    width: 100vw;
+    max-width: none;
   }
 
   .project-list {
@@ -1152,10 +1174,6 @@ button.chip:focus-visible,
     display: none;
   }
 
-  .activity-item {
-    grid-template-columns: 1fr;
-    gap: 0.15rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

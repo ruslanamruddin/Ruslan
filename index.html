@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="Life sciences researcher building ML pipelines and tools for biomedical research." />
+    <title>Ruslan Amruddin</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+    <script>
+      (() => {
+        try {
+          const storageKey = "research-archive-theme";
+          const saved = window.localStorage.getItem(storageKey);
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const theme = saved === "light" || saved === "dark" ? saved : "light";
+          document.documentElement.dataset.theme = theme;
+        } catch {
+          document.documentElement.dataset.theme = "light";
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="site-brand" href="/">R. Amruddin</a>
+        <nav class="site-nav" aria-label="Main navigation">
+          <a href="/notes/">Notes</a>
+          <a href="/cv/">CV</a>
+        </nav>
+        <div class="site-actions">
+          <button id="theme-toggle" class="text-button" type="button" aria-label="Toggle color theme" aria-pressed="false">dark</button>
+          <button class="text-button" type="button" data-command-open>&#8984;K</button>
+        </div>
+      </header>
+
+      <main id="main-content" class="site-main">
+        <section class="page-head">
+          <h1>Ruslan Amruddin</h1>
+          <p>4th-year Life Sciences student at Queen's University.</p>
+          <p>Interested in computational histology, machine learning for biomedical data, and reproducible research tooling.</p>
+          <p>Currently building ML pipelines for tissue segmentation and quantitative image analysis.</p>
+          <p>Currently reading genomics and bioinformatics ML papers and textbooks.</p>
+          <p>Curious by nature — always learning, always looking to try something new.</p>
+        </section>
+
+        <section>
+          <h2>Projects</h2>
+          <div class="project-list-home">
+            <button class="project-row" type="button" data-project-slug="histoscope">
+              <div class="project-row-header">
+                <h3>Histoscope</h3>
+                <span class="status-badge is-compact">Ongoing</span>
+              </div>
+              <p class="project-row-summary">A research-focused platform for deploying, reviewing, and iteratively improving machine learning histology segmentation models in real lab workflows.</p>
+              <div class="project-row-meta">
+                <div class="project-row-tags">
+                  <span class="chip">ML-tooling</span>
+                  <span class="chip">human-in-the-loop</span>
+                  <span class="chip">histology</span>
+                </div>
+                <small>Feb 10, 2025</small>
+              </div>
+            </button>
+
+            <button class="project-row" type="button" data-project-slug="placental-histology-segmentation">
+              <div class="project-row-header">
+                <h3>Deep Learning Pipeline for Placental Histology Segmentation</h3>
+                <span class="status-badge is-compact">Results ready (writing)</span>
+              </div>
+              <p class="project-row-summary">An end-to-end deep learning pipeline for segmenting fetal and maternal blood spaces in placental histology slides, reducing manual annotation time from up to 90 minutes per slide to seconds.</p>
+              <div class="project-row-meta">
+                <div class="project-row-tags">
+                  <span class="chip">computer-vision</span>
+                  <span class="chip">histology</span>
+                  <span class="chip">segmentation</span>
+                </div>
+                <small>Feb 15, 2025</small>
+              </div>
+            </button>
+
+            <button class="project-row" type="button" data-project-slug="prenatal-thc-cbd-placenta">
+              <div class="project-row-header">
+                <h3>Prenatal THC + CBD Effects on Rat Placental Development</h3>
+                <span class="status-badge is-compact">Ongoing</span>
+              </div>
+              <p class="project-row-summary">An in vivo study investigating the combined effects of prenatal THC and CBD exposure on placental morphology and vascular development.</p>
+              <div class="project-row-meta">
+                <div class="project-row-tags">
+                  <span class="chip">placental-biology</span>
+                  <span class="chip">cannabinoids</span>
+                  <span class="chip">histology</span>
+                </div>
+                <small>Jan 15, 2025</small>
+              </div>
+            </button>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p>&copy; 2026 — Last updated Feb 2026</p>
+      </footer>
+    </div>
+
+    <!-- Sidebar Panel -->
+    <div class="sidebar-overlay" id="sidebar-overlay" hidden></div>
+    <aside class="sidebar-panel" id="sidebar-panel" hidden>
+      <div class="sidebar-header">
+        <span class="sidebar-title" id="sidebar-title"></span>
+        <button class="text-button" type="button" id="sidebar-close" aria-label="Close panel">Close</button>
+      </div>
+      <div class="sidebar-detail" id="sidebar-detail" hidden>
+        <div class="sidebar-detail-inner" id="sidebar-detail-inner"></div>
+        <div class="sidebar-detail-divider">
+          <span>Live app</span>
+        </div>
+      </div>
+      <iframe class="sidebar-iframe" id="sidebar-iframe" title="Project detail"></iframe>
+    </aside>
+
+    <!-- Command Palette -->
+    <div class="command-palette" id="command-palette" hidden>
+      <button class="command-backdrop" data-command-close aria-label="Close command palette"></button>
+      <div class="command-dialog" role="dialog" aria-label="Command palette">
+        <div class="command-header">
+          <h2>Go to project</h2>
+          <button class="text-button" data-command-close type="button">Esc</button>
+        </div>
+        <input id="command-search" type="text" placeholder="Search projects..." autocomplete="off" />
+        <ul class="command-results" id="command-results"></ul>
+      </div>
+    </div>
+
+    <script src="/scripts/shared.js"></script>
+  </body>
+</html>

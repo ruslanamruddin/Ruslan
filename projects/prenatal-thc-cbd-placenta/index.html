@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="An in vivo study investigating the combined effects of prenatal THC and CBD exposure on placental morphology and vascular development." />
+    <title>Prenatal THC + CBD Effects on Rat Placental Development | Research Archive</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+    <script>
+      (() => {
+        try {
+          const s = window.localStorage.getItem("research-archive-theme");
+          const d = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          document.documentElement.dataset.theme = s === "light" || s === "dark" ? s : "light";
+        } catch { document.documentElement.dataset.theme = "light"; }
+      })();
+    </script>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="site-brand" href="/">R. Amruddin</a>
+        <nav class="site-nav" aria-label="Main navigation">
+          <a href="/notes/">Notes</a>
+          <a href="/cv/">CV</a>
+        </nav>
+        <div class="site-actions">
+          <button id="theme-toggle" class="text-button" type="button" aria-label="Toggle color theme" aria-pressed="false">dark</button>
+          <button class="text-button" type="button" data-command-open>&#8984;K</button>
+        </div>
+      </header>
+
+      <main id="main-content" class="site-main">
+        <article class="paper-layout">
+          <header class="paper-header">
+            <p style="font-family:var(--font-mono);font-size:var(--text-xs);"><a href="/projects/?project=prenatal-thc-cbd-placenta">Back to archive</a></p>
+            <h1>Prenatal THC + CBD Effects on Rat Placental Development</h1>
+            <p style="color:var(--muted);">An in vivo study investigating the combined effects of prenatal THC and CBD exposure on placental morphology and vascular development.</p>
+            <div class="preview-badges">
+              <span class="meta-pill">Research</span>
+              <span class="status-badge">Ongoing</span>
+            </div>
+            <div class="paper-meta-grid">
+              <div><strong>Started</strong><p>May 1, 2024</p></div>
+              <div><strong>Last updated</strong><p>Jan 15, 2025</p></div>
+              <div><strong>Venue target</strong><p>Developmental biology or reproductive toxicology journal</p></div>
+            </div>
+            <div class="project-row-tags">
+              <span class="chip">placental-biology</span>
+              <span class="chip">cannabinoids</span>
+              <span class="chip">histology</span>
+              <span class="chip">quantitative-analysis</span>
+            </div>
+          </header>
+
+          <section>
+            <h2>Abstract</h2>
+            <p style="max-width:64ch;">This project examines the impact of combined prenatal THC and CBD exposure on rat placental development, focusing on morphological and vascular endpoints across placental regions. Using histological staining, imaging, and quantitative analysis, the study integrates experimental biology with computational morphometrics to characterize treatment-specific effects. The work extends prior single-compound studies by evaluating combined exposure using reproducible, quantitative methods.</p>
+          </section>
+
+          <section>
+            <h2>Links</h2>
+            <div class="detail-links">
+              <p class="muted">No external links yet.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>Timeline</h2>
+            <ul class="timeline">
+              <li><time datetime="2025-01-15">Jan 15, 2025</time><p>Quantitative analysis in progress.</p></li>
+              <li><time datetime="2024-09-01">Sep 1, 2024</time><p>Histological imaging completed.</p></li>
+              <li><time datetime="2024-06-01">Jun 1, 2024</time><p>Experimental model and dosing finalized.</p></li>
+            </ul>
+          </section>
+
+          <section class="article-content">
+            <h2>Experimental design</h2>
+            <p>The study uses a rat model with controlled prenatal exposure to combined THC and CBD at physiologically relevant doses. Placentas are collected at defined gestational timepoints, processed for histological staining, and imaged at high resolution for downstream analysis.</p>
+
+            <h2>Quantitative methods</h2>
+            <p>Morphometric endpoints include regional area fractions, vascular density estimates, and tissue composition metrics derived from annotated histological images. Analysis integrates manual and semi-automated approaches to ensure reproducibility across samples.</p>
+
+            <h2>Preliminary observations</h2>
+            <p>Initial analysis suggests region-specific differences in placental morphology following combined cannabinoid exposure. Detailed quantitative results are being compiled for statistical evaluation.</p>
+
+            <h2>Limitations and next steps</h2>
+            <p>Sample sizes are constrained by the in vivo model. Complete statistical analysis and interpretation are ongoing. The next phase involves finalizing quantitative comparisons and preparing the manuscript.</p>
+          </section>
+        </article>
+      </main>
+
+      <footer class="site-footer">
+        <p>&copy; 2026 — Last updated Feb 2026</p>
+      </footer>
+    </div>
+
+    <div class="command-palette" id="command-palette" hidden>
+      <button class="command-backdrop" data-command-close aria-label="Close command palette"></button>
+      <div class="command-dialog" role="dialog" aria-label="Command palette">
+        <div class="command-header">
+          <h2>Go to project</h2>
+          <button class="text-button" data-command-close type="button">Esc</button>
+        </div>
+        <input id="command-search" type="text" placeholder="Search projects..." autocomplete="off" />
+        <ul class="command-results" id="command-results"></ul>
+      </div>
+    </div>
+
+    <script src="/scripts/shared.js"></script>
+  </body>
+</html>

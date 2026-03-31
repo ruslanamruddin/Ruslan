@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="An end-to-end deep learning pipeline for segmenting fetal and maternal blood spaces in placental histology slides." />
+    <title>Deep Learning Pipeline for Placental Histology Segmentation | Research Archive</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+    <script>
+      (() => {
+        try {
+          const s = window.localStorage.getItem("research-archive-theme");
+          const d = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          document.documentElement.dataset.theme = s === "light" || s === "dark" ? s : "light";
+        } catch { document.documentElement.dataset.theme = "light"; }
+      })();
+    </script>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="site-brand" href="/">R. Amruddin</a>
+        <nav class="site-nav" aria-label="Main navigation">
+          <a href="/notes/">Notes</a>
+          <a href="/cv/">CV</a>
+        </nav>
+        <div class="site-actions">
+          <button id="theme-toggle" class="text-button" type="button" aria-label="Toggle color theme" aria-pressed="false">dark</button>
+          <button class="text-button" type="button" data-command-open>&#8984;K</button>
+        </div>
+      </header>
+
+      <main id="main-content" class="site-main">
+        <article class="paper-layout">
+          <header class="paper-header">
+            <p style="font-family:var(--font-mono);font-size:var(--text-xs);"><a href="/projects/?project=placental-histology-segmentation">Back to archive</a></p>
+            <h1>Deep Learning Pipeline for Placental Histology Segmentation</h1>
+            <p style="color:var(--muted);">An end-to-end deep learning pipeline for segmenting fetal and maternal blood spaces in placental histology slides, reducing manual annotation time from up to 90 minutes per slide to seconds.</p>
+            <div class="preview-badges">
+              <span class="meta-pill">Research</span>
+              <span class="status-badge">Results ready (writing)</span>
+            </div>
+            <div class="paper-meta-grid">
+              <div><strong>Started</strong><p>Jan 15, 2024</p></div>
+              <div><strong>Last updated</strong><p>Feb 15, 2025</p></div>
+              <div><strong>Venue target</strong><p>Methods-focused computational biology or biomedical imaging journal</p></div>
+            </div>
+            <div class="project-row-tags">
+              <span class="chip">computer-vision</span>
+              <span class="chip">histology</span>
+              <span class="chip">segmentation</span>
+              <span class="chip">U-Net</span>
+              <span class="chip">PyTorch</span>
+            </div>
+          </header>
+
+          <section>
+            <h2>Abstract</h2>
+            <p style="max-width:64ch;">This project develops a scalable, reproducible deep learning pipeline for placental histology segmentation, focusing on fetal and maternal blood space quantification. Single-channel annotation masks generated in QuPath are used to train supervised U-Net convolutional neural networks, enabling accurate region-of-interest classification across whole-slide images. Pixel-level predictions are aggregated into slide-level quantitative metrics, supporting downstream morphometric analysis while dramatically reducing manual labor. The work is intended as a generalizable methods framework for histology-heavy labs.</p>
+          </section>
+
+          <section>
+            <h2>Links</h2>
+            <div class="detail-links">
+              <p class="muted">No external links yet.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2>Timeline</h2>
+            <ul class="timeline">
+              <li><time datetime="2025-02-15">Feb 15, 2025</time><p>Manuscript drafting in progress.</p></li>
+              <li><time datetime="2024-11-01">Nov 1, 2024</time><p>Slide-level aggregation and quantitative analysis completed.</p></li>
+              <li><time datetime="2024-06-01">Jun 1, 2024</time><p>Model training and validation completed.</p></li>
+              <li><time datetime="2024-03-01">Mar 1, 2024</time><p>Dataset curation and annotation protocol finalized.</p></li>
+            </ul>
+          </section>
+
+          <section class="article-content">
+            <h2>Methods</h2>
+            <p>Whole-slide placental histology images are annotated in QuPath to produce single-channel region masks delineating fetal blood space, maternal blood space, and tissue. These masks serve as ground truth for training U-Net convolutional neural networks in PyTorch. The pipeline handles tiling, normalization, augmentation, and training with configurable hyperparameters. Inference produces pixel-level segmentation maps across full slides.</p>
+
+            <h2>Results</h2>
+            <p>The trained models achieve accurate classification of fetal and maternal blood spaces across diverse placental regions. Pixel-level predictions are aggregated into slide-level quantitative metrics — area fractions, region counts, and spatial distributions — enabling reproducible morphometric comparison across experimental groups. Processing time drops from up to 90 minutes of manual annotation per slide to seconds of automated inference.</p>
+
+            <h2>Limitations</h2>
+            <p>Model performance is sensitive to staining variability and tissue preparation quality. Generalization to other tissue types or staining protocols has not yet been evaluated. The current pipeline assumes consistent annotation conventions across annotators.</p>
+
+            <h2>Next steps</h2>
+            <p>Finalize the methods manuscript. Evaluate cross-lab generalizability. Release the pipeline code and a sample annotated dataset for reproducibility.</p>
+          </section>
+        </article>
+      </main>
+
+      <footer class="site-footer">
+        <p>&copy; 2026 — Last updated Feb 2026</p>
+      </footer>
+    </div>
+
+    <div class="command-palette" id="command-palette" hidden>
+      <button class="command-backdrop" data-command-close aria-label="Close command palette"></button>
+      <div class="command-dialog" role="dialog" aria-label="Command palette">
+        <div class="command-header">
+          <h2>Go to project</h2>
+          <button class="text-button" data-command-close type="button">Esc</button>
+        </div>
+        <input id="command-search" type="text" placeholder="Search projects..." autocomplete="off" />
+        <ul class="command-results" id="command-results"></ul>
+      </div>
+    </div>
+
+    <script src="/scripts/shared.js"></script>
+  </body>
+</html>

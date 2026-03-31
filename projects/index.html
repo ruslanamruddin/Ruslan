@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="Browse research projects, prototypes, and tools." />
+    <title>Projects | Research Archive</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+    <script>
+      (() => {
+        try {
+          const storageKey = "research-archive-theme";
+          const saved = window.localStorage.getItem(storageKey);
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          const theme = saved === "light" || saved === "dark" ? saved : "light";
+          document.documentElement.dataset.theme = theme;
+        } catch { document.documentElement.dataset.theme = "light"; }
+      })();
+    </script>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="site-brand" href="/">R. Amruddin</a>
+        <nav class="site-nav" aria-label="Main navigation">
+          <a href="/notes/">Notes</a>
+          <a href="/cv/">CV</a>
+        </nav>
+        <div class="site-actions">
+          <button id="theme-toggle" class="text-button" type="button" aria-label="Toggle color theme" aria-pressed="false">dark</button>
+          <button class="text-button" type="button" data-command-open>&#8984;K</button>
+        </div>
+      </header>
+
+      <main id="main-content" class="site-main">
+        <section class="page-head">
+          <h1>Projects</h1>
+          <p>Search and filter active work. Use <code>&#8984;K</code> to jump to any project.</p>
+        </section>
+
+        <section data-project-archive>
+          <!-- Filters -->
+          <div class="filters-bar">
+            <div class="filters-row">
+              <div class="search-field">
+                <label for="project-search">Search</label>
+                <input id="project-search" type="text" placeholder="Filter by title, tag, keyword..." />
+              </div>
+              <div class="sort-field">
+                <label for="project-sort">Sort</label>
+                <select id="project-sort">
+                  <option value="recently-updated">Recently updated</option>
+                  <option value="newest">Newest first</option>
+                  <option value="oldest">Oldest first</option>
+                </select>
+              </div>
+            </div>
+            <div class="chip-groups">
+              <div class="chip-group">
+                <span class="chip-group-label">Type</span>
+                <button class="chip is-active" data-filter-chip data-filter-group="type" data-filter-value="all">All</button>
+                <button class="chip" data-filter-chip data-filter-group="type" data-filter-value="Research">Research</button>
+                <button class="chip" data-filter-chip data-filter-group="type" data-filter-value="Tool">Tool</button>
+                <button class="chip" data-filter-chip data-filter-group="type" data-filter-value="Prototype">Prototype</button>
+              </div>
+              <div class="chip-group">
+                <span class="chip-group-label">Status</span>
+                <button class="chip is-active" data-filter-chip data-filter-group="status" data-filter-value="all">All</button>
+                <button class="chip" data-filter-chip data-filter-group="status" data-filter-value="Ongoing">Ongoing</button>
+                <button class="chip" data-filter-chip data-filter-group="status" data-filter-value="Results ready (writing)">Results ready</button>
+                <button class="chip" data-filter-chip data-filter-group="status" data-filter-value="Preparing submission">Preparing submission</button>
+                <button class="chip" data-filter-chip data-filter-group="status" data-filter-value="Under review">Under review</button>
+                <button class="chip" data-filter-chip data-filter-group="status" data-filter-value="Published">Published</button>
+              </div>
+              <div class="chip-group">
+                <span class="chip-group-label">Tags</span>
+                <button class="chip is-active" data-filter-chip data-filter-group="tag" data-filter-value="all">All</button>
+                <button class="chip" data-filter-chip data-filter-group="tag" data-filter-value="ML-tooling">ML-tooling</button>
+                <button class="chip" data-filter-chip data-filter-group="tag" data-filter-value="human-in-the-loop">human-in-the-loop</button>
+                <button class="chip" data-filter-chip data-filter-group="tag" data-filter-value="histology">histology</button>
+                <button class="chip" data-filter-chip data-filter-group="tag" data-filter-value="software">software</button>
+                <button class="chip" data-filter-chip data-filter-group="tag" data-filter-value="computer-vision">computer-vision</button>
+                <button class="chip" data-filter-chip data-filter-group="tag" data-filter-value="segmentation">segmentation</button>
+                <button class="chip" data-filter-chip data-filter-group="tag" data-filter-value="U-Net">U-Net</button>
+                <button class="chip" data-filter-chip data-filter-group="tag" data-filter-value="PyTorch">PyTorch</button>
+                <button class="chip" data-filter-chip data-filter-group="tag" data-filter-value="placental-biology">placental-biology</button>
+                <button class="chip" data-filter-chip data-filter-group="tag" data-filter-value="cannabinoids">cannabinoids</button>
+                <button class="chip" data-filter-chip data-filter-group="tag" data-filter-value="quantitative-analysis">quantitative-analysis</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="projects-shell" style="margin-top:1rem;">
+            <!-- Project list -->
+            <div class="project-list-column">
+              <ul class="project-list" id="project-list">
+                <li>
+                  <button class="project-row"
+                    data-project-row
+                    data-project-slug="placental-histology-segmentation"
+                    data-project-title="Deep Learning Pipeline for Placental Histology Segmentation"
+                    data-project-summary="An end-to-end deep learning pipeline for segmenting fetal and maternal blood spaces in placental histology slides, reducing manual annotation time from up to 90 minutes per slide to seconds."
+                    data-project-abstract="This project develops a scalable, reproducible deep learning pipeline for placental histology segmentation, focusing on fetal and maternal blood space quantification."
+                    data-project-tags="computer-vision|histology|segmentation|U-Net|PyTorch"
+                    data-project-type="Research"
+                    data-project-status="Results ready (writing)"
+                    data-project-date="2024-01-15"
+                    data-project-updated="2025-02-15"
+                    aria-selected="true">
+                    <div class="project-row-header">
+                      <h3>Deep Learning Pipeline for Placental Histology Segmentation</h3>
+                      <span class="status-badge is-compact">Results ready (writing)</span>
+                    </div>
+                    <p class="project-row-summary">An end-to-end deep learning pipeline for segmenting fetal and maternal blood spaces in placental histology slides.</p>
+                    <div class="project-row-tags">
+                      <span class="chip">computer-vision</span>
+                      <span class="chip">histology</span>
+                      <span class="chip">segmentation</span>
+                    </div>
+                  </button>
+                </li>
+                <li>
+                  <button class="project-row"
+                    data-project-row
+                    data-project-slug="histoscope"
+                    data-project-title="Histoscope"
+                    data-project-summary="A research-focused platform for deploying, reviewing, and iteratively improving machine learning histology segmentation models in real lab workflows."
+                    data-project-abstract="Histoscope is a software platform designed to support practical deployment of machine learning models for histological analysis."
+                    data-project-tags="ML-tooling|human-in-the-loop|histology|software"
+                    data-project-type="Tool"
+                    data-project-status="Ongoing"
+                    data-project-date="2024-08-01"
+                    data-project-updated="2025-02-10"
+                    aria-selected="false">
+                    <div class="project-row-header">
+                      <h3>Histoscope</h3>
+                      <span class="status-badge is-compact">Ongoing</span>
+                    </div>
+                    <p class="project-row-summary">A research-focused platform for deploying, reviewing, and iteratively improving ML histology segmentation models.</p>
+                    <div class="project-row-tags">
+                      <span class="chip">ML-tooling</span>
+                      <span class="chip">human-in-the-loop</span>
+                      <span class="chip">histology</span>
+                    </div>
+                  </button>
+                </li>
+                <li>
+                  <button class="project-row"
+                    data-project-row
+                    data-project-slug="prenatal-thc-cbd-placenta"
+                    data-project-title="Prenatal THC + CBD Effects on Rat Placental Development"
+                    data-project-summary="An in vivo study investigating the combined effects of prenatal THC and CBD exposure on placental morphology and vascular development."
+                    data-project-abstract="This project examines the impact of combined prenatal THC and CBD exposure on rat placental development, focusing on morphological and vascular endpoints across placental regions."
+                    data-project-tags="placental-biology|cannabinoids|histology|quantitative-analysis"
+                    data-project-type="Research"
+                    data-project-status="Ongoing"
+                    data-project-date="2024-05-01"
+                    data-project-updated="2025-01-15"
+                    aria-selected="false">
+                    <div class="project-row-header">
+                      <h3>Prenatal THC + CBD Effects on Rat Placental Development</h3>
+                      <span class="status-badge is-compact">Ongoing</span>
+                    </div>
+                    <p class="project-row-summary">An in vivo study investigating the combined effects of prenatal THC and CBD exposure on placental morphology.</p>
+                    <div class="project-row-tags">
+                      <span class="chip">placental-biology</span>
+                      <span class="chip">cannabinoids</span>
+                      <span class="chip">histology</span>
+                    </div>
+                  </button>
+                </li>
+              </ul>
+              <p id="project-empty" class="project-empty" hidden>No projects match the current filters.</p>
+            </div>
+
+            <!-- Preview panel -->
+            <div class="project-preview-column">
+              <button id="preview-mobile-toggle" class="preview-mobile-toggle" type="button" aria-expanded="true">Hide preview</button>
+              <div class="preview-card" id="preview-card">
+                <span class="preview-kicker" id="preview-type">Research</span>
+                <h3 id="preview-title">Deep Learning Pipeline for Placental Histology Segmentation</h3>
+                <p class="preview-summary" id="preview-summary">An end-to-end deep learning pipeline for segmenting fetal and maternal blood spaces in placental histology slides, reducing manual annotation time from up to 90 minutes per slide to seconds.</p>
+                <div class="preview-badges">
+                  <span class="status-badge" id="preview-status">Results ready (writing)</span>
+                </div>
+                <p class="preview-meta" id="preview-meta">Updated Feb 15, 2025</p>
+                <p class="preview-venue" id="preview-venue">Venue: Methods-focused computational biology or biomedical imaging journal</p>
+                <div class="preview-image-wrap" id="preview-image-wrap" hidden>
+                  <img id="preview-image" src="" alt="Project figure" loading="lazy" />
+                </div>
+                <div class="preview-abstract-block">
+                  <div class="preview-abstract-header">
+                    <h3>Abstract</h3>
+                    <button id="preview-abstract-toggle" class="text-button" type="button" aria-expanded="false">Expand</button>
+                  </div>
+                  <p class="preview-abstract-text is-collapsed" id="preview-abstract">This project develops a scalable, reproducible deep learning pipeline for placental histology segmentation, focusing on fetal and maternal blood space quantification. Single-channel annotation masks generated in QuPath are used to train supervised U-Net convolutional neural networks, enabling accurate region-of-interest classification across whole-slide images. Pixel-level predictions are aggregated into slide-level quantitative metrics, supporting downstream morphometric analysis while dramatically reducing manual labor. The work is intended as a generalizable methods framework for histology-heavy labs.</p>
+                </div>
+                <div class="preview-links-wrap">
+                  <h3>Links</h3>
+                  <div class="preview-links-grid" id="preview-links">
+                    <p class="muted">No external links yet.</p>
+                  </div>
+                </div>
+                <div class="preview-latest" id="preview-latest">
+                  <p><strong>Latest:</strong> Feb 15, 2025 — Manuscript drafting in progress.</p>
+                </div>
+                <a id="preview-read-full" class="button button-secondary" href="/projects/placental-histology-segmentation/">Read full page</a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p>&copy; 2026 — Last updated Feb 2026</p>
+      </footer>
+    </div>
+
+    <div class="command-palette" id="command-palette" hidden>
+      <button class="command-backdrop" data-command-close aria-label="Close command palette"></button>
+      <div class="command-dialog" role="dialog" aria-label="Command palette">
+        <div class="command-header">
+          <h2>Go to project</h2>
+          <button class="text-button" data-command-close type="button">Esc</button>
+        </div>
+        <input id="command-search" type="text" placeholder="Search projects..." autocomplete="off" />
+        <ul class="command-results" id="command-results"></ul>
+      </div>
+    </div>
+
+    <script type="application/json" id="projects-data">
+    [
+      {
+        "slug": "placental-histology-segmentation",
+        "title": "Deep Learning Pipeline for Placental Histology Segmentation",
+        "date": "2024-01-15",
+        "lastUpdated": "2025-02-15",
+        "type": "Research",
+        "status": "Results ready (writing)",
+        "tags": ["computer-vision","histology","segmentation","U-Net","PyTorch"],
+        "summary": "An end-to-end deep learning pipeline for segmenting fetal and maternal blood spaces in placental histology slides, reducing manual annotation time from up to 90 minutes per slide to seconds.",
+        "abstract": "This project develops a scalable, reproducible deep learning pipeline for placental histology segmentation, focusing on fetal and maternal blood space quantification. Single-channel annotation masks generated in QuPath are used to train supervised U-Net convolutional neural networks, enabling accurate region-of-interest classification across whole-slide images. Pixel-level predictions are aggregated into slide-level quantitative metrics, supporting downstream morphometric analysis while dramatically reducing manual labor. The work is intended as a generalizable methods framework for histology-heavy labs.",
+        "venueTarget": "Methods-focused computational biology or biomedical imaging journal",
+        "links": {},
+        "updates": [
+          {"date":"2025-02-15","note":"Manuscript drafting in progress."},
+          {"date":"2024-11-01","note":"Slide-level aggregation and quantitative analysis completed."},
+          {"date":"2024-06-01","note":"Model training and validation completed."},
+          {"date":"2024-03-01","note":"Dataset curation and annotation protocol finalized."}
+        ],
+        "pinned": true
+      },
+      {
+        "slug": "histoscope",
+        "title": "Histoscope",
+        "date": "2024-08-01",
+        "lastUpdated": "2025-02-10",
+        "type": "Tool",
+        "status": "Ongoing",
+        "tags": ["ML-tooling","human-in-the-loop","histology","software"],
+        "summary": "A research-focused platform for deploying, reviewing, and iteratively improving machine learning histology segmentation models in real lab workflows.",
+        "abstract": "Histoscope is a software platform designed to support practical deployment of machine learning models for histological analysis. It enables versioned inference runs, human-in-the-loop review of segmentation outputs, and reproducible mask export for downstream quantitative analysis. The system is built to bridge experimental labs and ML research by prioritizing traceability, validation, and iterative dataset improvement.",
+        "venueTarget": "Not publication-focused (research infrastructure)",
+        "links": {},
+        "updates": [
+          {"date":"2025-02-10","note":"Dataset reintegration and versioning in progress."},
+          {"date":"2024-12-01","note":"Human-in-the-loop review system added."},
+          {"date":"2024-09-01","note":"Core inference workflow implemented."}
+        ],
+        "pinned": true
+      },
+      {
+        "slug": "prenatal-thc-cbd-placenta",
+        "title": "Prenatal THC + CBD Effects on Rat Placental Development",
+        "date": "2024-05-01",
+        "lastUpdated": "2025-01-15",
+        "type": "Research",
+        "status": "Ongoing",
+        "tags": ["placental-biology","cannabinoids","histology","quantitative-analysis"],
+        "summary": "An in vivo study investigating the combined effects of prenatal THC and CBD exposure on placental morphology and vascular development.",
+        "abstract": "This project examines the impact of combined prenatal THC and CBD exposure on rat placental development, focusing on morphological and vascular endpoints across placental regions. Using histological staining, imaging, and quantitative analysis, the study integrates experimental biology with computational morphometrics to characterize treatment-specific effects. The work extends prior single-compound studies by evaluating combined exposure using reproducible, quantitative methods.",
+        "venueTarget": "Developmental biology or reproductive toxicology journal",
+        "links": {},
+        "updates": [
+          {"date":"2025-01-15","note":"Quantitative analysis in progress."},
+          {"date":"2024-09-01","note":"Histological imaging completed."},
+          {"date":"2024-06-01","note":"Experimental model and dosing finalized."}
+        ],
+        "pinned": true
+      }
+    ]
+    </script>
+
+    <script src="/scripts/shared.js"></script>
+    <script src="/scripts/projects.js"></script>
+  </body>
+</html>
