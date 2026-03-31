@@ -29,6 +29,7 @@
   const detail = document.getElementById("sidebar-detail");
   const detailInner = document.getElementById("sidebar-detail-inner");
   const resizeHandle = document.getElementById("sidebar-resize");
+  const detailDivider = document.getElementById("sidebar-detail-divider");
   if (!overlay || !panel || !iframe) return;
 
   const base = document.querySelector("base")?.getAttribute("href") || "/";
@@ -55,6 +56,36 @@
       iframe.style.pointerEvents = "none";
       document.addEventListener("mousemove", onMouseMove);
       document.addEventListener("mouseup", onMouseUp);
+    });
+  }
+
+  // Drag-to-resize vertical (detail/iframe split)
+  if (detailDivider && detail) {
+    let startY, startHeight;
+    const onVMove = (e) => {
+      const delta = e.clientY - startY;
+      const panelTop = panel.getBoundingClientRect().top;
+      const headerH = detail.offsetTop - panelTop;
+      const available = panel.offsetHeight - headerH - detailDivider.offsetHeight;
+      const newH = Math.max(60, Math.min(startHeight + delta, available - 80));
+      detail.style.height = newH + "px";
+      panel.style.gridTemplateRows = `auto ${newH}px auto 1fr`;
+    };
+    const onVUp = () => {
+      panel.classList.remove("is-resizing");
+      document.removeEventListener("mousemove", onVMove);
+      document.removeEventListener("mouseup", onVUp);
+      iframe.style.pointerEvents = "";
+    };
+    detailDivider.addEventListener("mousedown", (e) => {
+      if (!panel.classList.contains("has-detail")) return;
+      e.preventDefault();
+      startY = e.clientY;
+      startHeight = detail.offsetHeight;
+      panel.classList.add("is-resizing");
+      iframe.style.pointerEvents = "none";
+      document.addEventListener("mousemove", onVMove);
+      document.addEventListener("mouseup", onVUp);
     });
   }
 
@@ -92,10 +123,12 @@
     if (proj.detail && detail && detailInner) {
       detailInner.innerHTML = proj.detail;
       detail.hidden = false;
+      if (detailDivider) detailDivider.hidden = false;
       panel.classList.add("has-detail");
       iframe.src = proj.liveUrl;
     } else {
       if (detail) detail.hidden = true;
+      if (detailDivider) detailDivider.hidden = true;
       panel.classList.remove("has-detail");
       iframe.src = `${base}projects/${slug}/`;
     }
@@ -119,7 +152,9 @@
       overlay.hidden = true;
       panel.hidden = true;
       panel.classList.remove("has-detail");
-      if (detail) detail.hidden = true;
+      if (detail) { detail.hidden = true; detail.style.height = ""; }
+      if (detailDivider) detailDivider.hidden = true;
+      panel.style.gridTemplateRows = "";
       iframe.src = "about:blank";
       panel.style.width = "";
     }, { once: true });
@@ -210,5 +245,37 @@
   document.addEventListener("keydown", (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === "k") { e.preventDefault(); palette.hidden ? open() : close(); }
     if (e.key === "Escape" && !palette.hidden) close();
+  });
+})();
+
+// Lightbox
+(() => {
+  const lightbox = document.getElementById("lightbox");
+  const lbImg = document.getElementById("lightbox-img");
+  const lbClose = document.getElementById("lightbox-close");
+  const lbBackdrop = document.getElementById("lightbox-backdrop");
+  if (!lightbox || !lbImg) return;
+
+  const openLightbox = (src, alt) => {
+    lbImg.src = src;
+    lbImg.alt = alt || "";
+    lightbox.hidden = false;
+    requestAnimationFrame(() => lightbox.classList.add("is-open"));
+  };
+
+  const closeLightbox = () => {
+    lightbox.classList.remove("is-open");
+    setTimeout(() => { lightbox.hidden = true; lbImg.src = ""; }, 200);
+  };
+
+  document.addEventListener("click", (e) => {
+    const img = e.target.closest(".sidebar-demo-img");
+    if (img) openLightbox(img.src, img.alt);
+  });
+
+  if (lbClose) lbClose.addEventListener("click", closeLightbox);
+  if (lbBackdrop) lbBackdrop.addEventListener("click", closeLightbox);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !lightbox.hidden) closeLightbox();
   });
 })();
