@@ -275,8 +275,8 @@ textarea {
 
 .bio-photo {
   float: right;
-  width: 160px;
-  margin: 1.5rem 3rem 0.75rem 1.5rem;
+  width: 200px;
+  margin: 2.5rem 6rem 0.75rem 1.5rem;
   border-radius: var(--radius);
   border: 1px solid var(--border);
 }
