@@ -94,9 +94,7 @@
       title: "Histoscope",
       liveUrl: "https://histoscope.app",
       detail: `
-        <figure class="sidebar-demo-figure">
-          <img class="sidebar-demo-img" src="${base}images/histoscope-demo.png" alt="Histoscope platform demo" title="Click image" />
-        </figure>
+        <img class="sidebar-demo-img" src="${base}images/histoscope-demo.png" alt="Histoscope platform demo" />
         <h3>What it is</h3>
         <p>A research-focused platform for deploying, reviewing, and iteratively improving machine learning histology segmentation models in real lab workflows.</p>
         <h3>Purpose</h3>
@@ -111,22 +109,7 @@
       `
     },
     "placental-histology-segmentation": {
-      title: "Deep Learning Pipeline for Placental Histology Segmentation",
-      detail: `
-        <figure class="sidebar-demo-figure">
-          <img class="sidebar-demo-img" src="${base}images/poster-day.png" alt="Poster conference presentation" title="Click image" />
-          <figcaption>Presented research at poster conference.</figcaption>
-        </figure>
-        <h3>Abstract</h3>
-        <p>Systematically optimized deep learning pipeline for three-class segmentation (fetal blood space, maternal blood space, background tissue) in CD31-stained rat placenta. Benchmarked 12 encoders, 5 decoders, 12 loss functions, and 7 augmentation strategies. Achieved Dice ~0.80 with automated measurements showing no significant difference from expert annotations (r > 0.9, all p > 0.09).</p>
-        <div class="sidebar-meta">
-          <span class="meta-pill">Research</span>
-          <span class="status-badge is-compact">Results ready (writing)</span>
-          <span class="chip">computer-vision</span>
-          <span class="chip">segmentation</span>
-          <span class="chip">PyTorch</span>
-        </div>
-      `
+      title: "Deep Learning Pipeline for Placental Histology Segmentation"
     },
     "prenatal-thc-cbd-placenta": {
       title: "Prenatal THC + CBD Effects on Rat Placental Development"
@@ -142,7 +125,7 @@
       detail.hidden = false;
       if (detailDivider) detailDivider.hidden = false;
       panel.classList.add("has-detail");
-      iframe.src = proj.liveUrl || `${base}projects/${slug}/`;
+      iframe.src = proj.liveUrl;
     } else {
       if (detail) detail.hidden = true;
       if (detailDivider) detailDivider.hidden = true;

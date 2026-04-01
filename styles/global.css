@@ -857,24 +857,13 @@ button.chip:focus-visible,
   padding-top: 0.25rem;
 }
 
-.sidebar-detail-inner .sidebar-demo-figure {
+.sidebar-detail-inner .sidebar-demo-img {
   float: right;
   margin: 0 0 0.6rem 1rem;
-  width: 45%;
-  max-width: 280px;
-}
-
-.sidebar-detail-inner .sidebar-demo-figure figcaption {
-  font-size: var(--text-xs);
-  color: var(--muted);
-  margin-top: 0.3rem;
-  text-align: center;
-}
-
-.sidebar-detail-inner .sidebar-demo-img {
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  width: 100%;
+  width: 45%;
+  max-width: 280px;
   object-fit: cover;
   object-position: top left;
   cursor: pointer;
