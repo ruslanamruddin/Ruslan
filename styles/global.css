@@ -260,14 +260,25 @@ textarea {
 /* ── page head ─────────────────────────────────── */
 
 .page-head {
-  display: grid;
-  gap: 0.5rem;
+  display: block;
+}
+
+.page-head > * + * {
+  margin-top: 0.5rem;
 }
 
 .page-head p {
   max-width: 64ch;
   color: var(--muted);
   font-size: var(--text-base);
+}
+
+.bio-photo {
+  float: right;
+  width: 160px;
+  margin: 0 0 0.75rem 1.5rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
 }
 
 /* ── buttons ───────────────────────────────────── */
