@@ -94,7 +94,9 @@
       title: "Histoscope",
       liveUrl: "https://histoscope.app",
       detail: `
-        <img class="sidebar-demo-img" src="${base}images/histoscope-demo.png" alt="Histoscope platform demo" />
+        <figure class="sidebar-demo-figure">
+          <img class="sidebar-demo-img" src="${base}images/histoscope-demo.png" alt="Histoscope platform demo" title="Click image" />
+        </figure>
         <h3>What it is</h3>
         <p>A research-focused platform for deploying, reviewing, and iteratively improving machine learning histology segmentation models in real lab workflows.</p>
         <h3>Purpose</h3>
@@ -109,7 +111,13 @@
       `
     },
     "placental-histology-segmentation": {
-      title: "Deep Learning Pipeline for Placental Histology Segmentation"
+      title: "Deep Learning Pipeline for Placental Histology Segmentation",
+      detail: `
+        <figure class="sidebar-demo-figure">
+          <img class="sidebar-demo-img" src="${base}images/poster-day.png" alt="Poster conference presentation" title="Click image" />
+          <figcaption>Presented research at poster conference.</figcaption>
+        </figure>
+      `
     },
     "prenatal-thc-cbd-placenta": {
       title: "Prenatal THC + CBD Effects on Rat Placental Development"
@@ -123,12 +131,20 @@
     if (proj.detail && detail && detailInner) {
       detailInner.innerHTML = proj.detail;
       detail.hidden = false;
-      if (detailDivider) detailDivider.hidden = false;
       panel.classList.add("has-detail");
-      iframe.src = proj.liveUrl;
+      if (proj.liveUrl) {
+        if (detailDivider) detailDivider.hidden = false;
+        iframe.hidden = false;
+        iframe.src = proj.liveUrl;
+      } else {
+        if (detailDivider) detailDivider.hidden = true;
+        iframe.hidden = true;
+        iframe.src = "about:blank";
+      }
     } else {
       if (detail) detail.hidden = true;
       if (detailDivider) detailDivider.hidden = true;
+      iframe.hidden = false;
       panel.classList.remove("has-detail");
       iframe.src = `${base}projects/${slug}/`;
     }
@@ -154,6 +170,7 @@
       panel.classList.remove("has-detail");
       if (detail) { detail.hidden = true; detail.style.height = ""; }
       if (detailDivider) detailDivider.hidden = true;
+      iframe.hidden = false;
       panel.style.gridTemplateRows = "";
       iframe.src = "about:blank";
       panel.style.width = "";
