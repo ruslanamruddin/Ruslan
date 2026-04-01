@@ -143,6 +143,26 @@
           <span class="chip">face-recognition</span>
         </div>
       `
+    },
+    "artificial-consciousness-cucai": {
+      title: "Exploring Artificial Consciousness",
+      liveUrl: `${base}projects/artificial-consciousness-cucai/ExploringArtificialConsciousness.pdf`,
+      detail: `
+        <h3>What it is</h3>
+        <p>A comprehensive review exploring whether artificial consciousness is achievable, examining theories of consciousness from neuroscience and philosophy, methods for testing machine consciousness, and the ethical implications of creating sentient AI. Published and presented at the Canadian Undergraduate Conference on Artificial Intelligence (CUCAI).</p>
+        <h3>Key topics</h3>
+        <p>Covers Integrated Information Theory, Global Workspace Theory, the hard problem of consciousness, biological vs. artificial consciousness, and Ilya Sutskever's proposed qualia test for evaluating subjective experience in AI systems.</p>
+        <h3>Ethical analysis</h3>
+        <p>Examines societal impacts of conscious AI, the alignment problem, and proposes rights frameworks for potentially conscious machines including rights to existence, autonomy, privacy, and consent.</p>
+        <div class="sidebar-meta">
+          <span class="meta-pill">Research</span>
+          <span class="status-badge is-compact">Published</span>
+          <span class="chip">AI-consciousness</span>
+          <span class="chip">ethics</span>
+          <span class="chip">philosophy</span>
+          <span class="chip">review-paper</span>
+        </div>
+      `
     }
   };
 
@@ -233,7 +253,8 @@
     { title: "Histoscope", slug: "histoscope", type: "Tool", status: "Ongoing" },
     { title: "Deep Learning Pipeline for Placental Histology Segmentation", slug: "placental-histology-segmentation", type: "Research", status: "Results ready (writing)" },
     { title: "Prenatal THC + CBD Effects on Rat Placental Development", slug: "prenatal-thc-cbd-placenta", type: "Research", status: "Ongoing" },
-    { title: "RecognEyes — Smart Glasses for Prosopagnosia", slug: "recogneyes-cucai", type: "Research", status: "Published" }
+    { title: "RecognEyes — Smart Glasses for Prosopagnosia", slug: "recogneyes-cucai", type: "Research", status: "Published" },
+    { title: "Exploring Artificial Consciousness", slug: "artificial-consciousness-cucai", type: "Research", status: "Published" }
   ];
   const palette = document.getElementById("command-palette");
   const input = document.getElementById("command-search");
