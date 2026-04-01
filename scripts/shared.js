@@ -124,6 +124,13 @@
 
     if (proj.detail && detail && detailInner) {
       detailInner.innerHTML = proj.detail;
+      detailInner.querySelectorAll(".sidebar-demo-img").forEach((img) => {
+        if (img.closest(".enlarge-wrap")) return;
+        const wrap = document.createElement("span");
+        wrap.className = "enlarge-wrap";
+        img.parentNode.insertBefore(wrap, img);
+        wrap.appendChild(img);
+      });
       detail.hidden = false;
       panel.classList.add("has-detail");
       if (proj.liveUrl) {
