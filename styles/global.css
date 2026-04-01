@@ -1015,6 +1015,14 @@ button.chip:focus-visible,
   gap: 0.45rem;
 }
 
+.paper-layout section.flow {
+  display: block;
+}
+
+.paper-layout section.flow > * + * {
+  margin-top: 0.45rem;
+}
+
 .paper-header {
   display: grid;
   gap: 0.6rem;
