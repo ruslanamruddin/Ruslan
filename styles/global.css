@@ -815,7 +815,7 @@ button.chip:focus-visible,
 }
 
 .sidebar-panel.has-detail {
-  grid-template-rows: auto 25% auto 1fr;
+  grid-template-rows: auto 1fr auto 1fr;
 }
 
 
@@ -879,10 +879,18 @@ button.chip:focus-visible,
 }
 
 .sidebar-detail-inner .sidebar-demo-figure {
-  float: right;
-  margin: 0 0 0.6rem 1rem;
-  width: 45%;
-  max-width: 280px;
+  margin: 0;
+}
+
+.sidebar-gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+
+.sidebar-gallery .sidebar-demo-figure:only-child {
+  grid-column: 1 / -1;
 }
 
 .sidebar-detail-inner .sidebar-demo-figure figcaption {

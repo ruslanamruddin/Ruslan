@@ -94,15 +94,6 @@
       title: "Histoscope",
       liveUrl: "https://histoscope.app",
       detail: `
-        <figure class="sidebar-demo-figure">
-          <img class="sidebar-demo-img" src="${base}images/histoscope-demo.png" alt="Histoscope platform demo" title="Click image" />
-        </figure>
-        <figure class="sidebar-demo-figure">
-          <img class="sidebar-demo-img" src="${base}images/histoscope-annotation.png" alt="Histoscope annotation view" title="Click image" />
-        </figure>
-        <figure class="sidebar-demo-figure">
-          <img class="sidebar-demo-img" src="${base}images/histoscope-charts.png" alt="Histoscope charts and analytics" title="Click image" />
-        </figure>
         <h3>What it is</h3>
         <p>A research-focused platform for deploying, reviewing, and iteratively improving machine learning histology segmentation models in real lab workflows.</p>
         <h3>Purpose</h3>
@@ -113,6 +104,17 @@
           <span class="chip">ML-tooling</span>
           <span class="chip">human-in-the-loop</span>
           <span class="chip">histology</span>
+        </div>
+        <div class="sidebar-gallery">
+          <figure class="sidebar-demo-figure">
+            <img class="sidebar-demo-img" src="${base}images/histoscope-demo.png" alt="Histoscope platform demo" title="Click image" />
+          </figure>
+          <figure class="sidebar-demo-figure">
+            <img class="sidebar-demo-img" src="${base}images/histoscope-annotation.png" alt="Histoscope annotation view" title="Click image" />
+          </figure>
+          <figure class="sidebar-demo-figure">
+            <img class="sidebar-demo-img" src="${base}images/histoscope-charts.png" alt="Histoscope charts and analytics" title="Click image" />
+          </figure>
         </div>
       `
     },
