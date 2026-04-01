@@ -117,6 +117,24 @@
           <img class="sidebar-demo-img" src="${base}images/poster-day.png" alt="Poster conference presentation" title="Click image" />
           <figcaption>Presented research at poster conference.</figcaption>
         </figure>
+        <h3>Abstract</h3>
+        <p>Systematically optimized deep learning pipeline for three-class segmentation (fetal blood space, maternal blood space, background tissue) in CD31-stained rat placenta. Benchmarked 12 encoders, 5 decoders, 12 loss functions, and 7 augmentation strategies. Achieved Dice ~0.80 with automated measurements showing no significant difference from expert annotations (r &gt; 0.9, all p &gt; 0.09). Performance plateaus at 15 labeled images.</p>
+        <h3>Methods</h3>
+        <p>Sequential optimization of encoder, decoder, loss function, augmentation, and data efficiency. Encoders ranged from histology foundation models (Virchow2, H-Optimus-0) to standard ConvNeXt and EfficientNetV2. All models trained in PyTorch with differential learning rates and end-to-end fine-tuning.</p>
+        <h3>Results</h3>
+        <p>ConvNeXt encoders matched foundation models at 5-10x lower inference cost. U-Net top decoder; decoder impact minimal vs. encoder. Lovász loss best precision-recall balance. No augmentation strategy significantly improved over baseline. 3 placentas (15 images) reached 96% of full-dataset performance. Six downstream morphometric metrics validated against expert with no systematic bias.</p>
+        <h3>Limitations</h3>
+        <p>Not yet validated across labs, scanners, or staining protocols. Currently specific to CD31-stained rodent placenta.</p>
+        <h3>Next steps</h3>
+        <p>Expand to additional IHC markers. Cross-lab generalizability testing. Open-source release. Train on H&E alone to remove IHC requirement.</p>
+        <div class="sidebar-meta">
+          <span class="meta-pill">Research</span>
+          <span class="status-badge is-compact">Results ready (writing)</span>
+          <span class="chip">computer-vision</span>
+          <span class="chip">segmentation</span>
+          <span class="chip">U-Net</span>
+          <span class="chip">PyTorch</span>
+        </div>
       `
     },
     "prenatal-thc-cbd-placenta": {
