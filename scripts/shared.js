@@ -129,7 +129,7 @@
       liveUrl: `${base}projects/recogneyes-cucai/RecognEyes.pdf`,
       detail: `
         <h3>What it is</h3>
-        <p>An edge-computing wearable that helps people with prosopagnosia (face blindness) recognize familiar faces in real time using smart glasses with on-device face detection and a lightweight neural network.</p>
+        <p>An edge-computing wearable that helps people with prosopagnosia (face blindness) recognize familiar faces in real time using smart glasses with on-device face detection and a lightweight neural network. Published and presented at the Canadian Undergraduate Conference on Artificial Intelligence (CUCAI).</p>
         <h3>How it works</h3>
         <p>A camera on the glasses captures faces, which are detected and cropped locally using Haar Cascades on a Raspberry Pi Pico. Cropped faces are sent to a personal device running EdgeFace to extract embeddings, matched via cosine similarity, and identified names are delivered through a discreet earpiece.</p>
         <h3>Results</h3>
