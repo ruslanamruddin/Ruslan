@@ -123,6 +123,26 @@
     },
     "prenatal-thc-cbd-placenta": {
       title: "Prenatal THC + CBD Effects on Rat Placental Development"
+    },
+    "recogneyes-cucai": {
+      title: "RecognEyes — Smart Glasses for Prosopagnosia",
+      liveUrl: `${base}projects/recogneyes-cucai/RecognEyes.pdf`,
+      detail: `
+        <h3>What it is</h3>
+        <p>An edge-computing wearable that helps people with prosopagnosia (face blindness) recognize familiar faces in real time using smart glasses with on-device face detection and a lightweight neural network.</p>
+        <h3>How it works</h3>
+        <p>A camera on the glasses captures faces, which are detected and cropped locally using Haar Cascades on a Raspberry Pi Pico. Cropped faces are sent to a personal device running EdgeFace to extract embeddings, matched via cosine similarity, and identified names are delivered through a discreet earpiece.</p>
+        <h3>Results</h3>
+        <p>Over 99% accuracy on a private dataset of 500 images, sub-40 ms latency, and 3–4 hours battery life. Pilot testers reported reduced social anxiety and improved confidence in group settings.</p>
+        <div class="sidebar-meta">
+          <span class="meta-pill">Research</span>
+          <span class="status-badge is-compact">Published</span>
+          <span class="chip">computer-vision</span>
+          <span class="chip">edge-computing</span>
+          <span class="chip">assistive-tech</span>
+          <span class="chip">face-recognition</span>
+        </div>
+      `
     }
   };
 
@@ -212,7 +232,8 @@
   const projects = [
     { title: "Histoscope", slug: "histoscope", type: "Tool", status: "Ongoing" },
     { title: "Deep Learning Pipeline for Placental Histology Segmentation", slug: "placental-histology-segmentation", type: "Research", status: "Results ready (writing)" },
-    { title: "Prenatal THC + CBD Effects on Rat Placental Development", slug: "prenatal-thc-cbd-placenta", type: "Research", status: "Ongoing" }
+    { title: "Prenatal THC + CBD Effects on Rat Placental Development", slug: "prenatal-thc-cbd-placenta", type: "Research", status: "Ongoing" },
+    { title: "RecognEyes — Smart Glasses for Prosopagnosia", slug: "recogneyes-cucai", type: "Research", status: "Published" }
   ];
   const palette = document.getElementById("command-palette");
   const input = document.getElementById("command-search");
