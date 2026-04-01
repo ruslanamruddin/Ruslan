@@ -844,12 +844,13 @@ button.chip:focus-visible,
 
 .sidebar-detail {
   overflow: hidden;
+  min-height: 0;
 }
-
 
 .sidebar-detail-inner {
   padding: 1rem 1.2rem;
   overflow-y: auto;
+  height: 100%;
 }
 
 .sidebar-detail-inner h3 {
