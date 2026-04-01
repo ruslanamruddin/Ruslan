@@ -799,6 +799,7 @@ button.chip:focus-visible,
   grid-template-rows: auto 25% auto 1fr;
 }
 
+
 .sidebar-panel.is-open {
   transform: translateX(0);
 }
@@ -825,6 +826,7 @@ button.chip:focus-visible,
 .sidebar-detail {
   overflow: hidden;
 }
+
 
 .sidebar-detail-inner {
   padding: 1rem 1.2rem;
@@ -1055,6 +1057,33 @@ button.chip:focus-visible,
 
 .timeline p {
   font-size: var(--text-sm);
+}
+
+/* ── page figure (floated image with caption) ──── */
+
+.page-figure-right {
+  float: right;
+  margin: 0 0 0.75rem 1rem;
+  width: 40%;
+  max-width: 260px;
+}
+
+.page-figure-right img {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.page-figure-right img:hover {
+  opacity: 0.85;
+}
+
+.page-figure-right figcaption {
+  font-size: var(--text-xs);
+  color: var(--muted);
+  margin-top: 0.3rem;
+  text-align: center;
 }
 
 /* ── article content (MDX body) ────────────────── */
