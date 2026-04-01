@@ -1082,7 +1082,7 @@ button.chip:focus-visible,
 
 .page-figure-right {
   float: right;
-  margin: 0 0 0.75rem 1rem;
+  margin: 0 0 0.25rem 1rem;
   width: 40%;
   max-width: 260px;
 }
