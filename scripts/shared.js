@@ -140,20 +140,12 @@
     if (proj.detail && detail && detailInner) {
       detailInner.innerHTML = proj.detail;
       detail.hidden = false;
+      if (detailDivider) detailDivider.hidden = false;
       panel.classList.add("has-detail");
-      if (proj.liveUrl) {
-        if (detailDivider) detailDivider.hidden = false;
-        iframe.hidden = false;
-        iframe.src = proj.liveUrl;
-      } else {
-        if (detailDivider) detailDivider.hidden = true;
-        iframe.hidden = true;
-        iframe.src = "about:blank";
-      }
+      iframe.src = proj.liveUrl || `${base}projects/${slug}/`;
     } else {
       if (detail) detail.hidden = true;
       if (detailDivider) detailDivider.hidden = true;
-      iframe.hidden = false;
       panel.classList.remove("has-detail");
       iframe.src = `${base}projects/${slug}/`;
     }
@@ -179,7 +171,6 @@
       panel.classList.remove("has-detail");
       if (detail) { detail.hidden = true; detail.style.height = ""; }
       if (detailDivider) detailDivider.hidden = true;
-      iframe.hidden = false;
       panel.style.gridTemplateRows = "";
       iframe.src = "about:blank";
       panel.style.width = "";
