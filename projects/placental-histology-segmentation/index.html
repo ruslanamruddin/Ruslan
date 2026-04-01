@@ -68,16 +68,6 @@
             </div>
           </section>
 
-          <section>
-            <h2>Timeline</h2>
-            <ul class="timeline">
-              <li><time datetime="2025-02-15">Feb 15, 2025</time><p>Manuscript drafting in progress.</p></li>
-              <li><time datetime="2024-11-01">Nov 1, 2024</time><p>Slide-level aggregation and quantitative analysis completed.</p></li>
-              <li><time datetime="2024-06-01">Jun 1, 2024</time><p>Model training and validation completed.</p></li>
-              <li><time datetime="2024-03-01">Mar 1, 2024</time><p>Dataset curation and annotation protocol finalized.</p></li>
-            </ul>
-          </section>
-
           <section class="article-content">
             <h2>Methods</h2>
             <p>Whole-slide placental histology images are annotated in QuPath to produce single-channel region masks delineating fetal blood space, maternal blood space, and tissue. These masks serve as ground truth for training U-Net convolutional neural networks in PyTorch. The pipeline handles tiling, normalization, augmentation, and training with configurable hyperparameters. Inference produces pixel-level segmentation maps across full slides.</p>
