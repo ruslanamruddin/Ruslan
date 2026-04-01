@@ -901,8 +901,34 @@ button.chip:focus-visible,
   cursor: pointer;
 }
 
-.sidebar-detail-inner .sidebar-demo-img:hover {
-  opacity: 0.85;
+/* ── enlargeable image hover overlay ──────────── */
+
+.enlarge-wrap {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.enlarge-wrap::after {
+  content: "Click to enlarge";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.03em;
+  border-radius: var(--radius);
+  opacity: 0;
+  transition: opacity 200ms ease;
+  pointer-events: none;
+}
+
+.enlarge-wrap:hover::after {
+  opacity: 1;
 }
 
 /* ── lightbox ─────────────────────────────────── */
@@ -1102,8 +1128,8 @@ button.chip:focus-visible,
   cursor: pointer;
 }
 
-.page-figure-right img:hover {
-  opacity: 0.85;
+.page-figure-right .enlarge-wrap::after {
+  border-radius: var(--radius);
 }
 
 .page-figure-right figcaption {

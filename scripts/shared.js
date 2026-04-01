@@ -279,10 +279,51 @@
     setTimeout(() => { lightbox.hidden = true; lbImg.src = ""; }, 200);
   };
 
+  // Wrap an image in an .enlarge-wrap span for hover overlay
+  const wrapEnlargeable = (img) => {
+    if (img.closest(".enlarge-wrap")) return;
+    const wrap = document.createElement("span");
+    wrap.className = "enlarge-wrap";
+    img.parentNode.insertBefore(wrap, img);
+    wrap.appendChild(img);
+  };
+
+  // Wrap existing sidebar demo images
+  document.querySelectorAll(".sidebar-demo-img").forEach(wrapEnlargeable);
+
   document.addEventListener("click", (e) => {
-    const img = e.target.closest(".sidebar-demo-img");
-    if (img) openLightbox(img.src, img.alt);
+    const wrap = e.target.closest(".enlarge-wrap");
+    if (wrap) {
+      const img = wrap.querySelector("img");
+      if (img) openLightbox(img.src, img.alt);
+    }
   });
+
+  // Bridge clicks from same-origin iframes to parent lightbox
+  const iframe = document.getElementById("sidebar-iframe");
+  if (iframe) {
+    iframe.addEventListener("load", () => {
+      try {
+        const doc = iframe.contentDocument;
+        if (!doc) return;
+        // Wrap enlargeable images inside iframe
+        doc.querySelectorAll(".page-figure-right img").forEach((img) => {
+          if (img.closest(".enlarge-wrap")) return;
+          const wrap = doc.createElement("span");
+          wrap.className = "enlarge-wrap";
+          img.parentNode.insertBefore(wrap, img);
+          wrap.appendChild(img);
+        });
+        doc.addEventListener("click", (e) => {
+          const wrap = e.target.closest(".enlarge-wrap");
+          if (wrap) {
+            const img = wrap.querySelector("img");
+            if (img) openLightbox(img.src, img.alt);
+          }
+        });
+      } catch (e) { /* cross-origin iframe, ignore */ }
+    });
+  }
 
   if (lbClose) lbClose.addEventListener("click", closeLightbox);
   if (lbBackdrop) lbBackdrop.addEventListener("click", closeLightbox);
