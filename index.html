@@ -1,190 +1,613 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <base href="/Ruslan/" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="description" content="Life sciences researcher building ML pipelines and tools for biomedical research." />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Ruslan Amruddin</title>
-    <link rel="stylesheet" href="styles/global.css" />
+    <meta name="description" content="Ruslan Amruddin works at Tactus AI, building humanoid robots for labs." />
+    <meta name="theme-color" content="#f7f7f8" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="site.css" />
+    <style>
+      /* Column: one quiet centred column. Click a project and the column glides left while the arm carries the
+         project's page in from the right by its edge, lets go, and steps away while you read. */
+      :root[data-theme="light"] {
+        --bg: #f7f7f8; --ink: #18181a; --muted: #75757b; --faint: #e4e4e7; --accent: #18181a;
+        --tick-empty: #d4d4d8; --tick-future: #ebebee; --bubble: #ededf0; --tip-bg: #ffffff; --tip-line: rgba(0, 0, 0, 0.08);
+        --sheet: #ffffff; --sheet-shadow: 0 40px 120px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.06); --todo: #a0730f;
+        color-scheme: light;
+      }
+      :root[data-theme="light"] .veil { opacity: 0; }
+      html, body { transition: background-color 450ms ease, color 450ms ease; }
+      .veil { transition: opacity 450ms ease; }
+      :root { --glide: cubic-bezier(0.22, 1, 0.36, 1); --shift: 0px; --sheet-left: 50vw; }
+      .arm-layer.away { opacity: 0; transition: opacity 500ms ease; }
+      /* Take the arm away (bottom right). It sits under the arm's layer, so the hand can wag a finger over it. */
+      .arm-toggle { all: unset; position: fixed; right: 20px; bottom: 16px; z-index: 4; font-size: 13px; color: var(--muted); cursor: pointer; padding: 6px 8px; border-radius: 6px; }
+      .arm-toggle:hover { color: var(--ink); }
+      .arm-toggle:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+      .arm-off .arm-layer { visibility: hidden; }
+      .todo, .row .d.todo { color: var(--todo, #d8b45a); }
+      .col { width: min(500px, calc(100vw - 48px)); margin: 0 auto; padding: clamp(72px, 14vh, 140px) 0 120px; transition: transform 900ms var(--glide); }
+      body.open .col { transform: translateX(var(--shift)); }
+      .who { display: flex; align-items: center; gap: 14px; margin-bottom: 36px; }
+      .who .me { width: 44px; height: 44px; border-radius: 12px; margin: 0; }
+      .who div { display: grid; font-size: 15px; line-height: 1.35; }
+      .who strong { font-weight: 600; color: var(--ink); }
+      .who span { color: var(--muted); }
+      .who .toggles { margin-left: auto; align-self: start; display: flex; gap: 16px; }
+      .who .toggles button { all: unset; font-size: 13px; color: var(--muted); cursor: pointer; padding: 2px 0; }
+      .who .toggles button:hover { color: var(--ink); }
+      .who .toggles button:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 4px; }
+      .intro p { font-size: 16px; line-height: 1.6; color: var(--ink); margin: 0 0 14px; }
+      .intro a { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-decoration-color: var(--muted); text-underline-offset: 0.18em; }
+      /* the little text robot standing in for the word "robot"; it blinks now and then */
+      .bot { white-space: nowrap; }
+      .bot b { position: relative; display: inline-block; font-weight: 600; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.92em; letter-spacing: -0.08em; margin-right: -0.1em; }
+      /* an antenna on its head, with a little light that pulses */
+      .bot b::before { content: ""; position: absolute; left: 50%; top: -0.24em; width: 1.5px; height: 0.34em; translate: -50% 0; background: currentColor; border-radius: 1px; }
+      .bot b::after { content: ""; position: absolute; left: 50%; top: -0.42em; width: 0.26em; height: 0.26em; translate: -50% 0; border-radius: 50%; background: #e5484d; box-shadow: 0 0 0.35em rgba(229, 72, 77, 0.7); animation: beacon 2.4s ease-in-out infinite; }
+      @keyframes beacon { 50% { opacity: 0.35; box-shadow: none; } }
+      @media (prefers-reduced-motion: reduce) { .bot b::after { animation: none; } }
+      .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+      .intro a:hover { text-decoration-color: currentColor; }
+      .outro { margin-top: 56px; }   /* the sign-off: how to reach me, at the end of the page */
+      .block { margin-top: 56px; }
+
+      /* Recommend me a song (quiet link): a line until you ask, then a typing line with plain-text matches */
+      .recs { margin-top: 40px; position: relative; z-index: 7; }
+      .recs .lead { font-size: 16px; line-height: 1.6; margin: 0; }
+      .recs button { all: unset; cursor: pointer; }
+      .recs .rec-open { text-decoration: underline; text-decoration-thickness: 1px; text-decoration-color: var(--muted); text-underline-offset: 0.18em; }
+      .recs .rec-open:hover { text-decoration-color: currentColor; }
+      .rec-pl a { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-decoration-color: var(--muted); text-underline-offset: 0.18em; }
+      .rec-pl a:hover { text-decoration-color: currentColor; }
+      .rec-area:not(:empty) { margin-top: 12px; }
+      .rec-line { display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--ink); padding: 5px 0; }
+      .rec-line .note-mark { color: var(--muted); }
+      .rec-line input { all: unset; flex: 1; min-width: 0; font-size: 16px; color: var(--ink); }
+      .rec-line input::placeholder { color: var(--muted); }
+      .recs .rec-quiet { font-size: 14px; color: var(--muted); }
+      .recs .rec-quiet:hover { color: var(--ink); }
+      .rec-list { list-style: none; margin: 4px 0 0; padding: 0; }
+      .rec-list li { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0; border-bottom: 1px solid var(--faint); cursor: pointer; }
+      .rec-list .s { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--ink); transition: color 150ms ease; }
+      .rec-list .a { flex: none; max-width: 45%; color: var(--muted); font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: right; }
+      .rec-list.has-active li:not([aria-selected="true"]) .s { color: var(--muted); }
+      .rec-list .info { cursor: default; color: var(--muted); font-size: 14px; }
+      .rec-chosen { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--faint); }
+      .rec-chosen .by { color: var(--muted); }
+      .rec-chosen .acts { flex: none; display: flex; gap: 16px; align-items: center; }
+      .recs .rec-send { padding: 6px 12px; border-radius: 10px; background: var(--ink); color: var(--bg); font-size: 14px; font-weight: 500; transition: scale 160ms ease; }
+      .recs .rec-send:active { scale: 0.97; }
+      .recs button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 6px; }
+      .rec-done { margin: 10px 0 0; font-size: 14px; color: var(--muted); min-height: 1px; }
+      .block h2 { font-size: 14px; font-weight: 500; color: var(--muted); margin: 0 0 10px; display: flex; justify-content: space-between; }
+      .rows { list-style: none; margin: 0; padding: 0; }
+      .row { all: unset; box-sizing: border-box; width: 100%; display: grid; grid-template-columns: 1fr auto; gap: 3px 16px; align-items: baseline; padding: 11px 0; border-top: 1px solid var(--faint); cursor: pointer; transition: scale 160ms ease; }
+      .row .t { font-size: 16px; font-weight: 500; color: var(--ink); transition: color 200ms ease; }
+      .row .d { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+      .row .n { grid-column: 1 / -1; font-size: 14px; font-weight: 400; color: var(--muted); line-height: 1.45; }
+      .row .d { line-height: 1.3; }
+      .row .n.todo { color: var(--todo, #a0730f); }
+      .row .todo { margin-top: 0; }
+      .papers .row .t { font-weight: 400; line-height: 1.4; }
+      .papers div.row { cursor: default; }
+      .papers .ext { margin-left: 2px; }
+      .papers a.row:hover .ext { color: var(--ink); }   /* style.css gives placeholders a top margin */
+      .rows:hover .row .t { color: var(--muted); }
+      .rows:hover .row:hover .t, .row.on .t { color: var(--ink); }
+      body.open .row[data-key]:not(.on) .t { color: var(--muted); }
+      body.open .col { cursor: pointer; }   /* a click on the column closes the open page */
+      .row:active { scale: 0.985; }
+      .row:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 4px; }
+      .block .year { margin-top: 4px; }
+      .block .caption { font-size: 12px; margin-top: 6px; }
+      .block [data-glimpse] { height: 150px; }
+      .block [data-glimpse] span { aspect-ratio: auto !important; height: 100%; }
+      .col [data-updated] { margin-top: 56px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+      /* The project page the arm brings in */
+      .sheet { position: fixed; top: 16px; bottom: 16px; right: 16px; left: var(--sheet-left); z-index: 3; border-radius: 22px; background: var(--sheet, #141312); box-shadow: var(--sheet-shadow, 0 40px 120px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05)); transition: background-color 450ms ease; transform: translateX(110vw); visibility: hidden; }
+      .sheet.live { visibility: visible; }
+      .sheet-inner { height: 100%; overflow: auto; overscroll-behavior: contain; padding: 52px clamp(28px, 4vw, 64px) 80px; border-radius: inherit; }
+      .sheet .close { all: unset; position: absolute; top: 18px; right: 20px; font-size: 13px; color: var(--muted); cursor: pointer; padding: 6px 8px; border-radius: 8px; z-index: 1; }
+      .sheet .close:hover { color: var(--ink); }
+      .sheet .close:focus-visible { outline: 2px solid var(--ink); }
+      .page { max-width: 720px; transition: opacity 180ms ease, translate 260ms var(--glide); }
+      .page.out { opacity: 0; translate: 0 6px; }
+      .page h1 { font-size: clamp(30px, 3vw, 42px); letter-spacing: -0.032em; line-height: 1.05; margin: 0 0 10px; }
+      .page .sub { font-size: 17px; color: var(--muted); margin: 0 0 32px; max-width: 34em; }
+      .page p { font-size: 16px; line-height: 1.65; color: var(--ink); max-width: 36em; margin: 0 0 16px; }
+      .page a { color: var(--ink); text-decoration-color: var(--faint); text-underline-offset: 0.18em; }
+      .page figure { margin: 0 0 28px; }
+      .page .shot { border-radius: 16px; overflow: hidden; background: var(--bubble); }
+      .page .shot img { display: block; width: 100%; height: auto; }
+      .page .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 0 28px; }
+      .page .two .shot { aspect-ratio: 4 / 3; }
+      .page .two img { height: 100%; object-fit: cover; }
+      .page .diagram { background: #fff; padding: 12px; box-shadow: 0 0 0 1px var(--faint); }
+      .page .cite { font-size: 14px; color: var(--muted); }
+      .page .slot { aspect-ratio: 16 / 10; display: grid; place-items: center; color: var(--todo, #d8b45a); font-size: 13px; border: 1px dashed color-mix(in srgb, var(--todo, #d8b45a) 40%, transparent); background: color-mix(in srgb, var(--todo, #d8b45a) 5%, transparent); }
+      .page .two .slot { aspect-ratio: 4 / 3; }
+
+      @media (max-width: 900px) {
+        body.open .col { transform: none; }
+        .sheet { inset: 0; left: 0; border-radius: 0; z-index: 30; }
+        .page .two { grid-template-columns: 1fr; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .col, .page { transition: none; }
+      }
+    </style>
+    <script>
+      // One theme: light, with the arm in daylight.
+      (() => {
+        document.documentElement.dataset.theme = "light";
+        window.ARM_CONFIG = { overlay: true, shift: [0.56, 0.2], zoom: 0.6, idle: "park", park: [0.6, -0.15], follow: true, sleeps: false, look: "daylight" };
+      })();
+    </script>
+    <script type="importmap">{ "imports": { "three": "./vendor/three/three.module.min.js", "three/addons/": "./vendor/three/addons/" } }</script>
+  </head>
+  <body>
+    <canvas id="stage" class="arm-layer" aria-hidden="true"></canvas>
+    <div class="veil" aria-hidden="true"></div>
+
+    <main class="col" id="col">
+      <header class="who in" style="--i: 0">
+        <div><strong>Ruslan Amruddin</strong><span>San Diego<span data-clock=", "></span></span></div>
+        <div class="toggles"><button class="sound" type="button" aria-pressed="true">Sound on</button></div>
+      </header>
+
+      <div class="intro in" style="--i: 1">
+        <p>Hi, I'm Ruslan. I'm from the Toronto area in Canada, and I work at <a href="https://tactus.ai" target="_blank" rel="noopener noreferrer" data-arm data-arm-anchor="right">Tactus AI</a>, where we're building humanoid <span class="sr">robots</span><span class="bot" aria-hidden="true"><b>[◉▂◉]</b>s</span> for labs. I like to learn and do new things.</p>
+      </div>
+
+      <section class="recs in" style="--i: 2" aria-label="Recommend me a song">
+        <p class="lead">I like all sorts of music and I'm always looking for more.<span class="rec-cta" hidden> <button type="button" class="rec-open" aria-expanded="false">Recommend me a song</button><span class="rec-pl" hidden>, or <a href="#" target="_blank" rel="noopener noreferrer">see what everyone's picked</a></span>.</span></p>
+        <div class="rec-area"></div>
+        <p class="rec-done" role="status"></p>
+      </section>
+
+      <section class="block in" style="--i: 3" aria-label="Projects">
+        <h2>Projects</h2>
+        <ul class="rows">
+          <li><button class="row" type="button" data-key="slidetrainer" aria-controls="sheet" data-arm data-arm-anchor="right"><span class="t">SlideTrainer</span><span class="d">Building now</span><span class="n">Lets scientists who can't code train their own AI.</span></button></li>
+          <li><button class="row" type="button" data-key="staining" aria-controls="sheet" data-arm data-arm-anchor="right"><span class="t">Digital staining</span><span class="d">Building now</span><span class="n">Open-source digital staining models for academic labs with limited funding.</span></button></li>
+          <li><button class="row" type="button" data-key="workspace" aria-controls="sheet" data-arm data-arm-anchor="right"><span class="t">AI-Native Workspace</span><span class="d">Building now</span><span class="n">A desktop workspace for directing many AI agents across my projects.</span></button></li>
+          <li><button class="row" type="button" data-key="grants" aria-controls="sheet" data-arm data-arm-anchor="right"><span class="t">AI grant writer</span><span class="d">Building now</span><span class="n">Edits grant proposals based on expert critique.</span></button></li>
+          <li><button class="row" type="button" data-key="recogneyes" aria-controls="sheet" data-arm data-arm-anchor="right"><span class="t">RecognEyes</span><span class="d">2025</span><span class="n">Smart glasses that recognize faces for people with face blindness.</span></button></li>
+        </ul>
+      </section>
+
+      <section class="block in" style="--i: 4" aria-label="Papers">
+        <h2>Papers</h2>
+        <!-- Newest first. Unpublished papers say "In review" instead of a year. A paper with a link opens it in a new
+             tab; one without is plain text until it has one. -->
+        <ul class="rows papers">
+          <li><div class="row"><span class="t">Deep learning semantic segmentation of fetal and maternal blood spaces in rat placental histology</span><span class="d">In review</span><span class="n">First author · <i>Placenta</i></span></div></li>
+          <li><div class="row"><span class="t">Anxiolytic-dose cannabidiol exposure alters placental development despite preserved fetal growth</span><span class="d">In review</span><span class="n">Co-author · <i>Placenta</i></span></div></li>
+          <li><a class="row" href="https://drive.google.com/file/d/1r8TMty_rmGMSC8P-tMV1zJ4hms0eBNBs/view" target="_blank" rel="noopener noreferrer" data-arm data-arm-anchor="right"><span class="t">Exploring artificial consciousness</span><span class="d">2024</span><span class="n">Second author · CUCAI proceedings, pages 64–71 <span class="ext" aria-hidden="true">↗</span></span></a></li>
+          <li><a class="row" href="https://doi.org/10.24908/qap.v1i3.18934" target="_blank" rel="noopener noreferrer" data-arm data-arm-anchor="right"><span class="t">Effects of notification sound frequency on cardiovascular and cognitive responses</span><span class="d">2024</span><span class="n">Second author · <i>Qapsule</i> <span class="ext" aria-hidden="true">↗</span></span></a></li>
+        </ul>
+      </section>
+
+      <!-- The commits-by-week strip is put away for now; bring it back (remove `hidden`) once the numbers are worth showing. -->
+      <section class="block in" style="--i: 3" hidden>
+        <h2>This year</h2>
+        <div class="year activity" id="activity" aria-label="Commits by week">
+          <div class="strip" id="strip"></div>
+          <div class="tip" id="tip" aria-hidden="true"><div class="tip-card"><div class="tip-body"><p class="tip-when"></p><p class="tip-commits"></p><p class="tip-songs"></p></div><div class="tip-foot"></div></div></div>
+          <div class="week" id="week" inert><div class="week-inner"><div class="week-head"><span class="week-range"></span><button class="week-close" type="button" aria-label="Close week"></button></div><div class="week-cols"><ul class="week-list week-code"></ul><ul class="week-list week-songs"></ul></div></div></div>
+        </div>
+        <p class="caption">One line per week</p>
+      </section>
+
+      <section class="block in" style="--i: 4">
+        <h2>From my phone <a class="quiet" href="site-photos.html">All photos</a></h2>
+        <a data-glimpse="3" href="site-photos.html" aria-label="See all photos" data-arm data-arm-pose="primed" data-arm-grip="pinch" data-arm-anchor="right"></a>
+      </section>
+
+      <div class="intro outro in" style="--i: 5">
+        <p>You can find me on <a href="https://linkedin.com/in/ruslan-amruddin/" data-arm data-arm-anchor="right">LinkedIn</a> and <a href="https://github.com/ruslanamruddin" data-arm data-arm-anchor="right">GitHub</a>, or <a href="mailto:rus.amruddin192@gmail.com" data-arm data-arm-pose="wave" data-arm-anchor="right">send me a note</a>.</p>
+      </div>
+
+      <p data-updated></p>
+    </main>
+
+    <button class="arm-toggle" type="button" aria-pressed="false" hidden>Remove the robot arm</button>
+
+    <aside class="sheet" id="sheet" aria-label="Project" inert>
+      <button class="close" type="button">Close <span aria-hidden="true">· Esc</span></button>
+      <div class="sheet-inner"><article class="page" id="page"></article></div>
+    </aside>
+
+    <!-- The project pages. Gold text and dashed boxes are placeholders for Ruslan's own words and photos. -->
+    <template id="p-slidetrainer">
+      <h1>SlideTrainer</h1>
+      <p class="sub">Lets scientists who can't code train their own AI. Two labs use it for real studies.</p>
+      <figure class="shot"><img src="images/work/slidetrainer-review.jpg" alt="SlideTrainer showing a model's outlines over a tissue slide, ready to review" /></figure>
+      <p>Training a model usually takes someone who can code. So I built a desktop app where people label their own images, train a model and measure a whole study, all on their own computer.</p>
+      <figure class="shot"><img src="images/work/slidetrainer-studies.jpg" alt="SlideTrainer's studies page" /></figure>
+    </template>
+    <template id="p-staining">
+      <h1>Digital staining</h1>
+      <p class="sub">Open-source digital staining models for academic labs with limited funding and resources. I'm building it now.</p>
+      <div class="shot slot"><span>Screenshot 1</span></div>
+      <p class="todo">[what it stains, how it works and where it's at, in your words]</p>
+      <div class="two"><div class="shot slot"><span>Screenshot 2</span></div><div class="shot slot"><span>Screenshot 3</span></div></div>
+    </template>
+    <template id="p-workspace">
+      <h1>AI-Native Workspace</h1>
+      <p class="sub">A desktop workspace for directing many AI agents across my projects. I'm building it now.</p>
+      <div class="shot slot"><span>Screenshot 1</span></div>
+      <p class="todo">[why you're building it and what it does, in your words]</p>
+      <div class="two"><div class="shot slot"><span>Screenshot 2</span></div><div class="shot slot"><span>Screenshot 3</span></div></div>
+    </template>
+    <template id="p-grants">
+      <h1>AI grant writer</h1>
+      <p class="sub">Edits grant proposals based on expert critique. I'm building it now.</p>
+      <div class="shot slot"><span>Screenshot 1</span></div>
+      <p>A review tool that checks grants and manuscripts against an expert's writing guidelines, built under contract with Kingston Health Sciences Centre. It combines rule-based checks with AI review (Python, FastAPI and the Claude API), and it's also used to teach resident researchers how to write strong papers and grants.</p>
+      <div class="two"><div class="shot slot"><span>Screenshot 2</span></div><div class="shot slot"><span>Screenshot 3</span></div></div>
+    </template>
+    <template id="p-recogneyes">
+      <h1>RecognEyes</h1>
+      <p class="sub">Smart glasses that recognize faces for people with face blindness (prosopagnosia). Published at CUCAI 2025.</p>
+      <figure class="shot diagram"><img src="images/work/recogneyes-system.jpg" alt="How RecognEyes works: the glasses' camera finds and crops a face, a phone or laptop matches it against people you know, and the answer is spoken into an earpiece" /></figure>
+      <p>The glasses identify the person in front of you and say their name through an earpiece. Faces are detected on the glasses themselves (OpenCV on a Raspberry Pi), and recognition (TensorFlow) is over 99% accurate.</p>
+      <p class="cite">Built with the QMIND AI Design Team, 2024–2025 · Published at the Canadian Undergraduate Conference on Artificial Intelligence (CUCAI 2025), pages 194–199 · <a href="https://drive.google.com/file/d/1Ov-0nKdaizbdKaXh8qTzVd0fzU6_8gG1/view" target="_blank" rel="noopener noreferrer">Read the paper ↗</a></p>
+    </template>
+
+    <script src="sound.js"></script>
+    <script src="main.js"></script>
+    <script src="site.js"></script>
+    <script src="arm-page.js"></script>
     <script>
       (() => {
-        try {
-          const storageKey = "research-archive-theme";
-          const saved = window.localStorage.getItem(storageKey);
-          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-          const theme = saved === "light" || saved === "dark" ? saved : "light";
-          document.documentElement.dataset.theme = theme;
-        } catch {
-          document.documentElement.dataset.theme = "light";
+        const stage = document.getElementById("stage"), root = document.documentElement, col = document.getElementById("col"), sheet = document.getElementById("sheet"), page = document.getElementById("page");
+        const rows = [...document.querySelectorAll(".row[data-key]")], keys = rows.map((r) => r.dataset.key);
+        const closeBtn = sheet.querySelector(".close"), soundBtn = document.querySelector(".sound");
+        const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const sound = window.siteSound;
+        const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+        const frame = () => new Promise((r) => requestAnimationFrame(r));
+        const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
+        const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+        const hasArm = () => Boolean(window.arm?.tip) && !root.classList.contains("no-arm") && !calm && innerWidth > 900;
+
+        // Where things go: the column slides to the left margin, the page fills the rest.
+        let sheetLeft = 0, shift = 0, gap = 0;
+        function layout() {
+          const W = col.offsetWidth, pad = clamp(innerWidth * 0.04, 24, 64);
+          gap = clamp(innerWidth * 0.04, 32, 72);
+          shift = pad - (innerWidth - W) / 2;
+          root.style.setProperty("--shift", `${shift}px`);
+          sheetLeft = Math.round(Math.min(pad + W + gap, innerWidth - 560));
+          root.style.setProperty("--sheet-left", `${sheetLeft}px`);
+        }
+        layout();
+        addEventListener("resize", layout);
+        const off = () => innerWidth - sheetLeft + 60;          // fully off the right edge
+        const grip = () => [sheetLeft + 3, 16 + (innerHeight - 32) * 0.34];   // where the hand holds the page's edge
+        const setX = (x) => (sheet.style.transform = `translateX(${x}px)`);
+        const anim = (css) => (sheet.style.transition = css);
+        // The column only moves when the incoming page's edge reaches it, and then it's pushed along ahead of it,
+        // keeping the usual gap; once the page has landed the column sits at --shift.
+        const pushed = (x) => (innerWidth <= 900 ? 0 : clamp(sheetLeft + x - gap - (innerWidth + col.offsetWidth) / 2, shift, 0));
+        const push = (x) => (col.style.transform = `translateX(${pushed(x)}px)`);
+        const settleCol = async () => { col.style.transition = "none"; col.style.transform = ""; await frame(); col.style.transition = ""; };   // hand back to the CSS (same spot)
+
+        // The hand's speed drives the servo whir.
+        (() => {
+          let last = null, lastT = 0;
+          const loop = (t) => {
+            if (window.arm?.tip && sound) {
+              const p = window.arm.tip();
+              if (last && t > lastT) sound.servo(Math.hypot(p[0] - last[0], p[1] - last[1]) / ((t - lastT) / 1000));
+              last = p; lastT = t;
+            }
+            requestAnimationFrame(loop);
+          };
+          requestAnimationFrame(loop);
+        })();
+
+        // Move the hand's target from x0 to x1 (at height y); while `carry`, the page's edge rides on the real
+        // fingertip, so it moves with the arm's own weight and lag rather than a canned slide.
+        async function drive(x0, x1, y, ms, opts, carry, onMove) {
+          const t0 = performance.now(), [gx] = grip();
+          for (;;) {
+            const k = Math.min(1, (performance.now() - t0) / ms);
+            window.arm.pointAt(x0 + (x1 - x0) * ease(k), y, opts);
+            if (carry) { const x = clamp(window.arm.tip()[0] - gx, 0, off()); setX(x); onMove?.(x); }
+            await frame();
+            if (k >= 1) break;
+          }
+          const t1 = performance.now();   // let the hand catch up with the end point
+          while (carry && performance.now() - t1 < 700 && Math.abs(window.arm.tip()[0] - x1) > 10) { const x = clamp(window.arm.tip()[0] - gx, 0, off()); setX(x); onMove?.(x); await frame(); }
+        }
+        async function until(test, ms) { const t0 = performance.now(); while (!test() && performance.now() - t0 < ms) await frame(); }
+
+        function fill(key) {
+          page.replaceChildren(document.getElementById(`p-${key}`).content.cloneNode(true));
+          sheet.querySelector(".sheet-inner").scrollTop = 0;
+          sheet.setAttribute("aria-label", rows.find((r) => r.dataset.key === key).querySelector(".t").textContent);
+          rows.forEach((r) => { r.classList.toggle("on", r.dataset.key === key); r.setAttribute("aria-expanded", String(r.dataset.key === key)); });
+        }
+
+        async function open(key) {
+          fill(key);
+          sheet.classList.add("live"); sheet.inert = false;
+          anim("none"); setX(off());
+          col.style.transition = "none"; push(off());              // the column stays put until the page reaches it
+          document.body.classList.add("open");
+          if (!hasArm()) {
+            if (calm) setX(0);
+            else {                                                    // slides in on its own, pushing the column aside
+              const t0 = performance.now(), from = off();
+              for (let k = 0; k < 1; ) {
+                k = Math.min(1, (performance.now() - t0) / 760);
+                const x = from * (1 - k) ** 5;                        // the same glide as --glide (an ease-out)
+                setX(x); push(x);
+                await frame();
+              }
+            }
+            await settleCol();
+          } else {
+            window.armLocked = true;
+            const [gx, gy] = grip(), hold = { pose: "pinch", grip: "pinch" };
+            window.arm.pointAt(innerWidth + 90, gy, hold);                       // reach off the edge for the page
+            await until(() => window.arm.tip()[0] > innerWidth - 40, 700);
+            sound?.grip();
+            await drive(innerWidth + 90, gx, gy, 950, hold, true, push);         // carry it in by its edge, pushing the column aside
+            const land = "transform 440ms cubic-bezier(0.34, 1.32, 0.64, 1)";
+            anim(land); setX(0);                                                 // it lands
+            col.style.transition = land; push(0);
+            sound?.dock();
+            await wait(170);
+            window.arm.pointAt(gx, gy, { pose: "primed", grip: "pinch" });      // lets go
+            sound?.grip();
+            await wait(300);
+            await settleCol();
+            await drive(gx, innerWidth * 1.8, gy, 900, { pose: "relaxed" }, false);   // backs straight out to the right, out of sight, while you read
+          }
+          closeBtn.focus({ preventScroll: true });
+        }
+
+        async function close() {
+          const from = rows.find((r) => r.classList.contains("on"));
+          rows.forEach((r) => { r.classList.remove("on"); r.setAttribute("aria-expanded", "false"); });
+          if (!hasArm()) {
+            anim(calm ? "none" : "transform 620ms var(--glide)"); setX(off());
+            document.body.classList.remove("open");
+            await wait(calm ? 0 : 620);
+            window.armLocked = false; window.arm?.release();
+          } else {
+            const [gx, gy] = grip(), hold = { pose: "pinch", grip: "pinch" };
+            window.arm.pointAt(innerWidth + 120, gy, { pose: "primed", grip: "pinch" });   // comes in at the page's height
+            await until(() => Math.abs(window.arm.tip()[1] - gy) < 60, 900);
+            window.arm.pointAt(gx, gy, { pose: "primed", grip: "pinch" });     // and reaches for its edge
+            await until(() => Math.hypot(window.arm.tip()[0] - gx, window.arm.tip()[1] - gy) < 26, 1500);
+            window.arm.pointAt(gx, gy, hold); sound?.grip();                     // takes hold
+            await wait(200);
+            anim("none");
+            // carries it off; the column slides back toward the centre only as fast as the page leaves
+            col.style.transition = "none";
+            await drive(gx, innerWidth + 140, gy, 1000, hold, true, (x) => (col.style.transform = `translateX(${shift * (1 - x / off())}px)`));
+            anim("transform 380ms var(--glide)"); setX(off());
+            col.style.transition = "transform 380ms var(--glide)"; col.style.transform = "translateX(0px)";
+            await wait(380);
+            col.style.transition = "none"; document.body.classList.remove("open"); col.style.transform = "";
+            await frame(); col.style.transition = "";
+            window.armLocked = false;
+            window.arm.release();
+          }
+          sheet.classList.remove("live"); sheet.inert = true;
+          from?.focus({ preventScroll: true });
+        }
+
+        async function swap(key) {
+          page.classList.add("out"); sound?.tick();
+          await wait(calm ? 0 : 180);
+          fill(key);
+          await frame();
+          page.classList.remove("out");
+        }
+
+        // One change at a time; clicks during a move are remembered and played after it.
+        let shown = null, want = null, running = false;
+        async function sync() {
+          if (running) return;
+          running = true;
+          try {
+            while (want !== shown) {
+              const next = want;
+              if (shown && next) await swap(next); else if (next) await open(next); else await close();
+              shown = next;
+            }
+          } finally { running = false; }
+        }
+        const fromHash = () => { const h = location.hash.slice(1); return keys.includes(h) ? h : null; };
+        addEventListener("hashchange", () => { want = fromHash(); sync(); });
+        const go = (key) => {
+          if (key) location.hash = key;
+          else history.replaceState(null, "", location.pathname + location.search), (want = null), sync();
+        };
+
+        rows.forEach((r) => {
+          r.addEventListener("pointerenter", () => sound?.tick());
+          r.addEventListener("click", () => { sound?.click(); go(want === r.dataset.key ? null : r.dataset.key); });
+        });
+        closeBtn.addEventListener("click", () => { sound?.click(); go(null); });
+        addEventListener("keydown", (e) => { if (e.key === "Escape" && want) go(null); });
+        // Clicking anywhere outside the open page (the column, or the space around it) closes it too, except on
+        // things that do their own job when clicked (links, buttons, the year strip, photos) or after selecting text.
+        document.addEventListener("click", (e) => {
+          if (!want || sheet.contains(e.target) || e.target.closest("a, button, input, .recs, .activity, [data-glimpse]")) return;
+          if (String(getSelection()).trim()) return;
+          sound?.click(); go(null);
+        });
+
+        // Sound toggle
+        const paint = () => { soundBtn.textContent = sound?.on ? "Sound on" : "Sound off"; soundBtn.setAttribute("aria-pressed", String(Boolean(sound?.on))); };
+        soundBtn.addEventListener("click", () => { sound?.toggle(); paint(); sound?.click(); });
+        paint();
+        // The text robot blinks every few seconds.
+        const bot = document.querySelector(".bot b");
+        if (bot && !calm) (function blink() { setTimeout(() => { bot.textContent = "[–▂–]"; setTimeout(() => { bot.textContent = "[◉▂◉]"; blink(); }, 140); }, 2600 + Math.random() * 3200); })();
+
+
+        // Recommend me a song (quiet link). Search and sending go through the song recs API (recs-api/), which
+        // searches Spotify and adds the pick to Ruslan's public playlist "Recommended by visitors". The link only
+        // appears once that API says it's set up; until then the music line is just a sentence.
+        (() => {
+          // Local preview talks to `npm run dev` in recs-api; set the live URL here once it's deployed.
+          const RECS_API = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? "http://127.0.0.1:8787/api" : null;
+          const recs = document.querySelector(".recs"), openBtn = recs.querySelector(".rec-open"), area = recs.querySelector(".rec-area"), done = recs.querySelector(".rec-done");
+          const esc = (t) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+          let songs = [], active = -1, timer = 0, ctl = null;
+
+          // While you use it, the arm waits in the margin beside it instead of reaching over the words.
+          const busy = () => recs.contains(document.activeElement) || area.querySelector(".rec-chosen");
+          function armWait() {
+            if (!window.arm || want || root.classList.contains("no-arm")) return;
+            if (busy()) {
+              window.armLocked = true;
+              const r = (area.firstElementChild ?? openBtn).getBoundingClientRect();
+              window.arm.pointAt(col.getBoundingClientRect().right + 150, r.top + r.height / 2, { pose: "relaxed" });
+            } else if (window.armLocked) { window.armLocked = false; window.arm.release(); }
+          }
+          recs.addEventListener("focusin", armWait);
+          recs.addEventListener("focusout", () => setTimeout(armWait, 0));
+          addEventListener("scroll", () => { if (busy()) armWait(); }, { passive: true });
+
+          function close() { area.innerHTML = ""; openBtn.setAttribute("aria-expanded", "false"); songs = []; armWait(); }
+          function startSearch() {
+            done.textContent = ""; openBtn.setAttribute("aria-expanded", "true");
+            area.innerHTML = `<div class="rec-line"><span class="note-mark" aria-hidden="true">♪</span><input type="text" role="combobox" aria-expanded="false" aria-controls="rec-list" aria-autocomplete="list" aria-label="Type a song or artist" placeholder="Type a song or artist" autocomplete="off" spellcheck="false" /><button type="button" class="rec-quiet">Cancel</button></div><ul class="rec-list" id="rec-list" role="listbox" aria-label="Songs"></ul>`;
+            const input = area.querySelector("input"), list = area.querySelector(".rec-list");
+            area.querySelector(".rec-quiet").onclick = () => { close(); openBtn.focus(); };
+            const draw = (info) => {
+              if (info) { list.innerHTML = `<li class="info">${esc(info)}</li>`; return; }
+              list.innerHTML = songs.map((s, i) => `<li role="option" id="rec-${i}" data-i="${i}" aria-selected="${i === active}"><span class="s">${esc(s.name)}</span><span class="a">${esc(s.artist)}</span></li>`).join("");
+              list.classList.toggle("has-active", active >= 0);
+              input.setAttribute("aria-expanded", String(songs.length > 0));
+              input.setAttribute("aria-activedescendant", active >= 0 ? `rec-${active}` : "");
+            };
+            input.addEventListener("input", () => {
+              clearTimeout(timer);
+              const term = input.value.trim();
+              if (term.length < 2) { ctl?.abort(); songs = []; active = -1; draw(); return; }
+              timer = setTimeout(async () => {
+                ctl?.abort(); ctl = new AbortController(); draw("Searching…");
+                try {
+                  const r = await fetch(`${RECS_API}/search?q=${encodeURIComponent(term)}`, { signal: ctl.signal });
+                  songs = (await r.json()).tracks ?? []; active = -1;
+                  songs.length ? draw() : draw("No songs found. Try the artist's name too.");
+                } catch (e) { if (e.name !== "AbortError") draw("Couldn't reach the song search. Try again in a moment."); }
+              }, 220);
+            });
+            input.addEventListener("keydown", (e) => {
+              if (e.key === "Escape") { e.stopPropagation(); close(); openBtn.focus(); return; }
+              if (!songs.length) return;
+              if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); active = (active + (e.key === "ArrowDown" ? 1 : -1) + songs.length) % songs.length; if (active < 0) active = songs.length - 1; draw(); sound?.tick(); }
+              else if (e.key === "Enter") { e.preventDefault(); choose(songs[Math.max(0, active)]); }
+            });
+            list.addEventListener("pointermove", (e) => { const li = e.target.closest("li[data-i]"); if (li && +li.dataset.i !== active) { active = +li.dataset.i; draw(); sound?.tick(); } });
+            list.addEventListener("pointerleave", () => { active = -1; draw(); });
+            list.addEventListener("click", (e) => { const li = e.target.closest("li[data-i]"); if (li) choose(songs[+li.dataset.i]); });
+            input.focus();
+            armWait();
+          }
+          function choose(s) {
+            sound?.click();
+            area.innerHTML = `<div class="rec-chosen"><span><span>${esc(s.name)}</span> <span class="by">by ${esc(s.artist)}</span></span><span class="acts"><button type="button" class="rec-quiet">Change</button><button type="button" class="rec-send">Send</button></span></div>`;
+            area.querySelector(".rec-quiet").onclick = startSearch;
+            const sendBtn = area.querySelector(".rec-send");
+            sendBtn.focus({ preventScroll: true });
+            sendBtn.onclick = async () => {
+              sendBtn.textContent = "Sending…"; sendBtn.disabled = true;
+              let res;
+              try { res = await fetch(`${RECS_API}/recommend`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: s.id }) }).then(async (r) => ({ ok: r.ok, ...(await r.json()) })); }
+              catch { res = { ok: false, error: "That didn't send. Try again in a moment." }; }
+              if (!res.ok) { done.textContent = res.error || "That didn't send. Try again in a moment."; sendBtn.textContent = "Send"; sendBtn.disabled = false; return; }
+              sound?.dock();
+              close();
+              done.textContent = res.added ? `Thanks! "${s.name}" is on the playlist now.` : `Someone beat you to it: "${s.name}" is already on the playlist. Thank you!`;
+              if (window.arm && !want && !root.classList.contains("no-arm")) {   // a little wave to say thanks
+                const r = done.getBoundingClientRect();
+                window.armLocked = true; window.arm.pointAt(r.right, r.top, { pose: "wave", waveAt: [col.getBoundingClientRect().right + 170, r.top - 60] });
+                setTimeout(() => { if (!want && !busy()) { window.armLocked = false; window.arm.release(); } }, 1800);
+              }
+            };
+            armWait();
+          }
+          openBtn.addEventListener("click", () => { sound?.click(); area.firstElementChild ? (close(), openBtn.focus()) : startSearch(); });
+          if (RECS_API) fetch(`${RECS_API}/config`).then((r) => r.json()).then((c) => {
+            if (!c.ok) return;
+            recs.querySelector(".rec-cta").hidden = false;
+            if (c.playlistUrl) { const pl = recs.querySelector(".rec-pl"); pl.querySelector("a").href = c.playlistUrl; pl.hidden = false; }
+          }).catch(() => {});
+        })();
+
+        // Remove the robot arm (bottom right). Hover it and the hand wags a finger: "no no". Take it away anyway
+        // and it walks off the right edge; after that the page works as if there were no arm (pages slide in on
+        // their own). Remembered for this visit only.
+        (() => {
+          const btn = document.querySelector(".arm-toggle");
+          let gone = false, wagging = false;
+          try { gone = sessionStorage.getItem("arm-off") === "1"; } catch {}
+          const save = () => { try { gone ? sessionStorage.setItem("arm-off", "1") : sessionStorage.removeItem("arm-off"); } catch {} };
+          const label = () => { btn.textContent = gone ? "Bring the arm back" : "Remove the robot arm"; btn.setAttribute("aria-pressed", String(gone)); };
+          const offRight = () => window.arm.pointAt(innerWidth * 1.8, innerHeight * 0.55, { pose: "relaxed" });
+          if (gone) root.classList.add("no-arm", "arm-off");
+
+          function wag() {
+            if (gone || running || !hasArm()) return;
+            const r = btn.getBoundingClientRect();
+            wagging = true; window.armLocked = true;
+            window.arm.pointAt(r.left, r.top, { pose: "point", wag: true, waveAt: [r.left - 110, r.top - 170] });
+          }
+          function unwag() {
+            if (!wagging) return;
+            wagging = false;
+            if (gone || running) return;
+            if (want) offRight();                                   // a page is open: back out of sight
+            else { window.armLocked = false; window.arm.release(); }
+          }
+          async function takeAway() {
+            gone = true; wagging = false; save(); label();
+            root.classList.add("no-arm");                           // from now on pages open without it
+            window.armLocked = true;
+            if (!calm) { offRight(); await until(() => window.arm.tip()[0] > innerWidth + 30, 1400); await wait(120); }
+            if (!gone) return;                                      // brought back while it was leaving
+            root.classList.add("arm-off");
+            window.arm.pause(true);
+          }
+          function bringBack() {
+            gone = false; save(); label();
+            offRight();                                             // it comes back in from the right edge
+            window.arm.pause(false);
+            root.classList.remove("arm-off", "no-arm");
+            if (!want) setTimeout(() => { if (!gone && !want && !wagging) { window.armLocked = false; window.arm.release(); } }, 60);
+          }
+
+          btn.addEventListener("pointerenter", () => { sound?.tick(); wag(); });
+          btn.addEventListener("pointerleave", unwag);
+          btn.addEventListener("click", () => { sound?.click(); gone ? bringBack() : takeAway(); });
+          addEventListener("arm-ready", () => {
+            label(); btn.hidden = false;
+            if (gone) { window.armLocked = true; offRight(); setTimeout(() => gone && window.arm.pause(true), 1500); }   // sent away on an earlier page: stay hidden
+          });
+        })();
+
+        // Opened with a link like #slidetrainer: wait briefly for the arm so it can bring the page in.
+        if (fromHash()) {
+          const begin = () => { want = fromHash(); sync(); };
+          if (window.arm || root.classList.contains("no-arm")) begin();
+          else { let done = false; const once = () => { if (!done) { done = true; begin(); } }; addEventListener("arm-ready", () => setTimeout(once, 600)); setTimeout(once, 2500); }
         }
       })();
     </script>
-  </head>
-  <body>
-    <a href="#main-content" class="skip-link">Skip to content</a>
-
-    <div class="site-shell">
-      <header class="site-header">
-        <a class="site-brand" href="./" target="_top">R. Amruddin</a>
-        <nav class="site-nav" aria-label="Main navigation">
-          <a href="notes/">Notes</a>
-        </nav>
-        <div class="site-actions">
-          <button id="theme-toggle" class="text-button" type="button" aria-label="Toggle color theme" aria-pressed="false">dark</button>
-          <button class="text-button" type="button" data-command-open>&#8984;K</button>
-        </div>
-      </header>
-
-      <main id="main-content" class="site-main">
-        <section class="page-head">
-          <div class="bio-photos">
-            <img class="bio-photo" src="images/me.png" alt="Ruslan Amruddin" />
-            <figure class="bio-photo-figure">
-              <img class="bio-photo" src="images/cat.png" alt="Gertrude the cat" />
-              <figcaption>My cat Gertrude</figcaption>
-            </figure>
-          </div>
-          <h1>Ruslan Amruddin</h1>
-          <p>4th-year Life Sciences student at Queen's University.</p>
-          <p>Interested in computational histology, machine learning for biomedical data, and reproducible research tooling.</p>
-          <p>Currently building ML pipelines for tissue segmentation and quantitative image analysis.</p>
-          <p>Currently trying to learn more about computational genomics andget better at chess so I stop losing to my friends.</p>
-          <p>Curious by nature — always learning, always looking to try something new.</p>
-        </section>
-
-        <section>
-          <h2>Projects</h2>
-          <div class="project-list-home">
-            <button class="project-row" type="button" data-project-slug="histoscope">
-              <div class="project-row-header">
-                <h3>Histoscope.app</h3>
-                <span class="status-badge is-compact">Ongoing</span>
-              </div>
-              <p class="project-row-summary">Go to histoscope.app. A research-focused platform for deploying, reviewing, and iteratively improving machine learning histology segmentation models in real lab workflows.</p>
-              <div class="project-row-meta">
-                <div class="project-row-tags">
-                  <span class="chip">ML-tooling</span>
-                  <span class="chip">human-in-the-loop</span>
-                  <span class="chip">histology</span>
-                </div>
-                <small>2026</small>
-              </div>
-            </button>
-
-            <button class="project-row" type="button" data-project-slug="placental-histology-segmentation">
-              <div class="project-row-header">
-                <h3>Deep Learning Pipeline for Placental Histology Segmentation</h3>
-                <span class="status-badge is-compact">Results ready (writing)</span>
-              </div>
-              <p class="project-row-summary">An end-to-end deep learning pipeline for segmenting fetal and maternal blood spaces in placental histology slides, reducing manual annotation time from up to 90 minutes per slide to seconds.</p>
-              <div class="project-row-meta">
-                <div class="project-row-tags">
-                  <span class="chip">computer-vision</span>
-                  <span class="chip">histology</span>
-                  <span class="chip">segmentation</span>
-                </div>
-                <small>2025</small>
-              </div>
-            </button>
-
-            <button class="project-row" type="button" data-project-slug="prenatal-thc-cbd-placenta">
-              <div class="project-row-header">
-                <h3>Prenatal THC + CBD Effects on Rat Placental Development</h3>
-                <span class="status-badge is-compact">Ongoing</span>
-              </div>
-              <p class="project-row-summary">An in vivo study investigating the combined effects of prenatal THC and CBD exposure on placental morphology and vascular development.</p>
-              <div class="project-row-meta">
-                <div class="project-row-tags">
-                  <span class="chip">placental-biology</span>
-                  <span class="chip">cannabinoids</span>
-                  <span class="chip">histology</span>
-                </div>
-                <small>2025</small>
-              </div>
-            </button>
-
-            <button class="project-row" type="button" data-project-slug="recogneyes-cucai">
-              <div class="project-row-header">
-                <h3>RecognEyes — Smart Glasses for Prosopagnosia</h3>
-                <span class="status-badge is-compact">Published</span>
-              </div>
-              <p class="project-row-summary">An edge-computing wearable solution for face blindness, presented at CUCAI. Achieves over 99% accuracy with sub-40 ms latency using on-device face detection and lightweight neural embeddings.</p>
-              <div class="project-row-meta">
-                <div class="project-row-tags">
-                  <span class="chip">computer-vision</span>
-                  <span class="chip">edge-computing</span>
-                  <span class="chip">assistive-tech</span>
-                  <span class="chip">face-recognition</span>
-                </div>
-                <small>2024</small>
-              </div>
-            </button>
-
-            <button class="project-row" type="button" data-project-slug="artificial-consciousness-cucai">
-              <div class="project-row-header">
-                <h3>Exploring Artificial Consciousness</h3>
-                <span class="status-badge is-compact">Published</span>
-              </div>
-              <p class="project-row-summary">A review of artificial consciousness exploring theories from neuroscience and philosophy, testing methodologies, and ethical frameworks for sentient AI. Presented at CUCAI.</p>
-              <div class="project-row-meta">
-                <div class="project-row-tags">
-                  <span class="chip">AI-consciousness</span>
-                  <span class="chip">ethics</span>
-                  <span class="chip">philosophy</span>
-                  <span class="chip">review-paper</span>
-                </div>
-                <small>2023</small>
-              </div>
-            </button>
-          </div>
-        </section>
-      </main>
-
-      <footer class="site-footer">
-        <p>&copy; 2026 — Last updated March 2026</p>
-      </footer>
-    </div>
-
-    <!-- Sidebar Panel -->
-    <div class="sidebar-overlay" id="sidebar-overlay" hidden></div>
-    <aside class="sidebar-panel" id="sidebar-panel" hidden>
-      <div class="sidebar-resize" id="sidebar-resize" aria-label="Resize sidebar"></div>
-      <div class="sidebar-header">
-        <span class="sidebar-title" id="sidebar-title"></span>
-        <button class="text-button" type="button" id="sidebar-close" aria-label="Close panel">Close</button>
-      </div>
-      <div class="sidebar-detail" id="sidebar-detail" hidden>
-        <div class="sidebar-detail-inner" id="sidebar-detail-inner"></div>
-      </div>
-      <div class="sidebar-detail-divider" id="sidebar-detail-divider" hidden>
-        <span>Drag to resize</span>
-      </div>
-      <iframe class="sidebar-iframe" id="sidebar-iframe" title="Project detail"></iframe>
-    </aside>
-
-    <!-- Image Lightbox -->
-    <div class="lightbox" id="lightbox" hidden>
-      <button class="lightbox-backdrop" id="lightbox-backdrop" aria-label="Close image"></button>
-      <div class="lightbox-wrap">
-        <img class="lightbox-img" id="lightbox-img" src="" alt="" />
-        <button class="lightbox-close" id="lightbox-close" type="button" aria-label="Close image">&times;</button>
-      </div>
-    </div>
-
-    <!-- Command Palette -->
-    <div class="command-palette" id="command-palette" hidden>
-      <button class="command-backdrop" data-command-close aria-label="Close command palette"></button>
-      <div class="command-dialog" role="dialog" aria-label="Command palette">
-        <div class="command-header">
-          <h2>Go to project</h2>
-          <button class="text-button" data-command-close type="button">Esc</button>
-        </div>
-        <input id="command-search" type="text" placeholder="Search projects..." autocomplete="off" />
-        <ul class="command-results" id="command-results"></ul>
-      </div>
-    </div>
-
-    <script src="scripts/shared.js"></script>
   </body>
 </html>

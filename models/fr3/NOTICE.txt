@@ -1,0 +1,3 @@
+Franka Research 3 arm model (franka_fr3_v2) and Franka hand (franka_emika_panda), from MuJoCo Menagerie, licensed under Apache-2.0. See LICENSE.
+Changes: visual meshes merged per link, simplified and compressed for the web, and material colours replaced.
+This site is not affiliated with or endorsed by Franka Robotics.

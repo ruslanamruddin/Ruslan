@@ -1,0 +1,475 @@
+/*
+  The site. One type family at four sizes, one easing curve, one corner radius per scale.
+  Noir: a warm near-black page, so the arm (look.js "noir") stands out of the dark; the only colour comes from the photos.
+*/
+:root {
+  --bg: #0c0b0b;
+  --ink: #f2f0ea;
+  --muted: #8f8c84;
+  --faint: #2a2825;
+  --accent: #f2f0ea;
+  --tick-empty: #2f2d29;
+  --tick-future: #1f1e1b;
+  --bubble: #1f1d1b;
+  --tip-bg: #1f1d1b;
+  --tip-line: rgba(255, 255, 255, 0.1);
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+body {
+  font: 400 17px/1.47 -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, "Helvetica Neue", sans-serif;
+  letter-spacing: -0.022em;
+}
+
+.note {
+  width: min(640px, 100%);
+  margin: 0 auto;
+  padding: clamp(48px, 9vh, 88px) 24px 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 72px;
+}
+
+.in {
+  animation: settle 900ms var(--ease) both;
+  animation-delay: calc(var(--i) * 70ms);
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+a {
+  transition: color 200ms ease, text-decoration-color 200ms ease;
+}
+
+/* Hello */
+.me {
+  display: block;
+  width: 88px;
+  height: 88px;
+  object-fit: cover;
+  border-radius: 20px;
+  margin-bottom: 28px;
+}
+
+/* The name at a calm size, then one plain line about the work */
+.intro h1 {
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.024em;
+}
+
+.role {
+  margin-top: 4px;
+  color: var(--muted);
+}
+
+.role a,
+.bye a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--faint);
+  text-underline-offset: 0.16em;
+}
+
+.role a:hover,
+.bye a:hover {
+  text-decoration-color: currentColor;
+}
+
+/* The first paragraph's links read as links at a glance: a clearly visible underline. */
+.role a {
+  text-decoration-color: var(--muted);
+}
+
+.where {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Sections */
+h2 {
+  margin-bottom: 16px;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.022em;
+}
+
+.headed {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.quiet {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.quiet:hover {
+  color: var(--ink);
+}
+
+.feature {
+  margin: 0;
+}
+
+.soon,
+.glimpse span {
+  background: var(--bubble);
+}
+
+.soon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 16 / 10;
+  border-radius: 18px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.todo {
+  margin-top: 14px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* Things */
+.things {
+  list-style: none;
+  padding: 0;
+  border-top: 1px solid var(--faint);
+}
+
+.things .project {
+  position: relative;
+  border-bottom: 1px solid var(--faint);
+}
+
+.things .project-row {
+  appearance: none;
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 16px 36px 16px 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.things .row-title {
+  display: block;
+  font-weight: 500;
+}
+
+.things .row-note {
+  display: block;
+  color: var(--muted);
+  transition: color 200ms ease;
+}
+
+/* A fine plus that turns into a close mark. */
+.things .project-row::before,
+.things .project-row::after {
+  content: "";
+  position: absolute;
+  top: 27px;
+  right: 2px;
+  width: 13px;
+  height: 1.25px;
+  border-radius: 1px;
+  background: var(--muted);
+  transition: rotate 420ms var(--ease), background 200ms ease;
+}
+
+.things .project-row::after {
+  rotate: 90deg;
+}
+
+.things .project.open .project-row::before {
+  rotate: 135deg;
+}
+
+.things .project.open .project-row::after {
+  rotate: 225deg;
+}
+
+@media (hover: hover) {
+  .things .project-row:hover .row-note {
+    color: var(--ink);
+  }
+
+  .things .project-row:hover::before,
+  .things .project-row:hover::after {
+    background: var(--ink);
+  }
+
+  .things .project-row:hover .row-title {
+    text-decoration: none;
+  }
+}
+
+.things .project-row:focus-visible {
+  outline: 2px solid var(--muted);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.project-detail {
+  transition-duration: 560ms;
+}
+
+.project-body {
+  padding: 2px 0 24px;
+}
+
+.project-body .project-media {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: 50% 12%;
+  margin-bottom: 14px;
+  border-radius: 14px;
+  background: var(--bubble);
+}
+
+.next {
+  margin-top: 16px;
+  color: var(--muted);
+}
+
+/* Right now */
+.plain {
+  list-style: none;
+  padding: 0;
+  color: var(--muted);
+}
+
+.plain li + li {
+  margin-top: 2px;
+}
+
+.year {
+  margin-top: 36px;
+}
+
+.tick {
+  cursor: default;
+}
+
+.tick i {
+  width: 2.5px;
+}
+
+.tip-songs,
+.tip-foot,
+.week {
+  display: none;
+}
+
+.tip {
+  letter-spacing: -0.01em;
+  width: 124px;
+}
+
+.tip-card {
+  border-radius: 9px;
+}
+
+.tip-body {
+  padding: 7px 10px;
+}
+
+.caption {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* Photos */
+.glimpse {
+  display: flex;
+  gap: 8px;
+  transition: opacity 300ms ease;
+}
+
+.glimpse span {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.glimpse img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: scale 700ms var(--ease);
+}
+
+@media (hover: hover) {
+  .glimpse:hover img {
+    scale: 1.03;
+  }
+}
+
+/* Goodbye */
+.bye p {
+  font-size: clamp(22px, 3.2vw, 26px);
+  font-weight: 600;
+  line-height: 1.22;
+  letter-spacing: -0.026em;
+}
+
+.bye span {
+  color: var(--muted);
+}
+
+/* Album */
+.album {
+  width: min(1200px, 100%);
+  height: 100dvh;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.album header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 36px 0 22px;
+}
+
+.album h1 {
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.album .frame {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+  margin: 0;
+}
+
+.album .roll,
+.album .col {
+  gap: 8px;
+}
+
+.album .cell,
+.album .ph {
+  border-radius: 10px;
+}
+
+.album .zoom {
+  border-radius: 14px;
+}
+
+@media (max-width: 560px) {
+  .note {
+    gap: 56px;
+    padding-inline: 20px;
+  }
+
+  .me {
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .in {
+    animation: none;
+  }
+}
+
+
+/* The arm: a transparent layer over the page that never catches the mouse. It reaches in from the right. */
+.arm-layer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 900ms ease;
+}
+
+.arm-layer.ready {
+  opacity: 1;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* A soft dark edge, like the noir stage */
+.veil {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  background: radial-gradient(ellipse at 50% 40%, transparent 60%, rgba(0, 0, 0, 0.45) 100%);
+}
+
+.bye p.about-arm {
+  margin-top: 32px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.47;
+  letter-spacing: -0.01em;
+  opacity: 0;
+  transition: opacity 600ms ease;
+}
+
+.bye p.about-arm.on {
+  opacity: 1;
+}
+
+/* Temporary: the switcher between site versions */
+.switch { position: fixed; z-index: 20; left: 50%; top: 10px; translate: -50% 0; display: flex; gap: 4px; padding: 6px; border-radius: 12px; background: rgba(28, 27, 25, 0.82); backdrop-filter: blur(12px); font-size: 12px; letter-spacing: 0; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4); }
+.switch a { padding: 5px 9px; border-radius: 7px; color: var(--muted); text-decoration: none; }
+.switch a:hover { color: var(--ink); }
+.switch a[aria-current="page"] { background: var(--ink); color: var(--bg); }
+
+/* Photo glimpses, anywhere */
+[data-glimpse] { display: flex; gap: 8px; }
+[data-glimpse] span { display: block; min-width: 0; overflow: hidden; border-radius: 10px; background: var(--bubble); }
+[data-glimpse] img { display: block; width: 100%; height: 100%; object-fit: cover; transition: scale 700ms var(--ease); }
+@media (hover: hover) { a[data-glimpse]:hover img { scale: 1.03; } }
+
+/* The line naming this visit's arm */
+[data-arm-name] { color: var(--muted); font-size: 13px; font-weight: 400; line-height: 1.45; letter-spacing: -0.01em; opacity: 0; transition: opacity 600ms ease; }
+[data-arm-name].on { opacity: 1; }
+[data-updated] { color: var(--muted); font-size: 13px; font-weight: 400; line-height: 1.45; letter-spacing: -0.01em; }

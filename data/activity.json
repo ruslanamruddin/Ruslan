@@ -1,0 +1,140 @@
+[
+{
+"start": "2026-03-22",
+"commits": 1,
+"repos": 1,
+"added": 1,
+"deleted": 0
+},
+{
+"start": "2026-06-14",
+"commits": 58,
+"repos": 1,
+"added": 22767,
+"deleted": 1309
+},
+{
+"start": "2026-06-28",
+"commits": 7,
+"repos": 1,
+"added": 4136,
+"deleted": 234
+},
+{
+"start": "2026-07-05",
+"commits": 54,
+"repos": 2,
+"added": 22157,
+"deleted": 4817
+},
+{
+"start": "2026-07-12",
+"commits": 2,
+"repos": 1,
+"added": 349,
+"deleted": 11
+},
+{
+"start": "2026-08-09",
+"commits": 3,
+"repos": 1,
+"added": 17277,
+"deleted": 0
+},
+{
+"start": "2026-08-16",
+"commits": 142,
+"repos": 1,
+"added": 27591,
+"deleted": 866
+},
+{
+"start": "2026-08-23",
+"commits": 87,
+"repos": 3,
+"added": 57101,
+"deleted": 2283
+},
+{
+"start": "2026-08-30",
+"commits": 8,
+"repos": 1,
+"added": 92799,
+"deleted": 16550
+},
+{
+"start": "2026-09-06",
+"commits": 3,
+"repos": 1,
+"added": 496,
+"deleted": 21
+},
+{
+"start": "2026-09-20",
+"commits": 5,
+"repos": 1,
+"added": 23657,
+"deleted": 4
+},
+{
+"start": "2026-09-27",
+"commits": 5,
+"repos": 2,
+"added": 253945,
+"deleted": 458
+},
+{
+"start": "2026-10-04",
+"commits": 39,
+"repos": 3,
+"added": 160870,
+"deleted": 4192,
+"aiDiffs": 74,
+"model": "Claude Opus 5.5 Medium"
+},
+{
+"start": "2026-10-11",
+"commits": 7,
+"repos": 2,
+"added": 1056,
+"deleted": 481,
+"aiDiffs": 44,
+"model": "Claude Opus 5.5 Medium"
+},
+{
+"start": "2026-10-18",
+"commits": 266,
+"repos": 4,
+"added": 208986,
+"deleted": 10287,
+"aiDiffs": 13,
+"model": "Claude Opus 5.5 Medium"
+},
+{
+"start": "2026-10-25",
+"commits": 280,
+"repos": 2,
+"added": 177823,
+"deleted": 7480,
+"aiDiffs": 315,
+"model": "Claude Opus 5.5 Medium"
+},
+{
+"start": "2026-11-01",
+"commits": 114,
+"repos": 3,
+"added": 56519,
+"deleted": 3019,
+"aiDiffs": 44,
+"model": "Claude Opus 5.5 Medium"
+},
+{
+"start": "2026-11-08",
+"commits": 2,
+"repos": 1,
+"added": 36,
+"deleted": 4,
+"aiDiffs": 66,
+"model": "Claude Opus 5.5 Medium"
+}
+]
