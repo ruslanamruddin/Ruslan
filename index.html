@@ -462,7 +462,7 @@
         // appears once that API says it's set up; until then the music line is just a sentence.
         (() => {
           // Local preview talks to `npm run dev` in recs-api; set the live URL here once it's deployed.
-          const RECS_API = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? "http://127.0.0.1:8787/api" : null;
+          const RECS_API = "https://song-recs-api.vercel.app/api";   // recs-api on Vercel (it also accepts localhost:4873 for previews)
           const recs = document.querySelector(".recs"), openBtn = recs.querySelector(".rec-open"), area = recs.querySelector(".rec-area"), done = recs.querySelector(".rec-done");
           const esc = (t) => String(t ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
           let songs = [], active = -1, timer = 0, ctl = null;
