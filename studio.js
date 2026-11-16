@@ -85,7 +85,7 @@ const canvas = document.getElementById("stage");
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: CFG.overlay, preserveDrawingBuffer: params.has("shot") });
 // Pixel density: capped at 1.5 (Retina at 2-3x costs 2-4x the pixels for little visible gain on a moving
 // 3D scene), then adjusted from measured frame times in frame().
-const DPR_CAP = Math.min(devicePixelRatio, 1.5);
+const DPR_CAP = Math.min(devicePixelRatio, 2);   // sharp on Retina screens; adapt() lowers it only while frames are actually slow
 let pixelRatio = DPR_CAP;
 renderer.setPixelRatio(pixelRatio);
 renderer.toneMapping = THREE.NeutralToneMapping;
@@ -789,16 +789,27 @@ function render(moved = true) {
   if ((moved || frames < 3) && !CFG.overlay) contactShadow();   // over a page the floor is off screen; the page shadow (look.js) stands in
   if (look) look.render(clock.elapsedTime, moved || frames < 3); else renderer.render(scene, camera);
 }
-// Adaptive resolution: if frames run slow, drop the pixel density a step; if there is lots of headroom, raise it.
+// Adaptive resolution: drop a step while frames are slow, climb back once they run at the screen's own rate again.
+// Climbing is tried again later after a level proves too slow, waiting longer each time, so it never flip-flops.
 let frameEma = 1 / 60, slowFor = 0, fastFor = 0, lastNow = performance.now();
+let tooSlowAt = Infinity, retryAfter = 0, backoff = 8, lastUp = -Infinity;
 function adapt() {
   const now = performance.now(), raw = (now - lastNow) / 1000;
   lastNow = now;
-  frameEma += (Math.min(raw, 0.2) - frameEma) * 0.05;
+  if (raw > 0.25) { slowFor = fastFor = 0; return; }   // a hitch (tab hidden, page loading), not a slow GPU
+  frameEma += (raw - frameEma) * 0.05;
   slowFor = frameEma > 1 / 42 ? slowFor + raw : 0;
-  fastFor = frameEma < 1 / 75 ? fastFor + raw : 0;
-  const step = slowFor > 1 && pixelRatio > 0.75 ? -0.25 : fastFor > 4 && pixelRatio < DPR_CAP ? 0.25 : 0;
-  if (step) { pixelRatio = Math.max(0.75, Math.min(DPR_CAP, pixelRatio + step)); renderer.setPixelRatio(pixelRatio); fit(); slowFor = fastFor = 0; }
+  fastFor = frameEma < 1 / 55 ? fastFor + raw : 0;   // at the screen's own rate (60 Hz or faster)
+  if (slowFor > 1.5 && pixelRatio > 0.75) {
+    if (now - lastUp < 6000) { tooSlowAt = pixelRatio; backoff = Math.min(backoff * 2, 120); }   // the last climb was too much
+    pixelRatio = Math.max(0.75, pixelRatio - 0.25);
+    retryAfter = now + backoff * 1000;
+  } else if (fastFor > 3 && pixelRatio < DPR_CAP && (pixelRatio + 0.25 < tooSlowAt || now > retryAfter)) {
+    pixelRatio = Math.min(DPR_CAP, pixelRatio + 0.25);
+    if (pixelRatio >= tooSlowAt) tooSlowAt = Infinity;
+    lastUp = now;
+  } else return;
+  renderer.setPixelRatio(pixelRatio); fit(); slowFor = fastFor = 0;
 }
 const sp = new THREE.Vector3(), st = new THREE.Vector3();
 function measure() {

@@ -297,7 +297,7 @@ export function createLook(look, ctx) {
   Object.assign(key.shadow.camera, { left: -1.2, right: 1.2, top: 1.4, bottom: -1, near: 0.5, far: 7 });
   key.shadow.camera.updateProjectionMatrix();
   renderer.shadowMap.autoUpdate = false;              // redrawn only when the arm moves (see render)
-  let composer = null, ao = null, bokeh = null, shadowDirty = true, skip = false;
+  let composer = null, ao = null, bokeh = null, shadowDirty = true;
   if (high) {
     const size = renderer.getDrawingBufferSize(new THREE.Vector2());
     const target = new THREE.WebGLRenderTarget(size.x, size.y, { type: THREE.HalfFloatType, samples: 4 });
@@ -316,17 +316,18 @@ export function createLook(look, ctx) {
     composer.addPass(finish);
   }
 
-  // The page shadow: the arm's silhouette rendered at a quarter of the screen's resolution (cheap), blurred
-  // with a proper two-pass Gaussian (smooth, no ghost copies of the fingers), then drawn first and offset down
-  // and to the right, away from the key light, so the arm sits on top of its own shadow. Only redrawn when the
-  // arm moves; all the blurring happens on the small target, so it stays cheap.
+  // The page shadow, in two layers drawn under the arm and offset down and to the right, away from the key light:
+  // a close shadow with a soft but defined edge, and a broad, faint one further out. The arm's silhouette is drawn
+  // at half the page's resolution with multisampling (smooth edges, no stair-steps); the close layer is a small
+  // Gaussian of it, the broad layer a wide Gaussian on a quarter-size copy. Only redrawn when the arm moves.
   let pageShadow = null;
   if (ctx.overlay) {
     const small = () => new THREE.WebGLRenderTarget(8, 8, { depthBuffer: false });
-    const sil = new THREE.WebGLRenderTarget(8, 8, { depthBuffer: true }), pass1 = small(), soft = small();
+    const sil = new THREE.WebGLRenderTarget(8, 8, { depthBuffer: true, samples: 4 });
+    const pass1 = small(), soft = small(), near1 = small(), near = small();   // quarter size (broad), half size (close)
     const silScene = new THREE.Scene();
     silScene.overrideMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
-    const strength = { daylight: [0.2, 0.12], studio: [0.18, 0.1], noir: [0.5, 0.2] }[look];
+    const strength = { daylight: [0.16, 0.16], studio: [0.15, 0.14], noir: [0.45, 0.24] }[look];
     const flat = new THREE.Camera(), quadScene = new THREE.Scene();
     const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2));
     quadScene.add(quad);
@@ -345,15 +346,13 @@ export function createLook(look, ctx) {
     });
     const drawMat = new THREE.ShaderMaterial({
       transparent: true, depthTest: false, depthWrite: false, toneMapped: false,
-      uniforms: { sil: { value: sil.texture }, soft: { value: soft.texture }, px: { value: new THREE.Vector2(1, 1) }, wide: { value: strength[0] }, tight: { value: strength[1] } },
+      uniforms: { near: { value: near.texture }, soft: { value: soft.texture }, px: { value: new THREE.Vector2(1, 1) }, wide: { value: strength[0] }, tight: { value: strength[1] } },
       vertexShader,
-      fragmentShader: `uniform sampler2D sil, soft; uniform vec2 px; uniform float wide, tight; varying vec2 vUv;
+      fragmentShader: `uniform sampler2D near, soft; uniform vec2 px; uniform float wide, tight; varying vec2 vUv;
         void main(){
-          // offsets in screen px: a broad soft shadow further out, and a tighter, darker one close to the arm
+          // offsets in screen px: a broad soft shadow further out, and a closer one with a defined edge
           float w = texture2D(soft, vUv + vec2(-26.0, 36.0) * px).a;
-          vec2 c = vUv + vec2(-7.0, 10.0) * px;
-          float t = 0.25 * (texture2D(sil, c + vec2(3.0, 3.0) * px).a + texture2D(sil, c + vec2(-3.0, 3.0) * px).a
-                          + texture2D(sil, c + vec2(3.0, -3.0) * px).a + texture2D(sil, c + vec2(-3.0, -3.0) * px).a);
+          float t = texture2D(near, vUv + vec2(-8.0, 11.0) * px).a;
           gl_FragColor = vec4(0.0, 0.0, 0.0, clamp(w * wide + t * tight, 0.0, 1.0));
         }`,
     });
@@ -363,8 +362,10 @@ export function createLook(look, ctx) {
     };
     pageShadow = {
       resize(w, h) {
-        const sw = Math.max(8, Math.round(w / 4)), sh = Math.max(8, Math.round(h / 4));
-        sil.setSize(sw, sh); pass1.setSize(sw, sh); soft.setSize(sw, sh);
+        const qw = Math.max(8, Math.round(w / 4)), qh = Math.max(8, Math.round(h / 4));
+        const hw = Math.max(8, Math.round(w / 2)), hh = Math.max(8, Math.round(h / 2));
+        sil.setSize(hw, hh); near1.setSize(hw, hh); near.setSize(hw, hh);
+        pass1.setSize(qw, qh); soft.setSize(qw, qh);
         drawMat.uniforms.px.value.set(1 / w, 1 / h);
       },
       update() {   // draw the silhouette (only the arm, not its floor) into the small target, then blur it
@@ -372,7 +373,8 @@ export function createLook(look, ctx) {
         silScene.add(robot);
         renderer.setClearAlpha(0);
         renderer.setRenderTarget(sil); renderer.clear(); renderer.render(silScene, camera);
-        blur(sil, pass1, 1, 0); blur(pass1, soft, 0, 1);
+        blur(sil, near1, 0.4, 0); blur(near1, near, 0, 0.4);   // close: about 3 px of softness
+        blur(sil, pass1, 2, 0); blur(pass1, soft, 0, 1);         // broad: as wide as before, from the sharper silhouette
         renderer.setRenderTarget(null);
         renderer.setClearAlpha(clearA);
         parent.add(robot);
@@ -398,7 +400,7 @@ export function createLook(look, ctx) {
     render(t, moved) {
       if (moved) renderer.shadowMap.needsUpdate = true;
       if (pageShadow && !composer) {
-        if (shadowDirty || (moved && (skip = !skip))) { pageShadow.update(); shadowDirty = false; }   // blurred, so every other frame is enough
+        if (shadowDirty || moved) { pageShadow.update(); shadowDirty = false; }   // every frame it moves, so it never trails the arm
         const auto = renderer.autoClear;
         pageShadow.draw();
         renderer.autoClear = false; renderer.render(scene, camera); renderer.autoClear = auto;

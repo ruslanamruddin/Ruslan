@@ -20,6 +20,8 @@
       :root[data-theme="light"] .veil { opacity: 0; }
       html, body { transition: background-color 450ms ease, color 450ms ease; }
       .veil { transition: opacity 450ms ease; }
+      /* Section labels in Instrument Serif italic (self-hosted, OFL: vendor/fonts/InstrumentSerif-OFL.txt) */
+      @font-face { font-family: "Instrument Serif"; font-style: italic; font-weight: 400; font-display: swap; src: url("vendor/fonts/instrument-serif-italic-latin.woff2") format("woff2"); }
       :root { --glide: cubic-bezier(0.22, 1, 0.36, 1); --shift: 0px; --sheet-left: 50vw; }
       .arm-layer.away { opacity: 0; transition: opacity 500ms ease; }
       /* Take the arm away (bottom right). It sits under the arm's layer, so the hand can wag a finger over it. */
@@ -33,7 +35,7 @@
       .who { display: flex; align-items: center; gap: 14px; margin-bottom: 36px; }
       .who .me { width: 44px; height: 44px; border-radius: 12px; margin: 0; }
       .who div { display: grid; font-size: 15px; line-height: 1.35; }
-      .who strong { font-weight: 600; color: var(--ink); }
+      .who strong { font-size: 22px; font-weight: 600; letter-spacing: -0.026em; line-height: 1.2; color: var(--ink); margin-bottom: 2px; }
       .who span { color: var(--muted); }
       .who .toggles { margin-left: auto; align-self: start; display: flex; gap: 16px; }
       .who .toggles button { all: unset; font-size: 13px; color: var(--muted); cursor: pointer; padding: 2px 0; }
@@ -41,14 +43,11 @@
       .who .toggles button:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 4px; }
       .intro p { font-size: 16px; line-height: 1.6; color: var(--ink); margin: 0 0 14px; }
       .intro a { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-decoration-color: var(--muted); text-underline-offset: 0.18em; }
-      /* the little text robot standing in for the word "robot"; it blinks now and then */
-      .bot { white-space: nowrap; }
-      .bot b { position: relative; display: inline-block; font-weight: 600; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.92em; letter-spacing: -0.08em; margin-right: -0.1em; }
-      /* an antenna on its head, with a little light that pulses */
-      .bot b::before { content: ""; position: absolute; left: 50%; top: -0.24em; width: 1.5px; height: 0.34em; translate: -50% 0; background: currentColor; border-radius: 1px; }
-      .bot b::after { content: ""; position: absolute; left: 50%; top: -0.42em; width: 0.26em; height: 0.26em; translate: -50% 0; border-radius: 50%; background: #e5484d; box-shadow: 0 0 0.35em rgba(229, 72, 77, 0.7); animation: beacon 2.4s ease-in-out infinite; }
-      @keyframes beacon { 50% { opacity: 0.35; box-shadow: none; } }
-      @media (prefers-reduced-motion: reduce) { .bot b::after { animation: none; } }
+      /* the little robot after the word "robots": a drawn head whose eyes follow the cursor and blink now and then */
+      .bot { display: inline-block; width: 1.15em; height: 1.15em; vertical-align: -0.2em; margin-left: 0.18em; overflow: visible; color: var(--ink); }
+      .bot .light { fill: #e5484d; animation: beacon 2.4s ease-in-out infinite; }
+      @keyframes beacon { 50% { opacity: 0.35; } }
+      @media (prefers-reduced-motion: reduce) { .bot .light { animation: none; } }
       .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
       .intro a:hover { text-decoration-color: currentColor; }
       .outro { margin-top: 56px; }   /* the sign-off: how to reach me, at the end of the page */
@@ -82,7 +81,7 @@
       .recs .rec-send:active { scale: 0.97; }
       .recs button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 6px; }
       .rec-done { margin: 10px 0 0; font-size: 14px; color: var(--muted); min-height: 1px; }
-      .block h2 { font-size: 14px; font-weight: 500; color: var(--muted); margin: 0 0 10px; display: flex; justify-content: space-between; }
+      .block h2 { font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-weight: 400; font-size: 26px; letter-spacing: -0.01em; line-height: 1.1; color: var(--ink); margin: 0 0 12px; display: flex; justify-content: space-between; align-items: baseline; }
       .rows { list-style: none; margin: 0; padding: 0; }
       .row { all: unset; box-sizing: border-box; width: 100%; display: grid; grid-template-columns: 1fr auto; gap: 3px 16px; align-items: baseline; padding: 11px 0; border-top: 1px solid var(--faint); cursor: pointer; transition: scale 160ms ease; }
       .row .t { font-size: 16px; font-weight: 500; color: var(--ink); transition: color 200ms ease; }
@@ -103,8 +102,44 @@
       .row:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 4px; }
       .block .year { margin-top: 4px; }
       .block .caption { font-size: 12px; margin-top: 6px; }
-      .block [data-glimpse] { height: 150px; }
-      .block [data-glimpse] span { aspect-ratio: auto !important; height: 100%; }
+      /* Photos: a strip you can scroll sideways (the wheel moves it while the cursor is on it); a click opens them all in a box */
+      .block h2 button { all: unset; cursor: pointer; font: 400 14px/1.4 -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, "Helvetica Neue", sans-serif; letter-spacing: -0.022em; color: var(--muted); }
+      .block h2 button:hover { color: var(--ink); }
+      .block h2 button:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 4px; }
+      .reel { --l: 0px; --r: 0px; display: flex; gap: 8px; height: 150px; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; overscroll-behavior-x: contain; border-radius: 10px;
+        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--l), #000 calc(100% - var(--r)), transparent 100%); mask-image: linear-gradient(to right, transparent 0, #000 var(--l), #000 calc(100% - var(--r)), transparent 100%); }
+      .reel::-webkit-scrollbar { display: none; }
+      .reel:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+      .reel button { all: unset; box-sizing: border-box; flex: none; height: 100%; border-radius: 10px; overflow: hidden; background: var(--bubble); cursor: pointer; }
+      .reel button:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+      .reel img { display: block; width: 100%; height: 100%; object-fit: cover; transition: scale 700ms var(--ease); }
+      @media (hover: hover) { .reel button:hover img { scale: 1.03; } }
+
+      /* All the photos, in a box over the page (same light paper as the project pages) */
+      .gallery { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; background: color-mix(in srgb, var(--bg) 72%, transparent); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); opacity: 0; visibility: hidden; transition: opacity 300ms ease, visibility 0s 300ms; }
+      .gallery.on { opacity: 1; visibility: visible; transition: opacity 300ms ease; }
+      .g-box { box-sizing: border-box; width: min(1180px, calc(100vw - 48px)); height: calc(100dvh - 48px); display: flex; flex-direction: column; border-radius: 22px; background: var(--sheet, #141312); box-shadow: var(--sheet-shadow); transform: scale(0.96); transform-origin: var(--ox, 50%) var(--oy, 50%); transition: transform 520ms var(--glide); }
+      .gallery.on .g-box { transform: none; }
+      .g-head { flex: none; display: flex; justify-content: space-between; align-items: baseline; padding: 22px 28px 16px; }
+      .g-head h2 { margin: 0; font-size: 16px; font-weight: 600; color: var(--ink); }
+      .g-head button { all: unset; font-size: 13px; color: var(--muted); cursor: pointer; padding: 6px 8px; margin: -6px -8px; border-radius: 8px; }
+      .g-head button:hover { color: var(--ink); }
+      .g-head button:focus-visible { outline: 2px solid var(--ink); }
+      .g-frame { position: relative; flex: 1; min-height: 0; margin: 0 28px 28px; }
+      .g-roll { height: 100%; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; display: flex; align-items: flex-start; gap: 8px; border-radius: 10px; transition: opacity 320ms ease; }
+      .g-roll::-webkit-scrollbar { display: none; }
+      .g-col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+      .g-cell { all: unset; box-sizing: border-box; display: block; width: 100%; border-radius: 10px; overflow: hidden; background: var(--bubble); }
+      button.g-cell { cursor: zoom-in; }
+      button.g-cell:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+      .g-cell img { display: block; width: 100%; height: 100%; object-fit: cover; }
+      .g-cell.origin { visibility: hidden; }
+      .g-frame.zoomed .g-roll { opacity: 0.1; }
+      .g-zoom { all: unset; position: absolute; left: 0; top: 0; z-index: 2; width: var(--w); height: var(--h); transform: translate(var(--x), var(--y)); border-radius: 12px; overflow: hidden; visibility: hidden; cursor: zoom-out; transition: transform 420ms var(--glide), width 420ms var(--glide), height 420ms var(--glide); }
+      .g-zoom.live { visibility: visible; }
+      .g-zoom.on { width: var(--to-w); height: var(--to-h); transform: translate(var(--to-x), var(--to-y)); }
+      .g-zoom img { display: block; width: 100%; height: 100%; object-fit: cover; }
+      .g-zoom:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
       .col [data-updated] { margin-top: 56px; font-size: 13px; color: var(--muted); line-height: 1.5; }
 
       /* The project page the arm brings in */
@@ -135,9 +170,12 @@
         body.open .col { transform: none; }
         .sheet { inset: 0; left: 0; border-radius: 0; z-index: 30; }
         .page .two { grid-template-columns: 1fr; }
+        .g-box { width: 100vw; height: 100dvh; border-radius: 0; }
+        .g-head { padding: 18px 16px 12px; }
+        .g-frame { margin: 0 16px 16px; }
       }
       @media (prefers-reduced-motion: reduce) {
-        .col, .page { transition: none; }
+        .col, .page, .g-box, .g-zoom, .gallery, .gallery.on { transition: none; }
       }
     </style>
     <script>
@@ -160,7 +198,7 @@
       </header>
 
       <div class="intro in" style="--i: 1">
-        <p>Hi, I'm Ruslan. I'm from the Toronto area in Canada, and I work at <a href="https://tactus.ai" target="_blank" rel="noopener noreferrer" data-arm data-arm-anchor="right">Tactus AI</a>, where we're building humanoid <span class="sr">robots</span><span class="bot" aria-hidden="true"><b>[◉▂◉]</b>s</span> for labs. I like to learn and do new things.</p>
+        <p>Hi, I'm Ruslan. I'm from the Toronto area in Canada, and I work at <a href="https://tactus.ai" target="_blank" rel="noopener noreferrer" data-arm data-arm-anchor="right">Tactus AI</a>, where we're building humanoid robots<svg class="bot" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="1.5" x2="12" y2="6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /><circle class="light" cx="12" cy="2" r="1.9" /><rect x="3" y="6" width="18" height="15" rx="4.5" fill="none" stroke="currentColor" stroke-width="1.8" /><circle class="eye" cx="8.6" cy="13.3" r="2.1" fill="currentColor" /><circle class="eye" cx="15.4" cy="13.3" r="2.1" fill="currentColor" /><line x1="9.5" y1="17.6" x2="14.5" y2="17.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg> for labs. I like to learn and do new things.</p>
       </div>
 
       <section class="recs in" style="--i: 2" aria-label="Recommend me a song">
@@ -204,8 +242,8 @@
       </section>
 
       <section class="block in" style="--i: 4">
-        <h2>From my phone <a class="quiet" href="site-photos.html">All photos</a></h2>
-        <a data-glimpse="3" href="site-photos.html" aria-label="See all photos" data-arm data-arm-pose="primed" data-arm-grip="pinch" data-arm-anchor="right"></a>
+        <h2>From my phone <button class="reel-all" type="button" aria-controls="gallery">All photos</button></h2>
+        <div class="reel" id="reel" role="group" aria-label="Photos. Scroll sideways for more, or open one to see them all" data-arm data-arm-pose="primed" data-arm-grip="pinch" data-arm-anchor="right"></div>
       </section>
 
       <div class="intro outro in" style="--i: 5">
@@ -221,6 +259,14 @@
       <button class="close" type="button">Close <span aria-hidden="true">· Esc</span></button>
       <div class="sheet-inner"><article class="page" id="page"></article></div>
     </aside>
+
+    <!-- All the photos, opened over the page from the strip -->
+    <div class="gallery" id="gallery" role="dialog" aria-modal="true" aria-label="Photos from my phone" inert>
+      <div class="g-box">
+        <div class="g-head"><h2>From my phone</h2><button class="g-close" type="button">Close <span aria-hidden="true">· Esc</span></button></div>
+        <div class="g-frame"><div class="g-roll"></div><button class="g-zoom" type="button" aria-label="Close photo"><img alt="" /></button></div>
+      </div>
+    </div>
 
     <!-- The project pages. Gold text and dashed boxes are placeholders for Ruslan's own words and photos. -->
     <template id="p-slidetrainer">
@@ -443,7 +489,7 @@
         // Clicking anywhere outside the open page (the column, or the space around it) closes it too, except on
         // things that do their own job when clicked (links, buttons, the year strip, photos) or after selecting text.
         document.addEventListener("click", (e) => {
-          if (!want || sheet.contains(e.target) || e.target.closest("a, button, input, .recs, .activity, [data-glimpse]")) return;
+          if (!want || sheet.contains(e.target) || e.target.closest("a, button, input, .recs, .activity, .reel, .gallery")) return;
           if (String(getSelection()).trim()) return;
           sound?.click(); go(null);
         });
@@ -452,9 +498,15 @@
         const paint = () => { soundBtn.textContent = sound?.on ? "Sound on" : "Sound off"; soundBtn.setAttribute("aria-pressed", String(Boolean(sound?.on))); };
         soundBtn.addEventListener("click", () => { sound?.toggle(); paint(); sound?.click(); });
         paint();
-        // The text robot blinks every few seconds.
-        const bot = document.querySelector(".bot b");
-        if (bot && !calm) (function blink() { setTimeout(() => { bot.textContent = "[–▂–]"; setTimeout(() => { bot.textContent = "[◉▂◉]"; blink(); }, 140); }, 2600 + Math.random() * 3200); })();
+        // The little robot's eyes look toward the cursor and blink every few seconds.
+        const bot = document.querySelector(".bot"), eyes = bot ? [...bot.querySelectorAll(".eye")] : [];
+        if (eyes.length && !calm) {
+          addEventListener("pointermove", (e) => {
+            const r = bot.getBoundingClientRect(), dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2), d = Math.hypot(dx, dy) || 1, m = Math.min(1.3, d / 40);
+            eyes.forEach((el) => el.setAttribute("transform", `translate(${((dx / d) * m).toFixed(2)} ${((dy / d) * m).toFixed(2)})`));
+          }, { passive: true });
+          (function blink() { setTimeout(() => { eyes.forEach((el) => el.setAttribute("r", "0.3")); setTimeout(() => { eyes.forEach((el) => el.setAttribute("r", "2.1")); blink(); }, 130); }, 2600 + Math.random() * 3200); })();
+        }
 
 
         // Recommend me a song (quiet link). Search and sending go through the song recs API (recs-api/), which
@@ -548,6 +600,181 @@
             recs.querySelector(".rec-cta").hidden = false;
             if (c.playlistUrl) { const pl = recs.querySelector(".rec-pl"); pl.querySelector("a").href = c.playlistUrl; pl.hidden = false; }
           }).catch(() => {});
+        })();
+
+        // Photos. The strip holds every photo (shuffled each visit; grey tiles stand in until the real ones arrive).
+        // With the cursor on it the wheel moves the strip sideways, and the arm swipes it along like a touch screen.
+        // A click opens all of them in a box over the page; a photo in there grows to fill the box.
+        (() => {
+          const reel = document.getElementById("reel"), gallery = document.getElementById("gallery"), box = gallery.querySelector(".g-box");
+          const gFrame = gallery.querySelector(".g-frame"), roll = gallery.querySelector(".g-roll"), zoom = gallery.querySelector(".g-zoom"), zoomImg = zoom.querySelector("img");
+          let photos = [], isOpen = false;
+
+          // --- the strip
+          const edges = () => {
+            const max = reel.scrollWidth - reel.clientWidth, x = reel.scrollLeft;
+            reel.style.setProperty("--l", `${clamp(x, 0, 28)}px`);
+            reel.style.setProperty("--r", `${clamp(max - x, 0, 28)}px`);
+          };
+          window.sitePhotos.then((all) => {
+            photos = all;
+            reel.replaceChildren(...all.map((p, i) => {
+              const b = Object.assign(document.createElement("button"), { type: "button" });
+              b.style.aspectRatio = `${p.w} / ${p.h}`;
+              b.dataset.i = i;
+              b.setAttribute("aria-label", p.alt ? `${p.alt}. See all photos` : "See all photos");
+              if (p.src) b.append(Object.assign(document.createElement("img"), { src: p.src, alt: "", loading: "lazy", draggable: false }));
+              return b;
+            }));
+            edges();
+          });
+          addEventListener("resize", edges);
+
+          // The wheel moves the strip, but only for a scroll that starts on it: a page scroll that happens to pass
+          // under the cursor carries on, and so does a new scroll once the strip is at its end.
+          let goal = null, pos = 0, gliding = false, lastOwn = -1e9, lastPage = -1e9;
+          addEventListener("wheel", (e) => { if (!reel.contains(e.target)) lastPage = performance.now(); }, { passive: true, capture: true });
+          reel.addEventListener("wheel", (e) => {
+            const now = performance.now(), max = reel.scrollWidth - reel.clientWidth;
+            if (e.ctrlKey || max <= 0) return;
+            if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { lastOwn = now; return; }   // a sideways swipe scrolls it natively
+            const owned = now - lastOwn < 220;
+            if (!owned && now - lastPage < 220) { lastPage = now; return; }
+            const d = e.deltaY * (e.deltaMode === 1 ? 32 : e.deltaMode === 2 ? reel.clientWidth : 1), at = goal ?? reel.scrollLeft;
+            if (!owned && ((d > 0 && at >= max - 1) || (d < 0 && at <= 1))) { lastPage = now; return; }
+            e.preventDefault();
+            lastOwn = now;
+            goal = clamp(at + d, 0, max);
+            if (calm) { reel.scrollLeft = goal; goal = null; return; }
+            if (!gliding) { gliding = true; pos = reel.scrollLeft; requestAnimationFrame(glide); }
+          }, { passive: false });
+          function glide() {
+            if (goal === null) { gliding = false; return; }
+            pos += (goal - pos) * 0.2;
+            if (Math.abs(goal - pos) < 0.5) { reel.scrollLeft = goal; goal = null; gliding = false; return; }
+            reel.scrollLeft = pos;
+            requestAnimationFrame(glide);
+          }
+
+          // The swipe: while the strip is moving, the finger drags across it the way the photos go, lifts,
+          // comes back and drags again. It stops a moment after the strip does.
+          let swiping = false, dir = 1, phase = 0, lastMove = 0, lastLeft = 0, prev = 0;
+          const canSwipe = () => hasArm() && !want && !running && !isOpen && !window.armLocked;
+          reel.addEventListener("scroll", () => {
+            const x = reel.scrollLeft, d = x - lastLeft;
+            lastLeft = x; edges();
+            if (!d) return;
+            dir = Math.sign(d); lastMove = performance.now();
+            if (!swiping && canSwipe()) { swiping = true; window.armLocked = true; phase = 0; prev = lastMove; requestAnimationFrame(swipe); }
+          }, { passive: true });
+          function swipe() {
+            if (want || running || isOpen || !hasArm()) { swiping = false; return; }   // something else is driving the arm now
+            const now = performance.now(), moving = now - lastMove < 170;
+            phase += Math.min(50, now - prev) / 1000; prev = now;
+            if (!moving && phase >= 0.55) {                                             // let the drag finish, then hand back
+              swiping = false; window.armLocked = false;
+              reel.matches(":hover") ? window.armAimAt(reel) : window.arm.release();
+              return;
+            }
+            phase %= 1;
+            // One hand shape and one finger angle throughout (finger up, touching the strip from below), so the
+            // arm only slides sideways: across on the drag, then back a little lower, as if lifted off.
+            const r = reel.getBoundingClientRect(), cx = r.right - 120, half = 72, y0 = r.top + r.height * 0.6, hand = { pose: "point", pitch: 62 };
+            if (phase < 0.55) { const k = ease(phase / 0.55); window.arm.pointAt(cx + dir * half * (1 - 2 * k), y0, hand); }
+            else { const k = ease((phase - 0.55) / 0.45); window.arm.pointAt(cx - dir * half * (1 - 2 * k), y0 + 22 * Math.sin(Math.PI * k), hand); }
+            requestAnimationFrame(swipe);
+          }
+
+          // --- the box
+          const ZOOM_MS = calm ? 0 : 420;
+          let cols = 0, zoomed = null, settle = null, opener = null;
+          function layout(force) {
+            const n = clamp(Math.round(gFrame.clientWidth / 230), 2, 6);
+            if (!photos.length || (!force && n === cols)) return;
+            cols = n;
+            const stacks = Array.from({ length: n }, () => ({ el: Object.assign(document.createElement("div"), { className: "g-col" }), h: 0 }));
+            photos.forEach((p, i) => {
+              const shortest = stacks.reduce((a, b) => (b.h < a.h ? b : a));
+              const cell = document.createElement(p.src ? "button" : "div");
+              cell.className = "g-cell"; cell.dataset.i = i;
+              cell.style.aspectRatio = `${p.w} / ${p.h}`;
+              if (p.src) {
+                cell.type = "button"; cell.dataset.ratio = p.w / p.h;
+                cell.setAttribute("aria-label", p.alt ? `${p.alt}. Enlarge` : "Enlarge photo");
+                cell.append(Object.assign(document.createElement("img"), { src: p.src, alt: "", loading: "lazy" }));
+              }
+              shortest.el.append(cell);
+              shortest.h += p.h / p.w;
+            });
+            roll.replaceChildren(...stacks.map((c) => c.el));
+          }
+          const pin = (cell) => {
+            const o = gFrame.getBoundingClientRect(), r = cell.getBoundingClientRect();
+            for (const [k, v] of [["--x", r.left - o.left], ["--y", r.top - o.top], ["--w", r.width], ["--h", r.height]]) zoom.style.setProperty(k, `${v}px`);
+          };
+          const aimZoom = (cell) => {   // as large as fits in the box, the whole photo showing
+            const W = gFrame.clientWidth, H = gFrame.clientHeight, ratio = Number(cell.dataset.ratio), w = Math.min(W, H * ratio), h = w / ratio;
+            for (const [k, v] of [["--to-x", (W - w) / 2], ["--to-y", (H - h) / 2], ["--to-w", w], ["--to-h", h]]) zoom.style.setProperty(k, `${v}px`);
+          };
+          function settled() { if (!settle) return; clearTimeout(settle.timer); settle.cell.classList.remove("origin"); zoom.classList.remove("live"); settle = null; }
+          function zoomIn(cell) {
+            settled();
+            const img = cell.querySelector("img");
+            zoomImg.src = img.currentSrc || img.src; zoomImg.alt = photos[+cell.dataset.i]?.alt ?? "";
+            pin(cell); aimZoom(cell);
+            zoom.classList.add("live"); cell.classList.add("origin");
+            zoom.getBoundingClientRect();   // lock in the starting size before it grows
+            zoom.classList.add("on"); gFrame.classList.add("zoomed");
+            zoomed = cell; sound?.click();
+            zoom.focus({ preventScroll: true });
+          }
+          function zoomOut(quiet) {
+            const cell = zoomed;
+            if (!cell) return;
+            zoomed = null; pin(cell);
+            zoom.classList.remove("on"); gFrame.classList.remove("zoomed");
+            if (!quiet) { sound?.tick(); cell.focus({ preventScroll: true }); }
+            settle = { cell, timer: setTimeout(settled, ZOOM_MS) };
+          }
+          gFrame.addEventListener("click", (e) => {
+            if (zoomed) return zoomOut();   // a click anywhere beside an enlarged photo puts it back
+            const cell = e.target.closest("button.g-cell");
+            if (cell) zoomIn(cell);
+          });
+
+          function openBox(from, i) {
+            if (isOpen) return;
+            isOpen = true; opener = from;
+            const r = reel.getBoundingClientRect();   // it grows out of the strip
+            box.style.setProperty("--ox", `${r.left + r.width / 2 - box.offsetLeft}px`);
+            box.style.setProperty("--oy", `${clamp(r.top + r.height / 2, 0, innerHeight) - box.offsetTop}px`);
+            gallery.inert = false; gallery.classList.add("on");
+            layout(true);
+            roll.scrollTop = 0;
+            if (i > 0) roll.querySelector(`[data-i="${i}"]`)?.scrollIntoView({ block: "center" });
+            sound?.dock();
+            if (window.arm && !root.classList.contains("no-arm")) { window.armLocked = true; window.arm.pointAt(innerWidth * 1.8, innerHeight * 0.55, { pose: "relaxed" }); }   // the arm steps out of the way
+            gallery.querySelector(".g-close").focus({ preventScroll: true });
+          }
+          function closeBox() {
+            if (!isOpen) return;
+            isOpen = false;
+            zoomOut(true); settled();
+            gallery.classList.remove("on"); gallery.inert = true;
+            sound?.click();
+            if (window.arm && !want && !running && !root.classList.contains("no-arm")) { window.armLocked = false; window.arm.release(); }   // (a project page still open keeps it away)
+            opener?.focus({ preventScroll: true });
+          }
+          reel.addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) { sound?.click(); openBox(b, +b.dataset.i); } });
+          document.querySelector(".reel-all").addEventListener("click", (e) => { sound?.click(); openBox(e.currentTarget, 0); });
+          gallery.querySelector(".g-close").addEventListener("click", closeBox);
+          gallery.addEventListener("click", (e) => { if (e.target === gallery) closeBox(); });   // the space around the box
+          addEventListener("keydown", (e) => {
+            if (e.key !== "Escape" || !isOpen) return;
+            e.stopPropagation();   // not the project page behind it
+            zoomed ? zoomOut() : closeBox();
+          }, true);
+          addEventListener("resize", () => { if (!isOpen) return; layout(); if (zoomed) aimZoom(zoomed); });
         })();
 
         // Remove the robot arm (bottom right). Hover it and the hand wags a finger: "no no". Take it away anyway
