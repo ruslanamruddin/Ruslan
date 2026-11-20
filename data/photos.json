@@ -3,106 +3,217 @@
 "src": "images/photos/cat.jpg",
 "w": 640,
 "h": 597,
-"alt": "A cat lying on a chair in purple light"
+"alt": "A cat lying on a chair in purple light",
+"thumb": "images/photos/sm/cat.jpg"
 },
 {
-"w": 9,
-"h": 16
+"src": "images/photos/2524.jpg",
+"w": 2880,
+"h": 3643,
+"alt": "A round moon gate opening onto a Chinese garden",
+"thumb": "images/photos/sm/2524.jpg"
 },
 {
-"w": 1,
-"h": 1
+"src": "images/photos/2533.jpg",
+"w": 4284,
+"h": 5712,
+"alt": "A red lamppost and a Chinese gate over a city street",
+"thumb": "images/photos/sm/2533.jpg"
 },
 {
-"w": 2,
-"h": 3
+"src": "images/photos/2713.jpg",
+"w": 3896,
+"h": 2389,
+"alt": "Ships at anchor on a calm bay below mountains",
+"thumb": "images/photos/sm/2713.jpg"
 },
 {
-"w": 4,
-"h": 5
+"src": "images/photos/2717.jpg",
+"w": 5712,
+"h": 4284,
+"alt": "A gull over the beach at sunrise, ships on the water",
+"thumb": "images/photos/sm/2717.jpg"
 },
 {
-"w": 3,
-"h": 4
+"src": "images/photos/2753.jpg",
+"w": 2802,
+"h": 2451,
+"alt": "Looking out over a lake between forested mountains",
+"thumb": "images/photos/sm/2753.jpg"
 },
 {
-"w": 3,
-"h": 4
+"src": "images/photos/2806.jpg",
+"w": 5712,
+"h": 4284,
+"alt": "A stack of stones on driftwood by the sea",
+"thumb": "images/photos/sm/2806.jpg"
 },
 {
-"w": 9,
-"h": 16
+"src": "images/photos/2833.jpg",
+"w": 5712,
+"h": 4284,
+"alt": "A harbour and container port seen from high up",
+"thumb": "images/photos/sm/2833.jpg"
 },
 {
-"w": 4,
-"h": 5
+"src": "images/photos/3242.jpg",
+"w": 5712,
+"h": 4284,
+"alt": "A farmhouse across a green field at dusk",
+"thumb": "images/photos/sm/3242.jpg"
 },
 {
-"w": 4,
-"h": 3
+"src": "images/photos/3306.jpg",
+"w": 3024,
+"h": 1967,
+"alt": "A beaver swimming in clear water",
+"thumb": "images/photos/sm/3306.jpg"
 },
 {
-"w": 4,
-"h": 5
+"src": "images/photos/3518.jpg",
+"w": 4032,
+"h": 3024,
+"alt": "Two paddleboarders on the water at sunset",
+"thumb": "images/photos/sm/3518.jpg"
 },
 {
-"w": 3,
-"h": 4
+"src": "images/photos/3599.jpg",
+"w": 3024,
+"h": 4032,
+"alt": "A figure in a narrow beam of light in a dark stone hall",
+"thumb": "images/photos/sm/3599.jpg"
 },
 {
-"w": 2,
-"h": 3
+"src": "images/photos/3613.jpg",
+"w": 1008,
+"h": 756,
+"alt": "Bare trees in a snowy park",
+"thumb": "images/photos/sm/3613.jpg"
 },
 {
-"w": 2,
-"h": 3
+"src": "images/photos/3684.jpg",
+"w": 5135,
+"h": 3851,
+"alt": "A cat asleep on a rock by a lake",
+"thumb": "images/photos/sm/3684.jpg"
 },
 {
-"w": 3,
-"h": 4
+"src": "images/photos/3731.jpg",
+"w": 2073,
+"h": 1132,
+"alt": "Gulls against a grey sky",
+"thumb": "images/photos/sm/3731.jpg"
 },
 {
-"w": 4,
-"h": 3
+"src": "images/photos/4105.jpg",
+"w": 5712,
+"h": 4284,
+"alt": "Sailboats on a still lake at sunset",
+"thumb": "images/photos/sm/4105.jpg"
 },
 {
-"w": 3,
-"h": 4
+"src": "images/photos/4166.jpg",
+"w": 3024,
+"h": 4032,
+"alt": "Standing on a bridge in a Chinese garden",
+"thumb": "images/photos/sm/4166.jpg"
 },
 {
-"w": 2,
-"h": 3
+"src": "images/photos/4375.jpg",
+"w": 3024,
+"h": 4032,
+"alt": "A gold statue and a domed building at night",
+"thumb": "images/photos/sm/4375.jpg"
 },
 {
-"w": 4,
-"h": 5
+"src": "images/photos/4872.jpg",
+"w": 5712,
+"h": 4284,
+"alt": "A frozen shoreline at sunset",
+"thumb": "images/photos/sm/4872.jpg"
 },
 {
-"w": 3,
-"h": 4
+"src": "images/photos/5176.jpg",
+"w": 2830,
+"h": 3774,
+"alt": "A calm lake under a pale evening sky",
+"thumb": "images/photos/sm/5176.jpg"
 },
 {
-"w": 4,
-"h": 3
+"src": "images/photos/5907.jpg",
+"w": 3018,
+"h": 4486,
+"alt": "A watercolour of pink orchids in a pot",
+"thumb": "images/photos/sm/5907.jpg"
 },
 {
-"w": 4,
-"h": 5
+"src": "images/photos/5967.jpg",
+"w": 1437,
+"h": 2048,
+"alt": "A horse-and-rider statue against the sun",
+"thumb": "images/photos/sm/5967.jpg"
 },
 {
-"w": 2,
-"h": 3
+"src": "images/photos/6168.jpg",
+"w": 4284,
+"h": 5712,
+"alt": "Sea cliffs and waves under big clouds",
+"thumb": "images/photos/sm/6168.jpg"
 },
 {
-"w": 4,
-"h": 5
+"src": "images/photos/6267.jpg",
+"w": 3024,
+"h": 4032,
+"alt": "Cormorants crowded on a rock above the sea",
+"thumb": "images/photos/sm/6267.jpg"
 },
 {
-"w": 4,
-"h": 3
+"src": "images/photos/6382.jpg",
+"w": 983,
+"h": 798,
+"alt": "Wildfire smoke rising over dry hills",
+"thumb": "images/photos/sm/6382.jpg"
 },
 {
-"w": 4,
-"h": 5
+"src": "images/photos/sam-5419.jpg",
+"w": 3072,
+"h": 4608,
+"alt": "An orange cat napping beside a car",
+"thumb": "images/photos/sm/sam-5419.jpg"
+},
+{
+"src": "images/photos/sam-5494.jpg",
+"w": 3072,
+"h": 4608,
+"alt": "Walking into the surf at the beach",
+"thumb": "images/photos/sm/sam-5494.jpg"
+},
+{
+"src": "images/photos/sam-5513.jpg",
+"w": 3072,
+"h": 4608,
+"alt": "Dry coastal hills above the sea in soft light",
+"thumb": "images/photos/sm/sam-5513.jpg"
+},
+{
+"src": "images/photos/sam-5630.jpg",
+"w": 3072,
+"h": 4608,
+"alt": "Sandstone cliffs and surf at golden hour",
+"thumb": "images/photos/sm/sam-5630.jpg"
+},
+{
+"src": "images/photos/sam-5928.jpg",
+"w": 3072,
+"h": 4608,
+"alt": "Sea lions on the rocks in the evening",
+"thumb": "images/photos/sm/sam-5928.jpg"
+},
+{
+"src": "images/photos/sam-6228.jpg",
+"w": 1531,
+"h": 551,
+"alt": "Dolphins swimming in open water",
+"thumb": "images/photos/sm/sam-6228.jpg"
 }
 ]

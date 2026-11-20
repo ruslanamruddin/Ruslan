@@ -128,8 +128,8 @@
       .g-frame { position: relative; flex: 1; min-height: 0; margin: 0 28px 28px; }
       .g-roll { height: 100%; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; display: flex; align-items: flex-start; gap: 8px; border-radius: 10px; transition: opacity 320ms ease; }
       .g-roll::-webkit-scrollbar { display: none; }
-      .g-col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
-      .g-cell { all: unset; box-sizing: border-box; display: block; width: 100%; border-radius: 10px; overflow: hidden; background: var(--bubble); }
+      .g-sheet { position: relative; width: 100%; flex: none; }
+      .g-cell { all: unset; box-sizing: border-box; display: block; position: absolute; border-radius: 10px; overflow: hidden; background: var(--bubble); }
       button.g-cell { cursor: zoom-in; }
       button.g-cell:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
       .g-cell img { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -198,7 +198,7 @@
       </header>
 
       <div class="intro in" style="--i: 1">
-        <p>Hi, I'm Ruslan. I'm from the Toronto area in Canada, and I work at <a href="https://tactus.ai" target="_blank" rel="noopener noreferrer" data-arm data-arm-anchor="right">Tactus AI</a>, where we're building humanoid robots<svg class="bot" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="1.5" x2="12" y2="6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /><circle class="light" cx="12" cy="2" r="1.9" /><rect x="3" y="6" width="18" height="15" rx="4.5" fill="none" stroke="currentColor" stroke-width="1.8" /><circle class="eye" cx="8.6" cy="13.3" r="2.1" fill="currentColor" /><circle class="eye" cx="15.4" cy="13.3" r="2.1" fill="currentColor" /><line x1="9.5" y1="17.6" x2="14.5" y2="17.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg> for labs. I like to learn and do new things.</p>
+        <p>Hi, I'm Ruslan. I'm from Toronto 🍁, and I work at <a href="https://tactus.ai" target="_blank" rel="noopener noreferrer" data-arm data-arm-anchor="right">Tactus AI</a>, where we're building humanoid robots<svg class="bot" viewBox="0 0 24 24" aria-hidden="true"><line x1="12" y1="1.5" x2="12" y2="6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /><circle class="light" cx="12" cy="2" r="1.9" /><rect x="3" y="6" width="18" height="15" rx="4.5" fill="none" stroke="currentColor" stroke-width="1.8" /><circle class="eye" cx="8.6" cy="13.3" r="2.1" fill="currentColor" /><circle class="eye" cx="15.4" cy="13.3" r="2.1" fill="currentColor" /><line x1="9.5" y1="17.6" x2="14.5" y2="17.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg> for labs. I like to learn and do new things.</p>
       </div>
 
       <section class="recs in" style="--i: 2" aria-label="Recommend me a song">
@@ -311,6 +311,18 @@
     <script src="arm-page.js"></script>
     <script>
       (() => {
+        // On the live site (not this Mac's preview) nothing unfinished shows: empty screenshot boxes are left out of every
+        // project page, and a project whose page still has fill-in text is listed without opening.
+        if (!/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) && location.protocol !== "file:") {
+          for (const t of document.querySelectorAll('template[id^="p-"]')) {
+            t.content.querySelectorAll(".slot").forEach((el) => el.remove());
+            t.content.querySelectorAll(".two").forEach((el) => { if (!el.children.length) el.remove(); });
+            if (t.content.querySelector(".todo")) {
+              const row = document.querySelector(`.row[data-key="${t.id.slice(2)}"]`);
+              if (row) { const plain = Object.assign(document.createElement("div"), { className: "row" }); plain.append(...row.childNodes); row.replaceWith(plain); }
+            }
+          }
+        }
         const stage = document.getElementById("stage"), root = document.documentElement, col = document.getElementById("col"), sheet = document.getElementById("sheet"), page = document.getElementById("page");
         const rows = [...document.querySelectorAll(".row[data-key]")], keys = rows.map((r) => r.dataset.key);
         const closeBtn = sheet.querySelector(".close"), soundBtn = document.querySelector(".sound");
@@ -623,7 +635,7 @@
               b.style.aspectRatio = `${p.w} / ${p.h}`;
               b.dataset.i = i;
               b.setAttribute("aria-label", p.alt ? `${p.alt}. See all photos` : "See all photos");
-              if (p.src) b.append(Object.assign(document.createElement("img"), { src: p.src, alt: "", loading: "lazy", draggable: false }));
+              if (p.src) b.append(Object.assign(document.createElement("img"), { src: p.thumb ?? p.src, alt: "", loading: "lazy", decoding: "async", draggable: false }));
               return b;
             }));
             edges();
@@ -688,25 +700,81 @@
           // --- the box
           const ZOOM_MS = calm ? 0 : 420;
           let cols = 0, zoomed = null, settle = null, opener = null;
+          // A tight collage: photos of many sizes, packed edge to edge with one even 8px seam, no holes, and no straight
+          // line running across the box (so no columns and no rows). How: a fine grid of small squares. The next photo
+          // always goes in the first empty square (top to bottom, left to right), as wide as it wants or as the empty run
+          // there allows, its height following its shape. Placed that way nothing can ever be left empty above or to the
+          // left of the next photo, so there are no holes; at the bottom the photos that stick out are trimmed to one
+          // straight edge. Several tries from the same seed: the one with the least cropping and no tiny photos wins.
+          // A click shows the whole photo. Order and sizes are new each time the box opens; a resize keeps them.
+          let seed = 1, laidW = 0;
+          const rng = (n) => () => { n = (n + 0x6d2b79f5) | 0; let t = Math.imul(n ^ (n >>> 15), 1 | n); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+          function pack(W, R) {
+            const gap = 8, C = clamp(Math.round(W / 46), 6, 26), u = (W - (C - 1) * gap) / C;
+            const grid = [], row = (r) => (grid[r] ??= new Array(C).fill(-1));
+            const lo = Math.max(2, Math.round(C * (W < 500 ? 0.3 : 0.16))), hi = Math.max(lo + 1, Math.round(C * (W < 500 ? 0.62 : 0.38)));
+            const order = photos.map((p, i) => i).sort(() => R() - 0.5), tiles = [];
+            let r = 0, c = 0;
+            const next = () => { for (;; r++, c = 0) { const g = row(r); while (c < C && g[c] !== -1) c++; if (c < C) return; } };
+            // Does an edge at column x carry on a seam from the row above? (Then it would start to read as a column.)
+            const seamAbove = (x) => r > 0 && x > 0 && x < C && row(r - 1)[x - 1] !== row(r - 1)[x];
+            for (const i of order) {
+              next();
+              let run = 0; while (c + run < C && row(r)[c + run] === -1) run++;
+              const ratio = photos[i].w / photos[i].h, want = Math.min(C, lo + Math.floor(R() * (hi - lo + 1)) + (ratio > 1.25 ? 1 : 0));
+              // Widths near the wish, the whole run when what would be left beside is a sliver; prefer one whose right
+              // edge does not line up with an edge above.
+              const opts = [];
+              for (let w = Math.max(1, want - 2); w <= Math.min(run, want + 2); w++) if (run - w === 0 || run - w >= lo) opts.push(w);
+              if (!opts.length) opts.push(run);
+              const good = opts.filter((w) => !seamAbove(c + w));
+              const pick = (good.length ? good : opts).sort((a, b) => Math.abs(a - want) - Math.abs(b - want) || R() - 0.5)[0];
+              const w = pick, h = Math.max(1, Math.round((w * (u + gap) - gap) / ratio / (u + gap)));
+              for (let y = r; y < r + h; y++) for (let x = c; x < c + w; x++) row(y)[x] = tiles.length;
+              tiles.push({ i, r, c, w, h });
+            }
+            next();   // every square above row r is filled: the bottom is trimmed straight at row r
+            const full = r;
+            const lost = tiles.filter((t) => t.r >= full).length;   // a photo that would start below the edge: this try is not used
+            for (const t of tiles) if (t.r + t.h > full) t.h = Math.max(1, full - t.r);
+            const fit = (t) => { const a = (t.w * (u + gap) - gap) / (t.h * (u + gap) - gap), b = photos[t.i].w / photos[t.i].h; return Math.max(a / b, b / a); };
+            const crop = Math.max(...tiles.map(fit)), tiny = tiles.filter((t) => t.w < lo || t.h < 2).length;
+            // The longest straight seam, down and across, as a share of the box: long ones read as columns or rows.
+            const g = Array.from({ length: full }, () => new Array(C).fill(-1));
+            tiles.forEach((t, k) => { for (let y = t.r; y < Math.min(t.r + t.h, full); y++) for (let x = t.c; x < t.c + t.w; x++) g[y][x] = k; });
+            let down = 0, across = 0;
+            for (let x = 1; x < C; x++) { let n = 0; for (let y = 0; y < full; y++) { n = g[y][x - 1] !== g[y][x] ? n + 1 : 0; down = Math.max(down, n); } }
+            for (let y = 1; y < full; y++) { let n = 0; for (let x = 0; x < C; x++) { n = g[y - 1][x] !== g[y][x] ? n + 1 : 0; across = Math.max(across, n); } }
+            const lines = Math.max(down * (u + gap) / Math.min(full * (u + gap), 900), across / C);
+            const px = (n) => n * (u + gap);
+            return { crop, tiny, lost, lines, tiles: tiles.map((t) => ({ i: t.i, x: px(t.c), y: px(t.r), w: t.w * u + (t.w - 1) * gap, h: t.h * u + (t.h - 1) * gap })), height: full * u + (full - 1) * gap };
+          }
           function layout(force) {
-            const n = clamp(Math.round(gFrame.clientWidth / 230), 2, 6);
-            if (!photos.length || (!force && n === cols)) return;
-            cols = n;
-            const stacks = Array.from({ length: n }, () => ({ el: Object.assign(document.createElement("div"), { className: "g-col" }), h: 0 }));
-            photos.forEach((p, i) => {
-              const shortest = stacks.reduce((a, b) => (b.h < a.h ? b : a));
-              const cell = document.createElement(p.src ? "button" : "div");
-              cell.className = "g-cell"; cell.dataset.i = i;
-              cell.style.aspectRatio = `${p.w} / ${p.h}`;
+            const W = gFrame.clientWidth;
+            if (!photos.length || (!force && Math.abs(W - laidW) < 2)) return;
+            laidW = W;
+            const R = rng(seed);
+            let best = null;
+            for (let k = 0; k < 200; k++) {
+              const t = pack(W, R), score = t.lost * 1000 + t.tiny * 3 + t.crop * 2 + t.lines * 6;
+              if (!best || score < best.score) best = { ...t, score };
+            }
+            const { tiles, height } = best;
+            const cells = tiles.map((r) => {
+              const p = photos[r.i], cell = document.createElement(p.src ? "button" : "div");
+              cell.className = "g-cell"; cell.dataset.i = r.i;
+              Object.assign(cell.style, { left: `${r.x}px`, top: `${r.y}px`, width: `${r.w}px`, height: `${r.h}px` });
               if (p.src) {
                 cell.type = "button"; cell.dataset.ratio = p.w / p.h;
                 cell.setAttribute("aria-label", p.alt ? `${p.alt}. Enlarge` : "Enlarge photo");
-                cell.append(Object.assign(document.createElement("img"), { src: p.src, alt: "", loading: "lazy" }));
+                cell.append(Object.assign(document.createElement("img"), { src: p.thumb ?? p.src, alt: "", loading: "lazy", decoding: "async" }));
               }
-              shortest.el.append(cell);
-              shortest.h += p.h / p.w;
+              return cell;
             });
-            roll.replaceChildren(...stacks.map((c) => c.el));
+            const sheet = Object.assign(document.createElement("div"), { className: "g-sheet" });
+            sheet.style.height = `${height}px`;
+            sheet.append(...cells);
+            roll.replaceChildren(sheet);
           }
           const pin = (cell) => {
             const o = gFrame.getBoundingClientRect(), r = cell.getBoundingClientRect();
@@ -720,7 +788,9 @@
           function zoomIn(cell) {
             settled();
             const img = cell.querySelector("img");
+            const full = photos[+cell.dataset.i]?.src;   // the small copy shows at once, the full-size photo replaces it when it has loaded
             zoomImg.src = img.currentSrc || img.src; zoomImg.alt = photos[+cell.dataset.i]?.alt ?? "";
+            if (full && !zoomImg.src.endsWith(full)) { const big = new Image(); big.onload = () => { if (zoomed === cell) zoomImg.src = full; }; big.src = full; }
             pin(cell); aimZoom(cell);
             zoom.classList.add("live"); cell.classList.add("origin");
             zoom.getBoundingClientRect();   // lock in the starting size before it grows
@@ -749,7 +819,7 @@
             box.style.setProperty("--ox", `${r.left + r.width / 2 - box.offsetLeft}px`);
             box.style.setProperty("--oy", `${clamp(r.top + r.height / 2, 0, innerHeight) - box.offsetTop}px`);
             gallery.inert = false; gallery.classList.add("on");
-            layout(true);
+            seed = (Math.random() * 2 ** 31) | 0; layout(true);
             roll.scrollTop = 0;
             if (i > 0) roll.querySelector(`[data-i="${i}"]`)?.scrollIntoView({ block: "center" });
             sound?.dock();
